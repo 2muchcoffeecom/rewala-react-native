@@ -1,0 +1,3 @@
+rootProject.name = 'rewala'
+
+include ':app'

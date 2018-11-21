@@ -1,0 +1,1 @@
+export const apiEndpoint = 'https://rewala-api.2mc.team';
