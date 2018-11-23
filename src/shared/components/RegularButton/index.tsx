@@ -7,6 +7,8 @@ type Props = ButtonProps;
 const RegularButton: React.FunctionComponent<Props> = (props) => {
   return (
     <Button
+      buttonStyle={style.button}
+      textStyle={style.buttonTitle}
       {...props}
     />
   );

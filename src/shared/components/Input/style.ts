@@ -1,6 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
+import { fontFamily, greyColor, whiteColor, shadowColor } from '../../../app.style';
 
 const style = StyleSheet.create({
+  root: {
+    width: '100%',
+  },
   errorText: {
     color: 'red',
     fontSize: 10,
@@ -10,16 +14,29 @@ const style = StyleSheet.create({
     height: 34,
     justifyContent: 'flex-start',
   },
-  textInput: {
-    width: '100%',
-    height: 30,
-    padding: 3,
+  inputContainer: {
+    // width: '100%',
+    height: 40,
     paddingLeft: 10,
-    borderWidth: 2,
-    borderColor: '#5d0756',
+    backgroundColor: whiteColor,
     borderRadius: 5,
-    fontFamily: 'CrimsonText-Regular',
-    color: '#5d0756',
+    ...Platform.select({
+      ios: {
+        shadowColor,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  textInputText: {
+    fontFamily,
+    fontSize: 12,
+    fontWeight: '400',
+    color: greyColor,
   },
 });
 
