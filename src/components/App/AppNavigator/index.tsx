@@ -1,5 +1,5 @@
 import React from 'react';
-import { createSwitchNavigator, NavigationContainerComponent } from 'react-navigation';
+import { createNavigationContainer, createSwitchNavigator, NavigationContainerComponent } from 'react-navigation';
 
 import SplashScreen from './SplashScreen';
 import AuthNavigator from './AuthNavigator';
@@ -13,6 +13,8 @@ const Navigator = createSwitchNavigator({
   initialRouteName: 'SplashScreen',
 });
 
+const NavigatorContainer = createNavigationContainer(Navigator); // until new @types
+
 export default class AppNavigator extends React.Component {
   setNavigator(navigatorRef: NavigationContainerComponent): void {
     navService.setNavigator(navigatorRef);
@@ -21,7 +23,7 @@ export default class AppNavigator extends React.Component {
   render() {
     return (
       <DoubleBackExit>
-        <Navigator
+        <NavigatorContainer
           ref={this.setNavigator}
         />
       </DoubleBackExit>
