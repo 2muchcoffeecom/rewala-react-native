@@ -1,6 +1,6 @@
 import * as fromActions from '../AC';
 import { initialState } from '../states';
-import { RequestNestedState } from '../../../../../states';
+import { RequestNestedState } from '../../../states';
 
 export function reducer(state = initialState, action: fromActions.Actions): RequestNestedState {
 

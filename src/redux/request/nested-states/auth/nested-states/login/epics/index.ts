@@ -8,7 +8,7 @@ import { FetchResult } from 'apollo-link';
 
 export const loginEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(fromActions.ActionTypes.LOGIN),
-  switchMap((action: ReturnType<typeof fromActions.Actions.login>): Observable<fromActions.Actions> =>
+  switchMap((action: ReturnType<typeof fromActions.Actions.login>) =>
     authService.login(action.payload.data).pipe(
       map((resp: FetchResult) => {
         return resp.errors ?

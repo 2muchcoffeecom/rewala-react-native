@@ -1,12 +1,13 @@
-import { UserModel } from '../../../shared/models/user.model';
+import * as authState from '../nested-states/auth/states';
 
 export interface RequestError {
   message: string[] | string;
 }
 
-export interface RequestNestedState {
-  loading: boolean;
-  loaded: boolean;
-  errors: RequestError | null;
-  data: UserModel[] | UserModel | null;
+export interface RequestState {
+  auth: authState.AuthRequestState;
 }
+
+export const initialState: RequestState = {
+  auth: authState.initialState,
+};
