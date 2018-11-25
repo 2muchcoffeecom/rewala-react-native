@@ -1,21 +1,15 @@
 import { StyleSheet, Platform } from 'react-native';
-import { fontFamily, greyColor, whiteColor, shadowColor } from '../../../app.style';
+import { fontFamily, greyColor, whiteColor, shadowColor, errorColor } from '../../../app.style';
 
 const style = StyleSheet.create({
   root: {
     width: '100%',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 10,
-    lineHeight: 14,
   },
   label: {
     height: 34,
     justifyContent: 'flex-start',
   },
   inputContainer: {
-    // width: '100%',
     height: 40,
     paddingLeft: 10,
     backgroundColor: whiteColor,
@@ -32,11 +26,17 @@ const style = StyleSheet.create({
       },
     }),
   },
-  textInputText: {
+  inputText: {
     fontFamily,
     fontSize: 12,
     fontWeight: '400',
     color: greyColor,
+  },
+  errorText: {
+    fontFamily,
+    fontSize: 10,
+    fontWeight: '400',
+    color: errorColor,
   },
 });
 

@@ -5,6 +5,7 @@ export const greyColor = '#9D9D9D';
 export const mainColor = '#708EFF';
 export const blackColor = '#1C1C1C';
 export const shadowColor = '#CCCBCB';
+export const errorColor = '#FF0000';
 
 export const fontFamily = 'Lato';
 

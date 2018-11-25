@@ -33,10 +33,14 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
         editable={editable}
         keyboardType={keyboard}
         containerStyle={style.inputContainer}
-        inputStyle={style.textInputText}
+        inputStyle={style.inputText}
       />
       {touched && (error &&
-          <FormValidationMessage>{error}</FormValidationMessage>
+        <FormValidationMessage
+          labelStyle={style.errorText}
+        >
+          {error}
+        </FormValidationMessage>
       )}
     </View>
   );
