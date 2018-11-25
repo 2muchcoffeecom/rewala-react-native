@@ -47,7 +47,7 @@ class LoginScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit} = this.props;
+    const {handleSubmit, pristine} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -79,6 +79,7 @@ class LoginScreen extends React.Component<Props> {
         <View style={[style.wraper, style.signInWraper]}>
           <RegularButton
             title='SIGN IN'
+            disabled={pristine}
             onPress={handleSubmit(this.submitLogin)}
           />
         </View>

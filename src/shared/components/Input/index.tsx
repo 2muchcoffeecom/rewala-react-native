@@ -32,7 +32,11 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
         placeholder={placeholder}
         editable={editable}
         keyboardType={keyboard}
-        containerStyle={style.inputContainer}
+        containerStyle={
+          error ?
+            [style.inputContainer, style.errorContainer] :
+            style.inputContainer
+        }
         inputStyle={style.inputText}
       />
       {touched && (error &&

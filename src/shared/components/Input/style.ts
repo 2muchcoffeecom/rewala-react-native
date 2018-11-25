@@ -26,6 +26,11 @@ const style = StyleSheet.create({
       },
     }),
   },
+  errorContainer: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: errorColor,
+  },
   inputText: {
     fontFamily,
     fontSize: 12,
