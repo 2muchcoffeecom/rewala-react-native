@@ -5,6 +5,7 @@ import { requestReducer } from './request/reducers';
 import formReducer from './form/reducers';
 
 import { requestEpics } from './request/epics';
+import { authEpics } from './auth/epics';
 
 import { RequestState } from './request/states';
 import { FormsState } from './form/states';
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
 
 const rootEpic = combineEpics(
   ...requestEpics,
+  ...authEpics,
 );
 
 const epicMiddleware = createEpicMiddleware();

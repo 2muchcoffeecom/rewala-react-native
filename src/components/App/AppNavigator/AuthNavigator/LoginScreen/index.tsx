@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose/*, Dispatch */ } from 'redux';
+import { compose, Dispatch  } from 'redux';
 import { connect } from 'react-redux';
 import style from './style';
 
@@ -13,34 +13,32 @@ import required from '../../../../../shared/validators/required';
 import { passwordLogin } from '../../../../../shared/validators/password';
 
 import { LoginInput } from '../../../../../shared/services/auth.service';
-import { RootState } from '../../../../../redux/store';
 
+import { Actions as authActions } from '../../../../../redux/auth/AC';
 import navService from '../../../../../shared/services/nav.service';
 
 type LoginFormData = LoginInput;
 
-interface StateProps {
-  state: RootState;
-}
-
 interface DispatchProps {
+  login(data: LoginFormData): void;
 }
 
-const mapStateToProps = (state: RootState): StateProps => ({
-  state,
-});
+const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
+  {
+    login: (data) => {
+      dispatch(authActions.submitLogin(data));
+    },
+  }
+);
 
-// const mapDispatchToProps = (dispatch: Dispatch<FormAction | Actions | toastActions>): DispatchProps => (
-// );
-
-type Props = StateProps & DispatchProps & InjectedFormProps<LoginFormData>;
+type Props = DispatchProps & InjectedFormProps<LoginFormData>;
 
 class LoginScreen extends React.Component<Props> {
   submitLogin = (values: LoginFormData): void => {
-
+    this.props.login(values);
   }
 
-  forgotPassword = () => {
+  toForgotPassword = () => {
     navService.navigate('ForgotPasswordScreen');
   }
 
@@ -86,7 +84,7 @@ class LoginScreen extends React.Component<Props> {
         </View>
         <View>
           <Text
-            onPress={this.forgotPassword}
+            onPress={this.toForgotPassword}
             style={style.text}
           >
             {`Forgot password?`.toUpperCase()}
@@ -112,5 +110,5 @@ export default compose(
   reduxForm<LoginFormData>({
     form: 'login',
   }),
-  connect<StateProps/*, DispatchProps*/>(mapStateToProps/*, mapDispatchToProps*/),
+  connect<null, DispatchProps>(null, mapDispatchToProps),
 )(LoginScreen);
