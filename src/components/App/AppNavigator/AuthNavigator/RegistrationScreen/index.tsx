@@ -11,9 +11,9 @@ import CountryPicker from 'react-native-country-picker-modal';
 
 import email from '../../../../../shared/validators/email';
 import { fullNameLetters } from '../../../../../shared/validators/fullName';
-import { minLengthFullName } from '../../../../../shared/validators/minLenght';
-import { maxLengthFullName } from '../../../../../shared/validators/maxLenght';
-import { phone } from '../../../../../shared/validators/phone';
+import {
+  maxLengthFullName, minLengthFullName, maxLengthPhone, minLengthPhone,
+} from '../../../../../shared/validators/lenght';
 import { validate } from '../../../../../shared/validators/confirmPassword';
 import required from '../../../../../shared/validators/required';
 import { passwordRegistration } from '../../../../../shared/validators/password';
@@ -139,9 +139,10 @@ class RegistrationScreen extends React.Component<Props, State> {
               <Field
                 name='phone'
                 component={Input}
-                keyboard='phone-pad'
+                keyboard='numeric'
+                type='number'
                 placeholder='Phone Number'
-                validate={[required, phone]}
+                validate={[required, maxLengthPhone, minLengthPhone]}
               />
             </View>
           </View>
