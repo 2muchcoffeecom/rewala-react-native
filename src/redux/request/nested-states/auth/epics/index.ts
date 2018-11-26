@@ -1,5 +1,7 @@
-import { loginEpic } from '../nested-states/login/epics';
+import { loginRequestEpic } from '../nested-states/login/epics';
+import { registrationRequestEpic } from '../nested-states/registration/epics';
 
 export const authEpic = [
-  loginEpic,
+  loginRequestEpic,
+  registrationRequestEpic,
 ];
