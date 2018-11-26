@@ -3,7 +3,7 @@ import { createStackNavigator } from 'react-navigation';
 
 // import navService from '../../../../shared/services/nav.service';
 import LoginScreen from './LoginScreen';
-// import RegistrationScreen from './RegistrationScreen';
+import RegistrationScreen from './RegistrationScreen';
 
 export default createStackNavigator({
   LoginScreen: {
@@ -12,10 +12,12 @@ export default createStackNavigator({
       header: null,
     },
   },
-  // RegistrationScreen: {
-  //   screen: RegistrationScreen,
-  //   navigationOptions: navService.navigationOptions('Registration'),
-  // },
+  RegistrationScreen: {
+    screen: RegistrationScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
 }, {
   initialRouteName: 'LoginScreen',
 });

@@ -16,7 +16,7 @@ interface ProfileInput {
   phone: string;
 }
 
-interface UserInput {
+export interface UserInput {
   email: string;
   password: string;
   profileInput: ProfileInput;
