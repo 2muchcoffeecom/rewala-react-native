@@ -13,8 +13,7 @@ export const passwordLogin = (value: string): string | undefined => (
 );
 
 export const passwordRegistration = (value: string): string | undefined => (
-  value && regExpPassword.test(value) ?
-    `Password must contain at least 8 characters,
-    including upper and lower case letters, numeric and special characters`
+  value && !regExpPassword.test(value) ?
+    `Password must contain at least 8 characters, including upper and lower case letters, numeric and special characters`
     : undefined
 );
