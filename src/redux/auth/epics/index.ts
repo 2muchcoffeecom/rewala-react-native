@@ -9,11 +9,21 @@ const loginEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
     fromActions.ActionTypes.AUTH_SUBMIT_LOGIN,
   ),
-  map((action) => {
+  map((action: ReturnType<typeof fromActions.Actions.submitLogin>) => {
     return authRequestAC.login.Actions.login(action.payload.data);
+  }),
+);
+
+const registrationEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.AUTH_SUBMIT_REGISTRATION,
+  ),
+  map((action: ReturnType<typeof fromActions.Actions.submitRegistration>) => {
+    return authRequestAC.registration.Actions.registration(action.payload.data);
   }),
 );
 
 export const authEpics = [
   loginEpic,
+  registrationEpic,
 ];
