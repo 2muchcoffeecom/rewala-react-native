@@ -18,10 +18,10 @@ const style = StyleSheet.create({
     marginBottom: 87,
   },
   emailWraper: {
-    marginBottom: 24,
+    // marginBottom: 8,
   },
   passwordWraper: {
-    marginBottom: 40,
+    marginBottom: 16,
   },
   signInWraper: {
     marginBottom: 20,

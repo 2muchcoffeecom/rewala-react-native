@@ -24,27 +24,28 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <View style={style.root}>
       {labelText && <FormLabel>{labelText}</FormLabel>}
-      <FormInput
-        {...restInput}
-        secureTextEntry={isSecureTextEntry}
-        onChangeText={onChange}
-        onFocus={onFocus as any}
-        placeholder={placeholder}
-        editable={editable}
-        keyboardType={keyboard}
-        containerStyle={
-          error ?
-            [style.inputContainer, style.errorContainer] :
-            style.inputContainer
-        }
-        inputStyle={style.inputText}
-      />
+        <FormInput
+          {...restInput}
+          secureTextEntry={isSecureTextEntry}
+          onChangeText={onChange}
+          onFocus={onFocus as any}
+          placeholder={placeholder}
+          editable={editable}
+          keyboardType={keyboard}
+          containerStyle={
+            touched && error ?
+              [style.inputContainer, style.inputContainerError] :
+              style.inputContainer
+          }
+          inputStyle={style.inputText}
+        />
       {touched && (error &&
-        <FormValidationMessage
-          labelStyle={style.errorText}
-        >
-          {error}
-        </FormValidationMessage>
+          <FormValidationMessage
+              labelStyle={style.errorText}
+              containerStyle={style.errorContainer}
+          >
+            {error}
+          </FormValidationMessage>
       )}
     </View>
   );

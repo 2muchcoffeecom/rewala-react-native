@@ -3,13 +3,20 @@ import { fontFamily, greyColor, whiteColor, shadowColor, errorColor } from '../.
 
 const style = StyleSheet.create({
   root: {
-    width: '100%',
-  },
-  label: {
-    height: 34,
     justifyContent: 'flex-start',
+    width: '100%',
+    height: 64,
+  },
+  // label: {
+  //   height: 34,
+  //   justifyContent: 'flex-start',
+  // },
+  aaa: {
+    width: 300,
+    height: 40,
   },
   inputContainer: {
+    justifyContent: 'center',
     height: 40,
     paddingLeft: 10,
     backgroundColor: whiteColor,
@@ -26,7 +33,7 @@ const style = StyleSheet.create({
       },
     }),
   },
-  errorContainer: {
+  inputContainerError: {
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: errorColor,
@@ -36,6 +43,10 @@ const style = StyleSheet.create({
     fontSize: 12,
     fontWeight: '400',
     color: greyColor,
+  },
+  errorContainer: {
+    position: 'absolute',
+    top: 33,
   },
   errorText: {
     fontFamily,
