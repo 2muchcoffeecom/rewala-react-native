@@ -18,6 +18,7 @@
     "react-apollo": "^2.3.1",
     "react-native": "0.57.5",
     "react-native-contacts": "^2.2.4",
+    "react-native-country-picker-modal": "^0.6.2",
     "react-native-device-info": "^0.24.3",
     "react-native-easy-toast": "^1.1.0",
     "react-native-elements": "^0.19.1",
