@@ -16,35 +16,35 @@ import { RootState } from '../../../../../redux/store';
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import navService from '../../../../../shared/services/nav.service';
 
-interface ResetPasswordFormData {
+export interface ForgotPasswordFormData {
   email: string;
 }
 
 interface StateProps {
-  formValues: ResetPasswordFormData;
+  formValues: ForgotPasswordFormData;
 }
 
 interface DispatchProps {
-  resetPassword(data: ResetPasswordFormData): void;
+  resetPassword(data: string): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  formValues: getFormValues('resetPassword')(state) as ResetPasswordFormData,
+  formValues: getFormValues('forgotPassword')(state) as ForgotPasswordFormData,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
   {
     resetPassword: (data) => {
-      dispatch(authActions.submitResetPassword(data));
+      dispatch(authActions.submitForgotPassword(data));
     },
   }
 );
 
-type Props = StateProps & DispatchProps & InjectedFormProps<ResetPasswordFormData>;
+type Props = StateProps & DispatchProps & InjectedFormProps<ForgotPasswordFormData>;
 
 class ForgotPasswordScreen extends React.Component<Props> {
-  submitResetPassword = (values: ResetPasswordFormData): void => {
-    this.props.resetPassword(values);
+  submitResetPassword = (values: ForgotPasswordFormData): void => {
+    this.props.resetPassword(values.email);
   }
 
   toLoginScreen = () => {
@@ -98,8 +98,8 @@ class ForgotPasswordScreen extends React.Component<Props> {
 }
 
 export default compose(
-  reduxForm<ResetPasswordFormData>({
-    form: 'resetPassword',
+  reduxForm<ForgotPasswordFormData>({
+    form: 'forgotPassword',
   }),
   connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
 )(ForgotPasswordScreen);

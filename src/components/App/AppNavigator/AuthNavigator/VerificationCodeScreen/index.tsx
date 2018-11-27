@@ -11,6 +11,7 @@ import RegularButton from '../../../../../shared/components/RegularButton';
 import { verificationCode } from '../../../../../shared/validators/verificationCode';
 
 import { RootState } from '../../../../../redux/store';
+import { ForgotPasswordFormData } from '../ForgotPasswordScreen';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import navService from '../../../../../shared/services/nav.service';
@@ -21,20 +22,26 @@ interface VerificationCodeFormData {
 
 interface StateProps {
   formValues: VerificationCodeFormData;
+  forgotPasswordFormValues: ForgotPasswordFormData;
 }
 
 interface DispatchProps {
-  verifyCode(data: VerificationCodeFormData): void;
+  verifyCode(data: string): void;
+  resendCode(data: string): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  formValues: getFormValues('resetPassword')(state) as VerificationCodeFormData,
+  formValues: getFormValues('verificationCode')(state) as VerificationCodeFormData,
+  forgotPasswordFormValues: getFormValues('forgotPassword')(state) as ForgotPasswordFormData,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
   {
     verifyCode: (data) => {
-      dispatch(authActions.submitVerifyCode(data));
+      dispatch(authActions.submitVerificationCode(data));
+    },
+    resendCode: (data) => {
+      dispatch(authActions.submitForgotPassword(data));
     },
   }
 );
@@ -43,11 +50,17 @@ type Props = StateProps & DispatchProps & InjectedFormProps<VerificationCodeForm
 
 class VerificationCodeScreen extends React.Component<Props> {
   submitVerifyCode = (values: VerificationCodeFormData): void => {
-    this.props.verifyCode(values);
+    this.props.verifyCode(values.code);
   }
 
   toLoginScreen = () => {
     navService.navigate('LoginScreen');
+  }
+
+  resendCode = () => {
+    const {resendCode, forgotPasswordFormValues} = this.props;
+
+    resendCode(forgotPasswordFormValues.email);
   }
 
   render() {
