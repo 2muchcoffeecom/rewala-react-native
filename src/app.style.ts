@@ -2,10 +2,12 @@ import { Dimensions, TextStyle } from 'react-native';
 
 export const whiteColor = '#FFF';
 export const greyColor = '#9D9D9D';
+export const blackTextColor = '#000';
 export const mainColor = '#708EFF';
 export const blackColor = '#1C1C1C';
 export const shadowColor = '#CCCBCB';
 export const errorColor = '#FF0000';
+export const errorBorderColor = 'rgba(255, 0, 0, 0.5)';
 
 export const fontFamily = 'Lato';
 

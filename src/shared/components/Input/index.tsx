@@ -3,6 +3,7 @@ import { View, KeyboardTypeOptions } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
 import { WrappedFieldProps } from 'redux-form';
 import style from './style';
+import { greyColor } from '../../../app.style';
 
 export interface OwnProps {
   labelText?: string;
@@ -36,6 +37,7 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
         onChangeText={type === 'number' ? handleChangeNumberInput : onChange}
         onFocus={onFocus as any}
         placeholder={placeholder}
+        placeholderTextColor={greyColor}
         editable={editable}
         keyboardType={keyboard}
         containerStyle={
@@ -46,12 +48,12 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
         inputStyle={style.inputText}
       />
       {touched && (error &&
-        <FormValidationMessage
-          labelStyle={style.errorText}
-          containerStyle={style.errorContainer}
-        >
-          {error}
-        </FormValidationMessage>
+          <FormValidationMessage
+              labelStyle={style.errorText}
+              containerStyle={style.errorContainer}
+          >
+            {error}
+          </FormValidationMessage>
       )}
     </View>
   );

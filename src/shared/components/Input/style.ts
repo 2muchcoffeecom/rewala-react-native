@@ -1,19 +1,13 @@
 import { StyleSheet, Platform } from 'react-native';
-import { fontFamily, greyColor, whiteColor, shadowColor, errorColor } from '../../../app.style';
+import {
+  fontFamily, whiteColor, shadowColor, errorColor, errorBorderColor, blackTextColor
+} from '../../../app.style';
 
 const style = StyleSheet.create({
   root: {
     justifyContent: 'flex-start',
     width: '100%',
     height: 64,
-  },
-  // label: {
-  //   height: 34,
-  //   justifyContent: 'flex-start',
-  // },
-  aaa: {
-    width: 300,
-    height: 40,
   },
   inputContainer: {
     justifyContent: 'center',
@@ -34,15 +28,15 @@ const style = StyleSheet.create({
     }),
   },
   inputContainerError: {
-    borderWidth: 1,
+    borderWidth: 0.7,
     borderStyle: 'solid',
-    borderColor: errorColor,
+    borderColor: errorBorderColor,
   },
   inputText: {
     fontFamily,
     fontSize: 12,
     fontWeight: '400',
-    color: greyColor,
+    color: blackTextColor,
   },
   errorContainer: {
     position: 'absolute',
