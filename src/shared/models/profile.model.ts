@@ -1,3 +1,12 @@
+export interface IProfileModel {
+  _id: string;
+  fullName: string;
+  countryCode: string;
+  phone: string;
+  notifications: boolean;
+  userId: string;
+}
+
 export class ProfileModel {
   _id?: string;
   fullName?: string;

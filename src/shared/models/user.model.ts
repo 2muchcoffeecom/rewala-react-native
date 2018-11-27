@@ -1,3 +1,12 @@
+import { IProfileModel } from './profile.model';
+
+export interface IUserModel {
+  _id: string;
+  email: string;
+  authToken: string;
+  profile: IProfileModel;
+}
+
 export class UserModel {
   _id?: string;
   email?: string;
