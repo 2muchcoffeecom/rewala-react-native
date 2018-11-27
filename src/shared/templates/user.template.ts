@@ -13,10 +13,8 @@ export const userWithProfile = `{
   email
   authToken
   profile ${profile}
-  roles
   status
   statusIn
-  followRequestWithMe
 }`;
 
 export const result = `{
