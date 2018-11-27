@@ -12,13 +12,14 @@ export interface OwnProps {
   editable?: boolean;
   isSecureTextEntry?: boolean;
   type?: 'number';
+  maxLength?: number;
 }
 
 type Props = OwnProps & WrappedFieldProps;
 
 export const Input: React.FunctionComponent<Props> = (props: Props) => {
   const {
-    placeholder, labelText, keyboard, editable, isSecureTextEntry, type,
+    placeholder, labelText, keyboard, editable, isSecureTextEntry, type, maxLength,
     input: {onChange, onFocus, ...restInput},
     meta: {touched, error},
   } = props;
@@ -46,6 +47,7 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
             style.inputContainer
         }
         inputStyle={style.inputText}
+        maxLength={maxLength && maxLength}
       />
       {touched && (error &&
           <FormValidationMessage

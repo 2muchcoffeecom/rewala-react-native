@@ -9,7 +9,7 @@ export default class SplashScreen extends Component {
   constructor(props: {}) {
     super(props);
     const subscriber = authService.getToken().subscribe(token => {
-      navService.navigate(token ? 'MainNavigator' : 'AuthNavigator');
+      navService.navigate(/*token ? 'MainNavigator' : */'AuthNavigator');
       subscriber.unsubscribe();
     });
   }

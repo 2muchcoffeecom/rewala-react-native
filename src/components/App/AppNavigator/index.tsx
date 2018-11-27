@@ -1,9 +1,12 @@
 import React from 'react';
-import { createNavigationContainer, createSwitchNavigator, NavigationContainerComponent } from 'react-navigation';
+import {
+  createNavigationContainer, createSwitchNavigator, NavigationContainerComponent,
+} from 'react-navigation';
 
 import SplashScreen from './SplashScreen';
 import AuthNavigator from './AuthNavigator';
 import DoubleBackExit from '../../../shared/components/DoubleBackExit';
+import RootToast from '../../../shared/components/RootToast';
 import navService from '../../../shared/services/nav.service';
 
 const Navigator = createSwitchNavigator({
@@ -26,6 +29,7 @@ export default class AppNavigator extends React.Component {
         <NavigatorContainer
           ref={this.setNavigator}
         />
+        <RootToast/>
       </DoubleBackExit>
     );
   }
