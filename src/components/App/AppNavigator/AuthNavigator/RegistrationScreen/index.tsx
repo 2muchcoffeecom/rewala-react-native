@@ -75,7 +75,8 @@ class RegistrationScreen extends React.Component<Props, State> {
       password: values.password,
       profileInput: {
         fullName: values.fullName,
-        phone: this.state.callingCode + values.phone,
+        phone: values.phone,
+        countryCode: this.state.callingCode,
       },
     };
 
