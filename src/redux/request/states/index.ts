@@ -1,7 +1,12 @@
 import * as authState from '../nested-states/auth/states';
 
 export interface RequestError {
-  message: string[] | string;
+  fields?: {
+    email?: {
+      unique?: string;
+    },
+  };
+  message?: string;
 }
 
 export interface RequestState {
