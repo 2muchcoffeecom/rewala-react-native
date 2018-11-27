@@ -1,11 +1,13 @@
 import { Platform, StyleSheet } from 'react-native';
-import { mainColor, greyColor, fontFamily, fullHeight, shadowColor } from '../../../../../app.style';
+import {
+  mainColor, greyColor, fontFamily, fullHeight, shadowColor, blackTextColor
+} from '../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 94,
+    paddingTop: 95,
     paddingBottom: 20,
     minHeight: fullHeight,
   },
@@ -37,7 +39,7 @@ const style = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.5,
         shadowRadius: 4,
       },
@@ -50,7 +52,7 @@ const style = StyleSheet.create({
     fontFamily,
     fontWeight: '400',
     fontSize: 12,
-    color: '#000',
+    color: blackTextColor,
   },
   countryPickerImg: {
     width: 20,
@@ -59,21 +61,20 @@ const style = StyleSheet.create({
   },
   phoneField: {
     flex: 1,
-    // width: '100%',
   },
   fieldWraper: {
     // marginBottom: 16,
   },
   passwordConfirmWraper: {
-    marginBottom: 40,
+    marginBottom: 16,
   },
   singInWraper: {
     position: 'absolute',
     bottom: 20,
   },
   image: {
-    width: 204,
-    height: 42,
+    width: 160,
+    height: 33,
   },
   text: {
     fontFamily,

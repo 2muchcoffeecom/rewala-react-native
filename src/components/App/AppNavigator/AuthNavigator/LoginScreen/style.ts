@@ -5,7 +5,7 @@ const style = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 105,
+    paddingTop: 95,
     paddingBottom: 20,
     minHeight: fullHeight,
   },
@@ -15,7 +15,7 @@ const style = StyleSheet.create({
     paddingRight: 42,
   },
   imageWraper: {
-    marginBottom: 87,
+    marginBottom: 60,
   },
   emailWraper: {
     // marginBottom: 8,
@@ -31,15 +31,14 @@ const style = StyleSheet.create({
     bottom: 20,
   },
   image: {
-    width: 204,
-    height: 42,
+    width: 160,
+    height: 33,
   },
   text: {
     fontFamily,
     fontWeight: '400',
     fontSize: 11,
     color: greyColor,
-    // textTransform: 'uppercase',
   },
   textLink: {
     color: mainColor,
