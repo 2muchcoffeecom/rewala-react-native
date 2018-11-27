@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { mainColor, whiteColor } from '../../../app.style';
 
 const style = StyleSheet.create({
   container: {
@@ -6,7 +7,7 @@ const style = StyleSheet.create({
   },
   animatedView: {
     width: '100%',
-    backgroundColor: '#5d0756',
+    backgroundColor: mainColor,
     elevation: 2,
     position: 'absolute',
     bottom: 0,
@@ -17,17 +18,17 @@ const style = StyleSheet.create({
   },
   exitTitleText: {
     textAlign: 'center',
-    color: '#fff',
+    color: whiteColor,
     marginRight: 10,
   },
   buttonExit: {
     borderRadius: 30,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: '#fff',
+    borderColor: whiteColor,
   },
   exitText: {
-    color: '#fff',
+    color: whiteColor,
     paddingHorizontal: 10,
     paddingVertical: 3,
   },
