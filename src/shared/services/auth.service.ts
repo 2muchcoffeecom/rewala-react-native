@@ -14,6 +14,7 @@ export interface LoginInput {
 interface ProfileInput {
   fullName: string;
   phone: string;
+  countryCode: string;
 }
 
 export interface UserInput {
