@@ -5,7 +5,7 @@ export enum ActionTypes {
   AUTH_SUBMIT_LOGIN = 'AUTH_SUBMIT_LOGIN',
   AUTH_SUBMIT_REGISTRATION = 'AUTH_SUBMIT_REGISTRATION',
   AUTH_SUBMIT_FORGOT_PASSWORD = 'AUTH_SUBMIT_FORGOT_PASSWORD',
-  AUTH_SUBMIT_VERIFICATION_CODE = 'AUTH_SUBMIT_VERIFICATION_CODE',
+  AUTH_SUBMIT_RESET_PASSWORD_CODE = 'AUTH_SUBMIT_RESET_PASSWORD_CODE',
 }
 
 export const Actions = {
@@ -18,8 +18,8 @@ export const Actions = {
   submitForgotPassword: (data: string) => {
     return createAction(ActionTypes.AUTH_SUBMIT_FORGOT_PASSWORD, {data});
   },
-  submitVerificationCode: (data: string) => {
-    return createAction(ActionTypes.AUTH_SUBMIT_VERIFICATION_CODE, {data});
+  submitResetPasswordCode: (data: string) => {
+    return createAction(ActionTypes.AUTH_SUBMIT_RESET_PASSWORD_CODE, {data});
   },
 };
 
