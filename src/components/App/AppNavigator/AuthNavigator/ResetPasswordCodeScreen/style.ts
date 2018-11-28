@@ -35,9 +35,11 @@ const style = StyleSheet.create({
     fontFamily: fontFamilyRegular,
     fontWeight: '400',
     fontSize: 12,
+    textAlign: 'center',
     color: greyColor,
   },
   textLink: {
+    fontSize: 11,
     color: mainColor,
   },
 });

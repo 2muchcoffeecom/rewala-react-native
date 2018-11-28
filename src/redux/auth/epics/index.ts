@@ -42,11 +42,22 @@ const resetPasswordCodeEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const newPasswordEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.AUTH_SUBMIT_NEW_PASSWORD,
+  ),
+  map((action: ReturnType<typeof fromActions.Actions.submitNewPassword>) => {
+    return authRequestAC.newPassword.Actions.newPassword(action.payload.data);
+  }),
+);
+
 const setTokenEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess> |
-    ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess>>(
+    ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess> |
+    ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess>>(
     authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
     authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
+    authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_SUCCESS,
   ),
   switchMap((action) => {
     const user = action.payload.data;
@@ -74,4 +85,5 @@ export const authEpics = [
   setAuthorizedUserIdEpic,
   resetPasswordEpic,
   resetPasswordCodeEpic,
+  newPasswordEpic,
 ];

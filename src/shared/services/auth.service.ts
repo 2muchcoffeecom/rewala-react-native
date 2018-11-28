@@ -36,6 +36,7 @@ interface IAuthService {
   registration(input: UserInput): Observable<any>;
   resetPassword(email: string): Observable<any>;
   resetPasswordConfirmCode(resetPasswordCode: string): Observable<any>;
+  newPassword(resetPasswordConfirmInput: ResetPasswordConfirmInput): Observable<any>;
 }
 
 class AuthService implements IAuthService {
@@ -82,7 +83,7 @@ class AuthService implements IAuthService {
   resetPassword(email: string) {
     const operation = {
       query: gql`
-          mutation resetPassword($input: String) {
+          mutation resetPassword($input: String!) {
               resetPassword(input: $input)
           }
       `,
@@ -96,12 +97,26 @@ class AuthService implements IAuthService {
   resetPasswordConfirmCode(resetPasswordCode: string) {
     const operation = {
       query: gql`
-          mutation resetPasswordConfirmCode($input: String) {
+          mutation resetPasswordConfirmCode($input: String!) {
               resetPasswordConfirmCode(input: $input)
           }
       `,
       variables: {
         resetPasswordCode,
+      },
+    };
+    return from(execute(link, operation) as ObservableInput<any>);
+  }
+
+  newPassword(resetPasswordConfirmInput: ResetPasswordConfirmInput) {
+    const operation = {
+      query: gql`
+          mutation resetPasswordConfirm($input: ResetPasswordConfirmInput!) {
+              resetPasswordConfirm(input: $input)
+          } ${userWithProfile}
+      `,
+      variables: {
+        resetPasswordConfirmInput,
       },
     };
     return from(execute(link, operation) as ObservableInput<any>);
