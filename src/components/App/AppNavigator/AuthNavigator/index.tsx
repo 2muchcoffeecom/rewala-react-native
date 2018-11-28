@@ -1,10 +1,10 @@
-// import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 
-// import navService from '../../../../shared/services/nav.service';
 import LoginScreen from './LoginScreen';
 import RegistrationScreen from './RegistrationScreen';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
+import ResetPasswordCodeScreen from './ResetPasswordCodeScreen';
+import NewPasswordScreen from './NewPasswordScreen';
 
 export default createStackNavigator({
   LoginScreen: {
@@ -21,6 +21,18 @@ export default createStackNavigator({
   },
   ForgotPasswordScreen: {
     screen: ForgotPasswordScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  ResetPasswordCodeScreen: {
+    screen: ResetPasswordCodeScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  NewPasswordScreen: {
+    screen: NewPasswordScreen,
     navigationOptions: {
       header: null,
     },
