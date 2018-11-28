@@ -1,10 +1,13 @@
 import { Action } from 'redux';
 import { Observable } from 'rxjs';
 import { ofType } from 'redux-observable';
-import { ignoreElements, map, switchMap } from 'rxjs/operators';
+import { ignoreElements, map, switchMap, tap } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import { authRequestAC } from '../../request/nested-states/auth/AC';
 import authService from '../../../shared/services/auth.service';
+import navService from '../../../shared/services/nav.service';
+import deviceService from '../../../shared/services/device.service';
+import { PermissionsAndroid } from 'react-native';
 
 const loginEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
@@ -15,6 +18,14 @@ const loginEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const redirectToLoginScreenEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess>>(
+    authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_SUCCESS,
+  ),
+  tap(() => navService.navigate('LoginScreen')),
+  ignoreElements(),
+);
+
 const registrationEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
     fromActions.ActionTypes.AUTH_SUBMIT_REGISTRATION,
@@ -22,6 +33,21 @@ const registrationEpic = (action$: Observable<Action>) => action$.pipe(
   map((action: ReturnType<typeof fromActions.Actions.submitRegistration>) => {
     return authRequestAC.registration.Actions.registration(action.payload.data);
   }),
+);
+
+const checkReadContactsPermissionEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess>>(
+    authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
+  ),
+  switchMap(() => deviceService.getReadContactsPermission().pipe(
+    tap((result) => {
+      if (result === PermissionsAndroid.RESULTS.GRANTED) {
+        return deviceService.getDeviceContacts();
+      } else {
+        return navService.navigate('HomeBlank');
+      }
+    }),
+  )),
 );
 
 const resetPasswordEpic = (action$: Observable<Action>) => action$.pipe(
@@ -42,6 +68,14 @@ const resetPasswordCodeEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const redirectToResetPasswordCodeScreenEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.resetPassword.Actions.resetPasswordSuccess>>(
+    authRequestAC.resetPassword.ActionTypes.RESET_PASSWORD_SUCCESS,
+  ),
+  tap(() => navService.navigate('ResetPasswordCodeScreen')),
+  ignoreElements(),
+);
+
 const newPasswordEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
     fromActions.ActionTypes.AUTH_SUBMIT_NEW_PASSWORD,
@@ -49,6 +83,14 @@ const newPasswordEpic = (action$: Observable<Action>) => action$.pipe(
   map((action: ReturnType<typeof fromActions.Actions.submitNewPassword>) => {
     return authRequestAC.newPassword.Actions.newPassword(action.payload.data);
   }),
+);
+
+const redirectToNewPasswordScreenEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.resetPasswordCode.Actions.resetPasswordCodeSuccess>>(
+    authRequestAC.resetPasswordCode.ActionTypes.RESET_PASSWORD_CODE_SUCCESS,
+  ),
+  tap(() => navService.navigate('NewPasswordScreen')),
+  ignoreElements(),
 );
 
 const setTokenEpic = (action$: Observable<Action>) => action$.pipe(
@@ -78,6 +120,14 @@ const setAuthorizedUserIdEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const redirectToHomeScreenEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess>>(
+    authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
+  ),
+  tap(() => navService.navigate('HomeScreen')),
+  ignoreElements(),
+);
+
 export const authEpics = [
   loginEpic,
   registrationEpic,
@@ -86,4 +136,8 @@ export const authEpics = [
   resetPasswordEpic,
   resetPasswordCodeEpic,
   newPasswordEpic,
+  redirectToLoginScreenEpic,
+  redirectToResetPasswordCodeScreenEpic,
+  redirectToNewPasswordScreenEpic,
+  redirectToHomeScreenEpic,
 ];
