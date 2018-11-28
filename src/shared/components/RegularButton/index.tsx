@@ -8,6 +8,7 @@ const RegularButton: React.FunctionComponent<Props> = (props) => {
   return (
     <Button
       buttonStyle={style.button}
+      containerViewStyle={style.container}
       textStyle={style.buttonTitle}
       {...props}
     />

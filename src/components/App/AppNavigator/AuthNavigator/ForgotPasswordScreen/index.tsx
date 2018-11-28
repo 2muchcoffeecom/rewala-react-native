@@ -35,7 +35,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
 const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
   {
     resetPassword: (data) => {
-      dispatch(authActions.submitForgotPassword(data));
+      dispatch(authActions.submitResetPassword(data));
     },
   }
 );

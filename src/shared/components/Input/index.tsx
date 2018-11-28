@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, KeyboardTypeOptions } from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
+import { View, Text, KeyboardTypeOptions } from 'react-native';
+import { FormLabel, FormInput } from 'react-native-elements';
 import { WrappedFieldProps } from 'redux-form';
 import style from './style';
 import { greyColor } from '../../../app.style';
@@ -50,12 +50,9 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
         maxLength={maxLength && maxLength}
       />
       {touched && (error &&
-          <FormValidationMessage
-              labelStyle={style.errorText}
-              containerStyle={style.errorContainer}
-          >
+          <Text style={style.errorContainer}>
             {error}
-          </FormValidationMessage>
+          </Text>
       )}
     </View>
   );

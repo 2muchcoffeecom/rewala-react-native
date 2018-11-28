@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import { fontFamily, fullHeight, shadowColor, blackTextColor } from '../../../../../app.style';
+import { fontFamilyRegular, fullHeight, shadowColor, blackTextColor } from '../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
@@ -24,7 +24,6 @@ const style = StyleSheet.create({
     height: 64,
   },
   countryPickerWraper: {
-    left: 13,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -47,7 +46,7 @@ const style = StyleSheet.create({
     }),
   },
   countryPickerText: {
-    fontFamily,
+    fontFamily: fontFamilyRegular,
     fontWeight: '400',
     fontSize: 12,
     color: blackTextColor,

@@ -1,24 +1,28 @@
 import { StyleSheet, Platform } from 'react-native';
 import {
-  fontFamily, whiteColor, shadowColor, errorColor, errorBorderColor, blackTextColor
+  fontFamilyRegular, whiteColor, shadowColor, errorColor, errorBorderColor, blackTextColor,
 } from '../../../app.style';
 
 const style = StyleSheet.create({
   root: {
     justifyContent: 'flex-start',
     width: '100%',
-    height: 64,
+    minHeight: 64,
+    paddingBottom: 5,
   },
   inputContainer: {
     justifyContent: 'center',
     height: 40,
+    marginLeft: 0,
+    marginRight: 0,
     paddingLeft: 10,
+    paddingRight: 10,
     backgroundColor: whiteColor,
     borderRadius: 5,
     ...Platform.select({
       ios: {
         shadowColor,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.5,
         shadowRadius: 4,
       },
@@ -28,22 +32,28 @@ const style = StyleSheet.create({
     }),
   },
   inputContainerError: {
+    marginBottom: 5,
     borderWidth: 0.7,
     borderStyle: 'solid',
     borderColor: errorBorderColor,
   },
   inputText: {
-    fontFamily,
+    width: '100%',
+    fontFamily: fontFamilyRegular,
     fontSize: 12,
     fontWeight: '400',
     color: blackTextColor,
   },
   errorContainer: {
-    position: 'absolute',
-    top: 33,
+    width: '100%',
+    marginLeft: 3,
+    fontFamily: fontFamilyRegular,
+    fontSize: 10,
+    fontWeight: '400',
+    color: errorColor,
   },
   errorText: {
-    fontFamily,
+    fontFamily: fontFamilyRegular,
     fontSize: 10,
     fontWeight: '400',
     color: errorColor,

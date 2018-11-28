@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { mainColor, fontFamily, whiteColor } from '../../../app.style';
+import { mainColor, fontFamilyBold, whiteColor } from '../../../app.style';
 
 const style = StyleSheet.create({
   button: {
@@ -10,11 +10,14 @@ const style = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: mainColor,
   },
+  container: {
+    marginLeft: 0,
+    marginRight: 0,
+  },
   buttonTitle: {
-    fontFamily,
+    fontFamily: fontFamilyBold,
     fontSize: 14,
     fontWeight: '700',
-    // textTransform: 'uppercase',
     color: whiteColor,
   },
   disabled: {

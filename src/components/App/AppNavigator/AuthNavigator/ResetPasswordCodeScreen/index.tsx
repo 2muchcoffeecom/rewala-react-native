@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
       dispatch(authActions.submitResetPasswordCode(data));
     },
     resendCode: (data) => {
-      dispatch(authActions.submitForgotPassword(data));
+      dispatch(authActions.submitResetPassword(data));
     },
   }
 );

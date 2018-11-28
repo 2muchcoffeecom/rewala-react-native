@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { mainColor, greyColor, fontFamily, fullHeight } from '../../../../../app.style';
+import { mainColor, greyColor, fontFamilyRegular, fullHeight } from '../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
@@ -32,7 +32,7 @@ const style = StyleSheet.create({
     height: 33,
   },
   text: {
-    fontFamily,
+    fontFamily: fontFamilyRegular,
     fontWeight: '400',
     fontSize: 12,
     color: greyColor,

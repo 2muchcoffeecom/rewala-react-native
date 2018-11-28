@@ -25,7 +25,6 @@
     "react-native-gesture-handler": "^1.0.9",
     "react-native-image-picker": "^0.27.1",
     "react-native-linear-gradient": "^2.4.4",
-    "react-native-shadow": "^1.2.2",
     "react-native-svg": "^8.0.8",
     "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^3.0.0",
