@@ -23,12 +23,19 @@ export interface UserInput {
   profileInput: ProfileInput;
 }
 
+export interface ResetPasswordConfirmInput {
+  password: string;
+  resetPasswordCode: string;
+}
+
 interface IAuthService {
   getToken(): Observable<string | null>;
   setToken(token: string): Observable<void>;
   removeToken(): Observable<void>;
   login(input: LoginInput): Observable<any>;
   registration(input: UserInput): Observable<any>;
+  resetPassword(email: string): Observable<any>;
+  resetPasswordConfirmCode(resetPasswordCode: string): Observable<any>;
 }
 
 class AuthService implements IAuthService {
@@ -67,6 +74,34 @@ class AuthService implements IAuthService {
       `,
       variables: {
         input,
+      },
+    };
+    return from(execute(link, operation) as ObservableInput<any>);
+  }
+
+  resetPassword(email: string) {
+    const operation = {
+      query: gql`
+          mutation resetPassword($input: String) {
+              resetPassword(input: $input)
+          }
+      `,
+      variables: {
+        email,
+      },
+    };
+    return from(execute(link, operation) as ObservableInput<any>);
+  }
+
+  resetPasswordConfirmCode(resetPasswordCode: string) {
+    const operation = {
+      query: gql`
+          mutation resetPasswordConfirmCode($input: String) {
+              resetPasswordConfirmCode(input: $input)
+          }
+      `,
+      variables: {
+        resetPasswordCode,
       },
     };
     return from(execute(link, operation) as ObservableInput<any>);

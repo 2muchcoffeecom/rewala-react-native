@@ -49,7 +49,7 @@ const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
 type Props = StateProps & DispatchProps & InjectedFormProps<ResetPasswordCodeFormData>;
 
 class ResetPasswordCodeScreen extends React.Component<Props> {
-  submitVerifyCode = (values: ResetPasswordCodeFormData): void => {
+  submitResetPasswordCode = (values: ResetPasswordCodeFormData): void => {
     this.props.verifyCode(values.resetPasswordCode);
   }
 
@@ -91,7 +91,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
             <RegularButton
               title='CHANGE PASSWORD'
               disabled={!formValues || !formValues.resetPasswordCode}
-              onPress={handleSubmit(this.submitVerifyCode)}
+              onPress={handleSubmit(this.submitResetPasswordCode)}
             />
           </View>
           <Text

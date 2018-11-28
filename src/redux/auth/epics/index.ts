@@ -24,6 +24,24 @@ const registrationEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const resetPasswordEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.AUTH_SUBMIT_RESET_PASSWORD,
+  ),
+  map((action: ReturnType<typeof fromActions.Actions.submitResetPassword>) => {
+    return authRequestAC.resetPassword.Actions.resetPassword(action.payload.data);
+  }),
+);
+
+const resetPasswordCodeEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.AUTH_SUBMIT_RESET_PASSWORD_CODE,
+  ),
+  map((action: ReturnType<typeof fromActions.Actions.submitResetPasswordCode>) => {
+    return authRequestAC.resetPasswordCode.Actions.resetPasswordCode(action.payload.data);
+  }),
+);
+
 const setTokenEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess> |
     ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess>>(
@@ -35,11 +53,25 @@ const setTokenEpic = (action$: Observable<Action>) => action$.pipe(
     return authService.setToken(user.authToken);
   }),
   ignoreElements(),
-  )
-;
+);
+
+const setAuthorizedUserIdEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess> |
+    ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess>>(
+    authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
+    authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
+  ),
+  map((action) => {
+    const user = action.payload.data;
+    return fromActions.Actions.setAuthorizedUserId(user._id);
+  }),
+);
 
 export const authEpics = [
   loginEpic,
   registrationEpic,
   setTokenEpic,
+  setAuthorizedUserIdEpic,
+  resetPasswordEpic,
+  resetPasswordCodeEpic,
 ];
