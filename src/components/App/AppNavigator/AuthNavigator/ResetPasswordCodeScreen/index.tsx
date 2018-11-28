@@ -7,21 +7,21 @@ import { View, ScrollView, Image, Text } from 'react-native';
 import { Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
+import LogInLink from '../../../../../shared/components/LogInLink';
 
-import { verificationCode } from '../../../../../shared/validators/verificationCode';
+import { resetPasswordCode } from '../../../../../shared/validators/resetPasswordCode';
 
 import { RootState } from '../../../../../redux/store';
 import { ForgotPasswordFormData } from '../ForgotPasswordScreen';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
-import navService from '../../../../../shared/services/nav.service';
 
-interface VerificationCodeFormData {
-  code: string;
+export interface ResetPasswordCodeFormData {
+  resetPasswordCode: string;
 }
 
 interface StateProps {
-  formValues: VerificationCodeFormData;
+  formValues: ResetPasswordCodeFormData;
   forgotPasswordFormValues: ForgotPasswordFormData;
 }
 
@@ -31,14 +31,14 @@ interface DispatchProps {
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  formValues: getFormValues('verificationCode')(state) as VerificationCodeFormData,
+  formValues: getFormValues('resetPasswordCode')(state) as ResetPasswordCodeFormData,
   forgotPasswordFormValues: getFormValues('forgotPassword')(state) as ForgotPasswordFormData,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
   {
     verifyCode: (data) => {
-      dispatch(authActions.submitVerificationCode(data));
+      dispatch(authActions.submitResetPasswordCode(data));
     },
     resendCode: (data) => {
       dispatch(authActions.submitForgotPassword(data));
@@ -46,15 +46,11 @@ const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
   }
 );
 
-type Props = StateProps & DispatchProps & InjectedFormProps<VerificationCodeFormData>;
+type Props = StateProps & DispatchProps & InjectedFormProps<ResetPasswordCodeFormData>;
 
-class VerificationCodeScreen extends React.Component<Props> {
-  submitVerifyCode = (values: VerificationCodeFormData): void => {
-    this.props.verifyCode(values.code);
-  }
-
-  toLoginScreen = () => {
-    navService.navigate('LoginScreen');
+class ResetPasswordCodeScreen extends React.Component<Props> {
+  submitVerifyCode = (values: ResetPasswordCodeFormData): void => {
+    this.props.verifyCode(values.resetPasswordCode);
   }
 
   resendCode = () => {
@@ -78,15 +74,15 @@ class VerificationCodeScreen extends React.Component<Props> {
         <View style={style.wraper}>
           <View>
             <Field
-              name='code'
+              name='resetPasswordCode'
               component={Input}
               maxLength={8}
               placeholder='Enter Code From Email'
-              validate={verificationCode}
+              validate={resetPasswordCode}
             />
           </View>
           <View style={style.textCheckEmailWraper}>
-            <Text style={[style.text, style.textCheckEmail]}>
+            <Text style={style.text}>
               The verification code was sent to your account email address.
               Check your email inbox and enter the code to the field above.
             </Text>
@@ -94,7 +90,7 @@ class VerificationCodeScreen extends React.Component<Props> {
           <View style={style.changePasswordWraper}>
             <RegularButton
               title='CHANGE PASSWORD'
-              disabled={!formValues || !formValues.code}
+              disabled={!formValues || !formValues.resetPasswordCode}
               onPress={handleSubmit(this.submitVerifyCode)}
             />
           </View>
@@ -106,15 +102,7 @@ class VerificationCodeScreen extends React.Component<Props> {
           </Text>
         </View>
         <View style={style.loginWraper}>
-          <Text style={style.text}>
-            {'Already have an account? '.toUpperCase()}
-            <Text
-              onPress={this.toLoginScreen}
-              style={style.textLink}
-            >
-              LOG IN
-            </Text>
-          </Text>
+          <LogInLink/>
         </View>
       </ScrollView>
     );
@@ -122,8 +110,8 @@ class VerificationCodeScreen extends React.Component<Props> {
 }
 
 export default compose(
-  reduxForm<VerificationCodeFormData>({
-    form: 'verificationCode',
+  reduxForm<ResetPasswordCodeFormData>({
+    form: 'resetPasswordCode',
   }),
   connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
-)(VerificationCodeScreen);
+)(ResetPasswordCodeScreen);

@@ -3,10 +3,11 @@ import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import style from './style';
 
-import { View, ScrollView, Image, Text } from 'react-native';
+import { View, ScrollView, Image } from 'react-native';
 import { Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
+import LogInLink from '../../../../../shared/components/LogInLink';
 
 import email from '../../../../../shared/validators/email';
 import required from '../../../../../shared/validators/required';
@@ -14,7 +15,6 @@ import required from '../../../../../shared/validators/required';
 import { RootState } from '../../../../../redux/store';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
-import navService from '../../../../../shared/services/nav.service';
 
 export interface ForgotPasswordFormData {
   email: string;
@@ -45,10 +45,6 @@ type Props = StateProps & DispatchProps & InjectedFormProps<ForgotPasswordFormDa
 class ForgotPasswordScreen extends React.Component<Props> {
   submitResetPassword = (values: ForgotPasswordFormData): void => {
     this.props.resetPassword(values.email);
-  }
-
-  toLoginScreen = () => {
-    navService.navigate('LoginScreen');
   }
 
   render() {
@@ -82,15 +78,7 @@ class ForgotPasswordScreen extends React.Component<Props> {
           </View>
         </View>
         <View style={style.loginWraper}>
-          <Text style={style.text}>
-            {'Already have an account? '.toUpperCase()}
-            <Text
-              onPress={this.toLoginScreen}
-              style={style.textLink}
-            >
-              LOG IN
-            </Text>
-          </Text>
+          <LogInLink/>
         </View>
       </ScrollView>
     );

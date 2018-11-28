@@ -1,7 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import {
-  mainColor, greyColor, fontFamily, fullHeight, shadowColor, blackTextColor
-} from '../../../../../app.style';
+import { fontFamily, fullHeight, shadowColor, blackTextColor } from '../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
@@ -62,28 +60,16 @@ const style = StyleSheet.create({
   phoneField: {
     flex: 1,
   },
-  fieldWraper: {
-    // marginBottom: 16,
-  },
   passwordConfirmWraper: {
     marginBottom: 16,
   },
-  singInWraper: {
+  logInWraper: {
     position: 'absolute',
     bottom: 20,
   },
   image: {
     width: 160,
     height: 33,
-  },
-  text: {
-    fontFamily,
-    fontWeight: '400',
-    fontSize: 11,
-    color: greyColor,
-  },
-  textLink: {
-    color: mainColor,
   },
 });
 

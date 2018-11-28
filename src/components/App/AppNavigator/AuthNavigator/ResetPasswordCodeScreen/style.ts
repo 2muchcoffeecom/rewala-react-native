@@ -34,11 +34,8 @@ const style = StyleSheet.create({
   text: {
     fontFamily,
     fontWeight: '400',
-    fontSize: 11,
-    color: greyColor,
-  },
-  textCheckEmail: {
     fontSize: 12,
+    color: greyColor,
   },
   textLink: {
     color: mainColor,

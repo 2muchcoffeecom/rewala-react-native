@@ -8,6 +8,7 @@ import { Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import CountryPicker from 'react-native-country-picker-modal';
+import LogInLink from '../../../../../shared/components/LogInLink';
 
 import email from '../../../../../shared/validators/email';
 import { fullNameLetters } from '../../../../../shared/validators/fullName';
@@ -22,7 +23,6 @@ import { UserInput } from '../../../../../shared/services/auth.service';
 import { RootState } from '../../../../../redux/store';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
-import navService from '../../../../../shared/services/nav.service';
 import deviceService from '../../../../../shared/services/device.service';
 
 export interface RegistrationFormData {
@@ -83,10 +83,6 @@ class RegistrationScreen extends React.Component<Props, State> {
     this.props.registration(userInput);
   }
 
-  toLoginScreen = () => {
-    navService.navigate('LoginScreen');
-  }
-
   changeCountry = (value: any) => {
     this.setState({
       cca2: value.cca2,
@@ -107,7 +103,7 @@ class RegistrationScreen extends React.Component<Props, State> {
           />
         </View>
         <View style={style.wraper}>
-          <View style={style.fieldWraper}>
+          <View>
             <Field
               name='fullName'
               component={Input}
@@ -147,7 +143,7 @@ class RegistrationScreen extends React.Component<Props, State> {
               />
             </View>
           </View>
-          <View style={style.fieldWraper}>
+          <View>
             <Field
               name='email'
               component={Input}
@@ -156,7 +152,7 @@ class RegistrationScreen extends React.Component<Props, State> {
               validate={[required, email]}
             />
           </View>
-          <View style={style.fieldWraper}>
+          <View>
             <Field
               name='password'
               component={Input}
@@ -189,16 +185,8 @@ class RegistrationScreen extends React.Component<Props, State> {
             />
           </View>
         </View>
-        <View style={style.singInWraper}>
-          <Text style={style.text}>
-            {'Already have an account? '.toUpperCase()}
-            <Text
-              onPress={this.toLoginScreen}
-              style={style.textLink}
-            >
-              LOG IN
-            </Text>
-          </Text>
+        <View style={style.logInWraper}>
+          <LogInLink/>
         </View>
       </ScrollView>
     );
