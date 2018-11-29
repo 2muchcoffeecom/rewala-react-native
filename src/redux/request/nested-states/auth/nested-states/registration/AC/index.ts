@@ -1,6 +1,6 @@
 import { createAction, ActionsUnion } from '../../../../../../../shared/helpers/createAction';
 import { IUserModel } from '../../../../../../../shared/models/user.model';
-import { RequestError } from '../../../../../states';
+import { Reject, RequestError, Resolve } from '../../../../../states';
 import { UserInput } from '../../../../../../../shared/services/auth.service';
 
 export enum ActionTypes {
@@ -10,7 +10,9 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-  registration: (data: UserInput) => createAction(ActionTypes.REGISTRATION, {data}),
+  registration: (data: UserInput, resolve: Resolve<IUserModel>, reject: Reject) => createAction(
+    ActionTypes.REGISTRATION, {data, resolve, reject},
+  ),
   registrationSuccess: (data: IUserModel) => {
     return createAction(ActionTypes.REGISTRATION_SUCCESS, {data});
   },

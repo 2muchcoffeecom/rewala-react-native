@@ -31,7 +31,9 @@ const registrationEpic = (action$: Observable<Action>) => action$.pipe(
     fromActions.ActionTypes.AUTH_SUBMIT_REGISTRATION,
   ),
   map((action: ReturnType<typeof fromActions.Actions.submitRegistration>) => {
-    return authRequestAC.registration.Actions.registration(action.payload.data);
+    const {data, resolve, reject} = action.payload;
+
+    return authRequestAC.registration.Actions.registration(data, resolve, reject);
   }),
 );
 
@@ -40,7 +42,9 @@ const resetPasswordEpic = (action$: Observable<Action>) => action$.pipe(
     fromActions.ActionTypes.AUTH_SUBMIT_RESET_PASSWORD,
   ),
   map((action: ReturnType<typeof fromActions.Actions.submitResetPassword>) => {
-    return authRequestAC.resetPassword.Actions.resetPassword(action.payload.data);
+    const {data, resolve, reject} = action.payload;
+
+    return authRequestAC.resetPassword.Actions.resetPassword(data, resolve, reject);
   }),
 );
 
@@ -49,7 +53,9 @@ const resetPasswordCodeEpic = (action$: Observable<Action>) => action$.pipe(
     fromActions.ActionTypes.AUTH_SUBMIT_RESET_PASSWORD_CODE,
   ),
   map((action: ReturnType<typeof fromActions.Actions.submitResetPasswordCode>) => {
-    return authRequestAC.resetPasswordCode.Actions.resetPasswordCode(action.payload.data);
+    const {data, resolve, reject} = action.payload;
+
+    return authRequestAC.resetPasswordCode.Actions.resetPasswordCode(data, resolve, reject);
   }),
 );
 
@@ -66,7 +72,9 @@ const newPasswordEpic = (action$: Observable<Action>) => action$.pipe(
     fromActions.ActionTypes.AUTH_SUBMIT_NEW_PASSWORD,
   ),
   map((action: ReturnType<typeof fromActions.Actions.submitNewPassword>) => {
-    return authRequestAC.newPassword.Actions.newPassword(action.payload.data);
+    const {data, resolve, reject} = action.payload;
+
+    return authRequestAC.newPassword.Actions.newPassword(data, resolve, reject);
   }),
 );
 

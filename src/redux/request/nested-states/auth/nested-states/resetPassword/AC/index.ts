@@ -1,5 +1,6 @@
 import { createAction, ActionsUnion } from '../../../../../../../shared/helpers/createAction';
-import { RequestError } from '../../../../../states';
+import { Reject, RequestError, Resolve } from '../../../../../states';
+import { IUserModel } from '../../../../../../../shared/models/user.model';
 
 export enum ActionTypes {
   RESET_PASSWORD = 'RESET_PASSWORD',
@@ -8,7 +9,9 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-  resetPassword: (data: string) => createAction(ActionTypes.RESET_PASSWORD, {data}),
+  resetPassword: (
+    data: string, resolve: Resolve<IUserModel>, reject: Reject,
+  ) => createAction(ActionTypes.RESET_PASSWORD, {data, resolve, reject}),
   resetPasswordSuccess: (data: boolean) => {
     return createAction(ActionTypes.RESET_PASSWORD_SUCCESS, {data});
   },

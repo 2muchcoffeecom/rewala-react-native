@@ -16,17 +16,17 @@ export const Actions = {
   submitLogin: (data: LoginInput, resolve: Resolve<IUserModel>, reject: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_LOGIN, {data, resolve, reject});
   },
-  submitRegistration: (data: UserInput) => {
-    return createAction(ActionTypes.AUTH_SUBMIT_REGISTRATION, {data});
+  submitRegistration: (data: UserInput, resolve: Resolve<IUserModel>, reject: Reject) => {
+    return createAction(ActionTypes.AUTH_SUBMIT_REGISTRATION, {data, resolve, reject});
   },
-  submitResetPassword: (data: string) => {
-    return createAction(ActionTypes.AUTH_SUBMIT_RESET_PASSWORD, {data});
+  submitResetPassword: (data: string, resolve: Resolve<IUserModel>, reject: Reject) => {
+    return createAction(ActionTypes.AUTH_SUBMIT_RESET_PASSWORD, {data, resolve, reject});
   },
-  submitResetPasswordCode: (data: string) => {
-    return createAction(ActionTypes.AUTH_SUBMIT_RESET_PASSWORD_CODE, {data});
+  submitResetPasswordCode: (data: string, resolve: Resolve<IUserModel>, reject: Reject) => {
+    return createAction(ActionTypes.AUTH_SUBMIT_RESET_PASSWORD_CODE, {data, resolve, reject});
   },
-  submitNewPassword: (data: ResetPasswordConfirmInput) => {
-    return createAction(ActionTypes.AUTH_SUBMIT_NEW_PASSWORD, {data});
+  submitNewPassword: (data: ResetPasswordConfirmInput, resolve: Resolve<IUserModel>, reject: Reject) => {
+    return createAction(ActionTypes.AUTH_SUBMIT_NEW_PASSWORD, {data, resolve, reject});
   },
   setAuthorizedUserId: (data: string) => {
     return createAction(ActionTypes.SET_AUTHORIZED_USER_ID, {data});

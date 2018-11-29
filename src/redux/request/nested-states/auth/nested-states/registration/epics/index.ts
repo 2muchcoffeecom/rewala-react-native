@@ -11,9 +11,17 @@ export const registrationRequestEpic = (action$: Observable<Action>) => action$.
   switchMap((action: ReturnType<typeof fromActions.Actions.registration>) =>
     authService.registration(action.payload.data).pipe(
       map((resp: FetchResult) => {
-        return !resp.errors ?
-          fromActions.Actions.registrationSuccess(resp.data.registration) :
-          fromActions.Actions.registrationFail(resp.errors.pop());
+        const {resolve, reject} = action.payload;
+
+        if (resp.errors) {
+          reject(resp.errors.pop());
+
+          return fromActions.Actions.registrationFail(resp.errors.pop());
+        } else {
+          resolve(resp.data.registration);
+
+          return fromActions.Actions.registrationSuccess(resp.data.registration);
+        }
       }),
       catchError((errors) => {
         return of(fromActions.Actions.registrationFail(errors));

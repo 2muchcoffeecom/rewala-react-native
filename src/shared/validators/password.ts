@@ -1,3 +1,5 @@
+import { RegistrationFormData } from '../../components/App/AppNavigator/AuthNavigator/RegistrationScreen';
+
 const regExpPassword = new RegExp([
   '^(?=.*[0-9])',
   '^(?=.*[a-z])',
@@ -15,5 +17,11 @@ export const passwordLogin = (value: string): string | undefined => (
 export const passwordRegistration = (value: string): string | undefined => (
   value && !regExpPassword.test(value) ?
     `Password must contain at least 8 characters, including upper and lower case letters, numeric and special characters`
+    : undefined
+);
+
+export const confirmPassword = (value: string, allValues: RegistrationFormData): string | undefined => (
+  value && allValues.password && value !== allValues.password
+    ? 'Please enter a correct password'
     : undefined
 );

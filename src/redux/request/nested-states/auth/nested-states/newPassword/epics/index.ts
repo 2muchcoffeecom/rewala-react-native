@@ -11,9 +11,17 @@ export const newPasswordRequestEpic = (action$: Observable<Action>) => action$.p
   switchMap((action: ReturnType<typeof fromActions.Actions.newPassword>) =>
     authService.newPassword(action.payload.data).pipe(
       map((resp: FetchResult) => {
-        return !resp.errors ?
-          fromActions.Actions.newPasswordSuccess(resp.data.registration) :
-          fromActions.Actions.newPasswordFail(resp.errors.pop());
+        const {resolve, reject} = action.payload;
+
+        if (resp.errors) {
+          reject(resp.errors.pop());
+
+          return fromActions.Actions.newPasswordFail(resp.errors.pop());
+        } else {
+          resolve(resp.data.resetPasswordConfirm);
+
+          return fromActions.Actions.newPasswordSuccess(resp.data.resetPasswordConfirm);
+        }
       }),
       catchError((errors) => {
         return of(fromActions.Actions.newPasswordFail(errors));

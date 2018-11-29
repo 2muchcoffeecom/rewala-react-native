@@ -11,9 +11,17 @@ export const resetPasswordCodeRequestEpic = (action$: Observable<Action>) => act
   switchMap((action: ReturnType<typeof fromActions.Actions.resetPasswordCode>) =>
     authService.resetPassword(action.payload.data).pipe(
       map((resp: FetchResult) => {
-        return !resp.errors ?
-          fromActions.Actions.resetPasswordCodeSuccess(resp.data.resetPassword) :
-          fromActions.Actions.resetPasswordCodeFail(resp.errors.pop());
+        const {resolve, reject} = action.payload;
+
+        if (resp.errors) {
+          reject(resp.errors.pop());
+
+          return fromActions.Actions.resetPasswordCodeFail(resp.errors.pop());
+        } else {
+          resolve(resp.data.resetPasswordConfirmCode);
+
+          return fromActions.Actions.resetPasswordCodeSuccess(resp.data.resetPasswordConfirmCode);
+        }
       }),
       catchError((errors) => {
         return of(fromActions.Actions.resetPasswordCodeFail(errors));
