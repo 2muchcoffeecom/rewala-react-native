@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import style from './style';
 
 import { View, ScrollView, Image } from 'react-native';
-import { Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import LogInLink from '../../../../../shared/components/LogInLink';
+import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import email from '../../../../../shared/validators/email';
 import required from '../../../../../shared/validators/required';
@@ -15,6 +16,7 @@ import required from '../../../../../shared/validators/required';
 import { RootState } from '../../../../../redux/store';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
+import { RequestError } from '../../../../../redux/request/states';
 
 export interface ForgotPasswordFormData {
   email: string;
@@ -24,31 +26,28 @@ interface StateProps {
   formValues: ForgotPasswordFormData;
 }
 
-interface DispatchProps {
-  resetPassword(data: string): void;
-}
-
 const mapStateToProps = (state: RootState): StateProps => ({
   formValues: getFormValues('forgotPassword')(state) as ForgotPasswordFormData,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
-  {
-    resetPassword: (data) => {
-      dispatch(authActions.submitResetPassword(data));
-    },
-  }
-);
-
-type Props = StateProps & DispatchProps & InjectedFormProps<ForgotPasswordFormData>;
+type Props = StateProps & InjectedFormProps<ForgotPasswordFormData>;
 
 class ForgotPasswordScreen extends React.Component<Props> {
-  submitResetPassword = (values: ForgotPasswordFormData): void => {
-    this.props.resetPassword(values.email);
+  submitResetPassword = (values: ForgotPasswordFormData, dispatch: Dispatch<authActions>) => {
+    return new Promise<boolean>((resolve, reject) => {
+      dispatch(authActions.submitResetPassword(values.email, resolve, reject));
+    })
+      .catch((error: RequestError) => {
+        throw new SubmissionError<ForgotPasswordFormData>({
+          email: error.fields && error.fields.email ?
+            error.fields.email[Object.keys(error.fields.email)[0]] : undefined,
+          _error: error.message ? error.message : undefined,
+        });
+      });
   }
 
   render() {
-    const {handleSubmit, formValues} = this.props;
+    const {handleSubmit, formValues, error, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -60,6 +59,11 @@ class ForgotPasswordScreen extends React.Component<Props> {
           />
         </View>
         <View style={style.wraper}>
+          {
+            error && <ErrorRequestText>
+              {error}
+            </ErrorRequestText>
+          }
           <View style={style.emailWraper}>
             <Field
               name='email'
@@ -72,7 +76,7 @@ class ForgotPasswordScreen extends React.Component<Props> {
           <View style={style.resetWraper}>
             <RegularButton
               title='RESET PASSWORD'
-              disabled={!formValues || !formValues.email}
+              disabled={!formValues || !formValues.email || submitting}
               onPress={handleSubmit(this.submitResetPassword)}
             />
           </View>
@@ -89,5 +93,5 @@ export default compose(
   reduxForm<ForgotPasswordFormData>({
     form: 'forgotPassword',
   }),
-  connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
+  connect<StateProps>(mapStateToProps),
 )(ForgotPasswordScreen);

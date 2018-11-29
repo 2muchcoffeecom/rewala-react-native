@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import style from './style';
 
 import { View, ScrollView, Image, Text } from 'react-native';
-import { Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import LogInLink from '../../../../../shared/components/LogInLink';
+import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import { resetPasswordCode } from '../../../../../shared/validators/resetPasswordCode';
 
@@ -15,6 +16,7 @@ import { RootState } from '../../../../../redux/store';
 import { ForgotPasswordFormData } from '../ForgotPasswordScreen';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
+import { RequestError } from '../../../../../redux/request/states';
 
 export interface ResetPasswordCodeFormData {
   resetPasswordCode: string;
@@ -26,7 +28,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  verifyCode(data: string): void;
   resendCode(data: string): void;
 }
 
@@ -37,9 +38,6 @@ const mapStateToProps = (state: RootState): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
   {
-    verifyCode: (data) => {
-      dispatch(authActions.submitResetPasswordCode(data));
-    },
     resendCode: (data) => {
       dispatch(authActions.submitResetPassword(data));
     },
@@ -49,8 +47,17 @@ const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
 type Props = StateProps & DispatchProps & InjectedFormProps<ResetPasswordCodeFormData>;
 
 class ResetPasswordCodeScreen extends React.Component<Props> {
-  submitResetPasswordCode = (values: ResetPasswordCodeFormData): void => {
-    this.props.verifyCode(values.resetPasswordCode);
+  submitResetPasswordCode = (values: ResetPasswordCodeFormData, dispatch: Dispatch<authActions>) => {
+    return new Promise<boolean>((resolve, reject) => {
+      dispatch(authActions.submitResetPasswordCode(values.resetPasswordCode, resolve, reject));
+    })
+      .catch((error: RequestError) => {
+        throw new SubmissionError<ResetPasswordCodeFormData>({
+          resetPasswordCode: error.fields && error.fields.resetPasswordCode ?
+            error.fields.resetPasswordCode[Object.keys(error.fields.resetPasswordCode)[0]] : undefined,
+          _error: error.message ? error.message : undefined,
+        });
+      });
   }
 
   resendCode = () => {
@@ -60,7 +67,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, formValues} = this.props;
+    const {handleSubmit, formValues, error, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -72,6 +79,11 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
           />
         </View>
         <View style={style.wraper}>
+          {
+            error && <ErrorRequestText>
+              {error}
+            </ErrorRequestText>
+          }
           <View>
             <Field
               name='resetPasswordCode'
@@ -90,7 +102,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
           <View style={style.changePasswordWraper}>
             <RegularButton
               title='CHANGE PASSWORD'
-              disabled={!formValues || !formValues.resetPasswordCode}
+              disabled={!formValues || !formValues.resetPasswordCode || submitting}
               onPress={handleSubmit(this.submitResetPasswordCode)}
             />
           </View>

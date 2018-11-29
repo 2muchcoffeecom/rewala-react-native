@@ -7,6 +7,7 @@ export interface RequestError {
     fullName?: {},
     phone?: {},
     countryCode?: {},
+    resetPasswordCode?: {},
   };
   message?: string;
 }

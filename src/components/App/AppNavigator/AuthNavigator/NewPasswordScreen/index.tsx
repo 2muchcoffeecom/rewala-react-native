@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import style from './style';
 
 import { View, ScrollView, Image } from 'react-native';
-import { Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import LogInLink from '../../../../../shared/components/LogInLink';
+import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import required from '../../../../../shared/validators/required';
 import { passwordRegistration, confirmPassword } from '../../../../../shared/validators/password';
@@ -17,6 +18,8 @@ import { ResetPasswordCodeFormData } from '../ResetPasswordCodeScreen';
 import { RootState } from '../../../../../redux/store';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
+import { RequestError } from '../../../../../redux/request/states';
+import { IUserModel } from '../../../../../shared/models/user.model';
 
 export interface NewPasswordFormData {
   password: string;
@@ -28,39 +31,36 @@ interface StateProps {
   formValuesResetPasswordCode: ResetPasswordCodeFormData;
 }
 
-interface DispatchProps {
-  newPassword(data: ResetPasswordConfirmInput): void;
-}
-
 const mapStateToProps = (state: RootState): StateProps => ({
   formValues: getFormValues('newPassword')(state) as NewPasswordFormData,
   formValuesResetPasswordCode: getFormValues('resetPasswordCode')(state) as ResetPasswordCodeFormData,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
-  {
-    newPassword: (data) => {
-      dispatch(authActions.submitNewPassword(data));
-    },
-  }
-);
-
-type Props = StateProps & DispatchProps & InjectedFormProps<NewPasswordFormData>;
+type Props = StateProps & InjectedFormProps<NewPasswordFormData>;
 
 class NewPasswordScreen extends React.Component<Props> {
 
-  submitNewPassword = (values: NewPasswordFormData): void => {
-    const {newPassword, formValuesResetPasswordCode} = this.props;
+  submitNewPassword = (values: NewPasswordFormData, dispatch: Dispatch<authActions>) => {
+    const {formValuesResetPasswordCode} = this.props;
     const resetPasswordConfirmInput: ResetPasswordConfirmInput = {
       password: values.password,
       resetPasswordCode: formValuesResetPasswordCode.resetPasswordCode,
     };
 
-    newPassword(resetPasswordConfirmInput);
+    return new Promise<IUserModel>((resolve, reject) => {
+      dispatch(authActions.submitNewPassword(resetPasswordConfirmInput, resolve, reject));
+    })
+      .catch((error: RequestError) => {
+        throw new SubmissionError<NewPasswordFormData>({
+          password: error.fields && error.fields.password ?
+            error.fields.password[Object.keys(error.fields.password)[0]] : undefined,
+          _error: error.message ? error.message : undefined,
+        });
+      });
   }
 
   render() {
-    const {handleSubmit, formValues} = this.props;
+    const {handleSubmit, formValues, error, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -72,6 +72,11 @@ class NewPasswordScreen extends React.Component<Props> {
           />
         </View>
         <View style={style.wraper}>
+          {
+            error && <ErrorRequestText>
+              {error}
+            </ErrorRequestText>
+          }
           <View>
             <Field
               name='password'
@@ -96,7 +101,8 @@ class NewPasswordScreen extends React.Component<Props> {
               disabled={
                 !formValues ||
                 !formValues.password ||
-                !formValues.passwordConfirm
+                !formValues.passwordConfirm ||
+                submitting
               }
               onPress={handleSubmit(this.submitNewPassword)}
             />
@@ -114,5 +120,5 @@ export default compose(
   reduxForm<NewPasswordFormData>({
     form: 'newPassword',
   }),
-  connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
+  connect<StateProps>(mapStateToProps),
 )(NewPasswordScreen);

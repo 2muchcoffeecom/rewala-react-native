@@ -19,10 +19,10 @@ export const Actions = {
   submitRegistration: (data: UserInput, resolve: Resolve<IUserModel>, reject: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_REGISTRATION, {data, resolve, reject});
   },
-  submitResetPassword: (data: string, resolve: Resolve<IUserModel>, reject: Reject) => {
+  submitResetPassword: (data: string, resolve?: Resolve<boolean>, reject?: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_RESET_PASSWORD, {data, resolve, reject});
   },
-  submitResetPasswordCode: (data: string, resolve: Resolve<IUserModel>, reject: Reject) => {
+  submitResetPasswordCode: (data: string, resolve: Resolve<boolean>, reject: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_RESET_PASSWORD_CODE, {data, resolve, reject});
   },
   submitNewPassword: (data: ResetPasswordConfirmInput, resolve: Resolve<IUserModel>, reject: Reject) => {
