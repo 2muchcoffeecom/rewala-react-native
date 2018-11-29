@@ -44,15 +44,9 @@ const style = StyleSheet.create({
     fontWeight: '400',
     color: blackTextColor,
   },
-  errorContainer: {
+  errorText: {
     width: '100%',
     marginLeft: 3,
-    fontFamily: fontFamilyRegular,
-    fontSize: 10,
-    fontWeight: '400',
-    color: errorColor,
-  },
-  errorText: {
     fontFamily: fontFamilyRegular,
     fontSize: 10,
     fontWeight: '400',

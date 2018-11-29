@@ -50,7 +50,7 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
         maxLength={maxLength && maxLength}
       />
       {touched && (error &&
-          <Text style={style.errorContainer}>
+          <Text style={style.errorText}>
             {error}
           </Text>
       )}
