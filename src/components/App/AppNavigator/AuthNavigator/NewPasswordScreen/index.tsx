@@ -9,9 +9,8 @@ import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import LogInLink from '../../../../../shared/components/LogInLink';
 
-import { validate } from '../../../../../shared/validators/confirmPassword';
 import required from '../../../../../shared/validators/required';
-import { passwordRegistration } from '../../../../../shared/validators/password';
+import { passwordRegistration, confirmPassword } from '../../../../../shared/validators/password';
 
 import { ResetPasswordConfirmInput } from '../../../../../shared/services/auth.service';
 import { ResetPasswordCodeFormData } from '../ResetPasswordCodeScreen';
@@ -87,7 +86,7 @@ class NewPasswordScreen extends React.Component<Props> {
               name='passwordConfirm'
               component={Input}
               placeholder='Confirm Password'
-              validate={required}
+              validate={[required, confirmPassword]}
               isSecureTextEntry={true}
             />
           </View>
@@ -114,7 +113,6 @@ class NewPasswordScreen extends React.Component<Props> {
 export default compose(
   reduxForm<NewPasswordFormData>({
     form: 'newPassword',
-    validate,
   }),
   connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
 )(NewPasswordScreen);

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import style from './style';
 
 import { View, ScrollView, Image, Text } from 'react-native';
-import { Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -14,17 +14,18 @@ import ErrorRequestText from '../../../../../shared/components/ErrorRequestText'
 import email from '../../../../../shared/validators/email';
 import { fullNameLetters } from '../../../../../shared/validators/fullName';
 import {
-maxLengthFullName, minLengthFullName, maxLengthPhone, minLengthPhone,
+  maxLengthFullName, minLengthFullName, maxLengthPhone, minLengthPhone,
 } from '../../../../../shared/validators/lenght';
-import { validate } from '../../../../../shared/validators/confirmPassword';
 import required from '../../../../../shared/validators/required';
-import { passwordRegistration } from '../../../../../shared/validators/password';
+import { passwordRegistration, confirmPassword } from '../../../../../shared/validators/password';
 
 import { UserInput } from '../../../../../shared/services/auth.service';
 import { RootState } from '../../../../../redux/store';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import deviceService from '../../../../../shared/services/device.service';
+import { IUserModel } from '../../../../../shared/models/user.model';
+import { RequestError } from '../../../../../redux/request/states';
 
 export interface RegistrationFormData {
   fullName: string;
@@ -38,28 +39,16 @@ interface StateProps {
   formValues: RegistrationFormData;
 }
 
-interface DispatchProps {
-  registration(data: UserInput): void;
-}
-
 const mapStateToProps = (state: RootState): StateProps => ({
   formValues: getFormValues('registration')(state) as RegistrationFormData,
 });
-
-const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
-  {
-    registration: (data) => {
-      dispatch(authActions.submitRegistration(data));
-    },
-  }
-);
 
 interface State {
   cca2: string;
   callingCode: string;
 }
 
-type Props = StateProps & DispatchProps & InjectedFormProps<RegistrationFormData>;
+type Props = StateProps & InjectedFormProps<RegistrationFormData>;
 
 class RegistrationScreen extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -70,7 +59,7 @@ class RegistrationScreen extends React.Component<Props, State> {
     };
   }
 
-  submitRegistration = (values: RegistrationFormData): void => {
+  submitRegistration = (values: RegistrationFormData, dispatch: Dispatch<authActions>) => {
     const userInput: UserInput = {
       email: values.email,
       password: values.password,
@@ -81,7 +70,22 @@ class RegistrationScreen extends React.Component<Props, State> {
       },
     };
 
-    this.props.registration(userInput);
+    return new Promise<IUserModel>((resolve, reject) => {
+      dispatch(authActions.submitRegistration(userInput, resolve, reject));
+    })
+      .catch((error: RequestError) => {
+        throw new SubmissionError<RegistrationFormData>({
+          email: error.fields && error.fields.email ?
+            error.fields.email[Object.keys(error.fields.email)[0]] : undefined,
+          password: error.fields && error.fields.password ?
+            error.fields.password[Object.keys(error.fields.password)[0]] : undefined,
+          fullName: error.fields && error.fields.fullName ?
+            error.fields.fullName[Object.keys(error.fields.fullName)[0]] : undefined,
+          phone: error.fields && error.fields.phone ?
+            error.fields.phone[Object.keys(error.fields.phone)[0]] : undefined,
+          _error: error.message ? error.message : undefined,
+        });
+      });
   }
 
   changeCountry = (value: any) => {
@@ -92,7 +96,7 @@ class RegistrationScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const {handleSubmit, formValues, error} = this.props;
+    const {handleSubmit, formValues, error, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -172,7 +176,7 @@ class RegistrationScreen extends React.Component<Props, State> {
               name='passwordConfirm'
               component={Input}
               placeholder='Confirm Password'
-              validate={required}
+              validate={[required, confirmPassword]}
               isSecureTextEntry={true}
             />
           </View>
@@ -185,7 +189,8 @@ class RegistrationScreen extends React.Component<Props, State> {
                 !formValues.phone ||
                 !formValues.email ||
                 !formValues.password ||
-                !formValues.passwordConfirm
+                !formValues.passwordConfirm ||
+                submitting
               }
               onPress={handleSubmit(this.submitRegistration)}
             />
@@ -202,7 +207,6 @@ class RegistrationScreen extends React.Component<Props, State> {
 export default compose(
   reduxForm<RegistrationFormData>({
     form: 'registration',
-    validate,
   }),
-  connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
+  connect<StateProps>(mapStateToProps),
 )(RegistrationScreen);
