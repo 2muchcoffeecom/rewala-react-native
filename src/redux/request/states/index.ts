@@ -2,12 +2,17 @@ import * as authState from '../nested-states/auth/states';
 
 export interface RequestError {
   fields?: {
-    email?: {
-      unique?: string;
-    },
+    email?: {},
+    password?: {},
+    fullName?: {},
+    phone?: {},
+    countryCode?: {},
   };
   message?: string;
 }
+
+export type Resolve<T> = (value?: T | PromiseLike<T>) => void;
+export type Reject = (reason?: any) => void;
 
 export interface RequestState {
   auth: authState.AuthRequestState;

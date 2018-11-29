@@ -17,9 +17,6 @@ const style = StyleSheet.create({
   imageWraper: {
     marginBottom: 60,
   },
-  emailWraper: {
-    // marginBottom: 8,
-  },
   passwordWraper: {
     marginBottom: 16,
   },

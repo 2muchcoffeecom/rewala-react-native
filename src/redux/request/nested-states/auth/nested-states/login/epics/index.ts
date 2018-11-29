@@ -11,9 +11,17 @@ export const loginRequestEpic = (action$: Observable<Action>) => action$.pipe(
   switchMap((action: ReturnType<typeof fromActions.Actions.login>) =>
     authService.login(action.payload.data).pipe(
       map((resp: FetchResult) => {
-        return !resp.errors ?
-          fromActions.Actions.loginSuccess(resp.data.login) :
-          fromActions.Actions.loginFail(resp.errors.pop());
+        const {resolve, reject} = action.payload;
+
+        if (resp.errors) {
+          reject(resp.errors.pop());
+
+          return fromActions.Actions.loginFail(resp.errors.pop());
+        } else {
+          resolve(resp.data.login);
+
+          return fromActions.Actions.loginSuccess(resp.data.login);
+        }
       }),
       catchError((errors) => {
         return of(fromActions.Actions.loginFail(errors));

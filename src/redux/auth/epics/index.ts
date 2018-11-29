@@ -6,15 +6,15 @@ import * as fromActions from '../AC';
 import { authRequestAC } from '../../request/nested-states/auth/AC';
 import authService from '../../../shared/services/auth.service';
 import navService from '../../../shared/services/nav.service';
-import deviceService from '../../../shared/services/device.service';
-import { PermissionsAndroid } from 'react-native';
 
 const loginEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
     fromActions.ActionTypes.AUTH_SUBMIT_LOGIN,
   ),
   map((action: ReturnType<typeof fromActions.Actions.submitLogin>) => {
-    return authRequestAC.login.Actions.login(action.payload.data);
+    const {data, resolve, reject} = action.payload;
+
+    return authRequestAC.login.Actions.login(data, resolve, reject);
   }),
 );
 
@@ -33,21 +33,6 @@ const registrationEpic = (action$: Observable<Action>) => action$.pipe(
   map((action: ReturnType<typeof fromActions.Actions.submitRegistration>) => {
     return authRequestAC.registration.Actions.registration(action.payload.data);
   }),
-);
-
-const checkReadContactsPermissionEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess>>(
-    authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
-  ),
-  switchMap(() => deviceService.getReadContactsPermission().pipe(
-    tap((result) => {
-      if (result === PermissionsAndroid.RESULTS.GRANTED) {
-        return deviceService.getDeviceContacts();
-      } else {
-        return navService.navigate('HomeBlank');
-      }
-    }),
-  )),
 );
 
 const resetPasswordEpic = (action$: Observable<Action>) => action$.pipe(

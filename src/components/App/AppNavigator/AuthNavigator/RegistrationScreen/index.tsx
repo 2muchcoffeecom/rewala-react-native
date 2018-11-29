@@ -9,11 +9,12 @@ import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import CountryPicker from 'react-native-country-picker-modal';
 import LogInLink from '../../../../../shared/components/LogInLink';
+import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import email from '../../../../../shared/validators/email';
 import { fullNameLetters } from '../../../../../shared/validators/fullName';
 import {
-  maxLengthFullName, minLengthFullName, maxLengthPhone, minLengthPhone,
+maxLengthFullName, minLengthFullName, maxLengthPhone, minLengthPhone,
 } from '../../../../../shared/validators/lenght';
 import { validate } from '../../../../../shared/validators/confirmPassword';
 import required from '../../../../../shared/validators/required';
@@ -91,7 +92,7 @@ class RegistrationScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const {handleSubmit, formValues} = this.props;
+    const {handleSubmit, formValues, error} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -103,6 +104,11 @@ class RegistrationScreen extends React.Component<Props, State> {
           />
         </View>
         <View style={style.wraper}>
+          {
+            error && <ErrorRequestText>
+              {error}
+            </ErrorRequestText>
+          }
           <View>
             <Field
               name='fullName'

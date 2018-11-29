@@ -1,5 +1,7 @@
 import { createAction, ActionsUnion } from '../../../shared/helpers/createAction';
 import { LoginInput, UserInput, ResetPasswordConfirmInput } from '../../../shared/services/auth.service';
+import { Reject, Resolve } from '../../request/states';
+import { IUserModel } from '../../../shared/models/user.model';
 
 export enum ActionTypes {
   AUTH_SUBMIT_LOGIN = 'AUTH_SUBMIT_LOGIN',
@@ -11,8 +13,8 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-  submitLogin: (data: LoginInput) => {
-    return createAction(ActionTypes.AUTH_SUBMIT_LOGIN, {data});
+  submitLogin: (data: LoginInput, resolve: Resolve<IUserModel>, reject: Reject) => {
+    return createAction(ActionTypes.AUTH_SUBMIT_LOGIN, {data, resolve, reject});
   },
   submitRegistration: (data: UserInput) => {
     return createAction(ActionTypes.AUTH_SUBMIT_REGISTRATION, {data});

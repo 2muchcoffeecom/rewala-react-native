@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import style from './style';
 
 import { View, ScrollView, Image, Text } from 'react-native';
-import { Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
+import { SubmissionError, Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
+import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import email from '../../../../../shared/validators/email';
 import required from '../../../../../shared/validators/required';
@@ -14,9 +15,11 @@ import { passwordLogin } from '../../../../../shared/validators/password';
 
 import { LoginInput } from '../../../../../shared/services/auth.service';
 import { RootState } from '../../../../../redux/store';
+import { RequestError } from '../../../../../redux/request/states';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import navService from '../../../../../shared/services/nav.service';
+import { IUserModel } from '../../../../../shared/models/user.model';
 
 type LoginFormData = LoginInput;
 
@@ -24,27 +27,26 @@ interface StateProps {
   formValues: LoginFormData;
 }
 
-interface DispatchProps {
-  login(data: LoginFormData): void;
-}
-
 const mapStateToProps = (state: RootState): StateProps => ({
   formValues: getFormValues('login')(state) as LoginFormData,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<authActions>): DispatchProps => (
-  {
-    login: (data) => {
-      dispatch(authActions.submitLogin(data));
-    },
-  }
-);
-
-type Props = StateProps & DispatchProps & InjectedFormProps<LoginFormData>;
+type Props = StateProps & InjectedFormProps<LoginFormData>;
 
 class LoginScreen extends React.Component<Props> {
-  submitLogin = (values: LoginFormData): void => {
-    this.props.login(values);
+  submitLogin = (values: LoginFormData, dispatch: Dispatch<authActions>) => {
+    return new Promise<IUserModel>((resolve, reject) => {
+      dispatch(authActions.submitLogin(values, resolve, reject));
+    })
+      .catch((error: RequestError) => {
+        throw new SubmissionError<LoginFormData>({
+          email: error.fields && error.fields.email ?
+            error.fields.email[Object.keys(error.fields.email)[0]] : undefined,
+          password: error.fields && error.fields.password ?
+            error.fields.password[Object.keys(error.fields.password)[0]] : undefined,
+          _error: error.message ? error.message : undefined,
+        });
+      });
   }
 
   toForgotPassword = () => {
@@ -56,7 +58,7 @@ class LoginScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, formValues} = this.props;
+    const {handleSubmit, formValues, submitting, error} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -68,7 +70,12 @@ class LoginScreen extends React.Component<Props> {
           />
         </View>
         <View style={style.wraper}>
-          <View style={style.emailWraper}>
+          {
+            error && <ErrorRequestText>
+              {error}
+            </ErrorRequestText>
+          }
+          <View>
             <Field
               name='email'
               component={Input}
@@ -89,7 +96,12 @@ class LoginScreen extends React.Component<Props> {
           <View style={style.signInWraper}>
             <RegularButton
               title='SIGN IN'
-              disabled={!formValues || !formValues.email || !formValues.password}
+              disabled={
+                !formValues ||
+                !formValues.email ||
+                !formValues.password ||
+                submitting
+              }
               onPress={handleSubmit(this.submitLogin)}
             />
           </View>
@@ -122,5 +134,5 @@ export default compose(
   reduxForm<LoginFormData>({
     form: 'login',
   }),
-  connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
+  connect<StateProps>(mapStateToProps),
 )(LoginScreen);
