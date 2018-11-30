@@ -12,6 +12,7 @@ import ErrorRequestText from '../../../../../shared/components/ErrorRequestText'
 
 import required from '../../../../../shared/validators/required';
 import { passwordRegistration, confirmPassword } from '../../../../../shared/validators/password';
+import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { ResetPasswordConfirmInput } from '../../../../../shared/services/auth.service';
 import { ResetPasswordCodeFormData } from '../ResetPasswordCodeScreen';
@@ -52,8 +53,7 @@ class NewPasswordScreen extends React.Component<Props> {
     })
       .catch((error: RequestError) => {
         throw new SubmissionError<NewPasswordFormData>({
-          password: error.fields && error.fields.password ?
-            error.fields.password[Object.keys(error.fields.password)[0]] : undefined,
+          password: getSubmissionError(error, 'password'),
           _error: error.message ? error.message : undefined,
         });
       });

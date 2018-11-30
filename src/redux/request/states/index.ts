@@ -1,14 +1,16 @@
 import * as authState from '../nested-states/auth/states';
 
+export interface FieldsError {
+  email: {};
+  password: {};
+  fullName: {};
+  phone: {};
+  countryCode: {};
+  resetPasswordCode: {};
+}
+
 export interface RequestError {
-  fields?: {
-    email?: {},
-    password?: {},
-    fullName?: {},
-    phone?: {},
-    countryCode?: {},
-    resetPasswordCode?: {},
-  };
+  fields?: FieldsError;
   message?: string;
 }
 

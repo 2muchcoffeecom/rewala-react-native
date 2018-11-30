@@ -12,6 +12,7 @@ import ErrorRequestText from '../../../../../shared/components/ErrorRequestText'
 import email from '../../../../../shared/validators/email';
 import required from '../../../../../shared/validators/required';
 import { passwordLogin } from '../../../../../shared/validators/password';
+import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { LoginInput } from '../../../../../shared/services/auth.service';
 import { RootState } from '../../../../../redux/store';
@@ -40,10 +41,8 @@ class LoginScreen extends React.Component<Props> {
     })
       .catch((error: RequestError) => {
         throw new SubmissionError<LoginFormData>({
-          email: error.fields && error.fields.email ?
-            error.fields.email[Object.keys(error.fields.email)[0]] : undefined,
-          password: error.fields && error.fields.password ?
-            error.fields.password[Object.keys(error.fields.password)[0]] : undefined,
+          email: getSubmissionError(error, 'email'),
+          password: getSubmissionError(error, 'password'),
           _error: error.message ? error.message : undefined,
         });
       });

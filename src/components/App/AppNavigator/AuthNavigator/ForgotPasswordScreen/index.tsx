@@ -12,6 +12,7 @@ import ErrorRequestText from '../../../../../shared/components/ErrorRequestText'
 
 import email from '../../../../../shared/validators/email';
 import required from '../../../../../shared/validators/required';
+import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { RootState } from '../../../../../redux/store';
 
@@ -39,8 +40,7 @@ class ForgotPasswordScreen extends React.Component<Props> {
     })
       .catch((error: RequestError) => {
         throw new SubmissionError<ForgotPasswordFormData>({
-          email: error.fields && error.fields.email ?
-            error.fields.email[Object.keys(error.fields.email)[0]] : undefined,
+          email: getSubmissionError(error, 'email'),
           _error: error.message ? error.message : undefined,
         });
       });

@@ -18,6 +18,7 @@ import {
 } from '../../../../../shared/validators/lenght';
 import required from '../../../../../shared/validators/required';
 import { passwordRegistration, confirmPassword } from '../../../../../shared/validators/password';
+import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { UserInput } from '../../../../../shared/services/auth.service';
 import { RootState } from '../../../../../redux/store';
@@ -75,14 +76,10 @@ class RegistrationScreen extends React.Component<Props, State> {
     })
       .catch((error: RequestError) => {
         throw new SubmissionError<RegistrationFormData>({
-          email: error.fields && error.fields.email ?
-            error.fields.email[Object.keys(error.fields.email)[0]] : undefined,
-          password: error.fields && error.fields.password ?
-            error.fields.password[Object.keys(error.fields.password)[0]] : undefined,
-          fullName: error.fields && error.fields.fullName ?
-            error.fields.fullName[Object.keys(error.fields.fullName)[0]] : undefined,
-          phone: error.fields && error.fields.phone ?
-            error.fields.phone[Object.keys(error.fields.phone)[0]] : undefined,
+          email: getSubmissionError(error, 'email'),
+          password: getSubmissionError(error, 'password'),
+          fullName: getSubmissionError(error, 'fullName'),
+          phone: getSubmissionError(error, 'phone'),
           _error: error.message ? error.message : undefined,
         });
       });

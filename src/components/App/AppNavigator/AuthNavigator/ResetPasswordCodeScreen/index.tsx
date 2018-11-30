@@ -11,6 +11,7 @@ import LogInLink from '../../../../../shared/components/LogInLink';
 import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import { resetPasswordCode } from '../../../../../shared/validators/resetPasswordCode';
+import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { RootState } from '../../../../../redux/store';
 import { ForgotPasswordFormData } from '../ForgotPasswordScreen';
@@ -53,8 +54,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
     })
       .catch((error: RequestError) => {
         throw new SubmissionError<ResetPasswordCodeFormData>({
-          resetPasswordCode: error.fields && error.fields.resetPasswordCode ?
-            error.fields.resetPasswordCode[Object.keys(error.fields.resetPasswordCode)[0]] : undefined,
+          resetPasswordCode: getSubmissionError(error, 'resetPasswordCode'),
           _error: error.message ? error.message : undefined,
         });
       });
