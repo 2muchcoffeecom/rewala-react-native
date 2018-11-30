@@ -112,8 +112,8 @@ class AuthService implements IAuthService {
     const operation = {
       query: gql`
           mutation resetPasswordConfirm($input: ResetPasswordConfirmInput!) {
-              resetPasswordConfirm(input: $input)
-          } ${userWithProfile}
+              resetPasswordConfirm(input: $input) ${userWithProfile}
+          }
       `,
       variables: {
         input,
