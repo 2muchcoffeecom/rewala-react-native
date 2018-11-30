@@ -3,7 +3,7 @@ import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import style from './style';
 
-import { View, ScrollView, Image, Text } from 'react-native';
+import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
 import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
@@ -106,12 +106,13 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
               onPress={handleSubmit(this.submitResetPasswordCode)}
             />
           </View>
-          <Text
-            style={[style.text, style.textLink]}
-            onPress={this.resendCode}
-          >
-            {'Resend code'.toUpperCase()}
-          </Text>
+          <TouchableOpacity onPress={this.resendCode}>
+            <Text
+              style={[style.text, style.textLink]}
+            >
+              {'Resend code'.toUpperCase()}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={style.loginWraper}>
           <LogInLink/>

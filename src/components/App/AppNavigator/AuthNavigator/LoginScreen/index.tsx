@@ -3,7 +3,7 @@ import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import style from './style';
 
-import { View, ScrollView, Image, Text } from 'react-native';
+import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
 import { SubmissionError, Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
@@ -106,12 +106,11 @@ class LoginScreen extends React.Component<Props> {
           </View>
         </View>
         <View>
-          <Text
-            onPress={this.toForgotPassword}
-            style={style.text}
-          >
-            {`Forgot password?`.toUpperCase()}
-          </Text>
+          <TouchableOpacity onPress={this.toForgotPassword}>
+            <Text style={style.text}>
+              {`Forgot password?`.toUpperCase()}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={style.singUpWraper}>
           <Text style={style.text}>
