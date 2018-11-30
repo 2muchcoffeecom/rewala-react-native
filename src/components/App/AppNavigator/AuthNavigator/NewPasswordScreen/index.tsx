@@ -20,7 +20,7 @@ import { RootState } from '../../../../../redux/store';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import { RequestError } from '../../../../../redux/request/states';
-import { IUserModel } from '../../../../../shared/models/user.model';
+import { IUserModelWithToken } from '../../../../../shared/models/user.model';
 
 export interface NewPasswordFormData {
   password: string;
@@ -48,7 +48,7 @@ class NewPasswordScreen extends React.Component<Props> {
       resetPasswordCode: formValuesResetPasswordCode.resetPasswordCode,
     };
 
-    return new Promise<IUserModel>((resolve, reject) => {
+    return new Promise<IUserModelWithToken>((resolve, reject) => {
       dispatch(authActions.submitNewPassword(resetPasswordConfirmInput, resolve, reject));
     })
       .catch((error: RequestError) => {

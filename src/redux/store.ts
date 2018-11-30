@@ -9,6 +9,7 @@ import { reducer as toastReducer } from './toast/reducers';
 import { requestEpics } from './request/epics';
 import { authEpics } from './auth/epics';
 import { toastEpics } from './toast/epics';
+import { contactsEpics } from './contacts/epics';
 
 import { RequestState } from './request/states';
 import { FormsState } from './form/states';
@@ -33,6 +34,7 @@ const rootEpic = combineEpics(
   ...requestEpics,
   ...authEpics,
   ...toastEpics,
+  ...contactsEpics,
 );
 
 const epicMiddleware = createEpicMiddleware();

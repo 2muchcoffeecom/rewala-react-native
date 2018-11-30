@@ -1,5 +1,5 @@
 import { createAction, ActionsUnion } from '../../../../../../../shared/helpers/createAction';
-import { IUserModel } from '../../../../../../../shared/models/user.model';
+import { IUserModelWithToken } from '../../../../../../../shared/models/user.model';
 import { Reject, RequestError, Resolve } from '../../../../../states';
 import { ResetPasswordConfirmInput } from '../../../../../../../shared/services/auth.service';
 
@@ -11,9 +11,9 @@ export enum ActionTypes {
 
 export const Actions = {
   newPassword: (
-    data: ResetPasswordConfirmInput, resolve: Resolve<IUserModel>, reject: Reject,
+    data: ResetPasswordConfirmInput, resolve: Resolve<IUserModelWithToken>, reject: Reject,
   ) => createAction(ActionTypes.NEW_PASSWORD, {data, resolve, reject}),
-  newPasswordSuccess: (data: IUserModel) => {
+  newPasswordSuccess: (data: IUserModelWithToken) => {
     return createAction(ActionTypes.NEW_PASSWORD_SUCCESS, {data});
   },
   newPasswordFail: (errors: RequestError) => {

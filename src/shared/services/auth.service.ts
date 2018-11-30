@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { execute } from 'apollo-link';
 
 import link from '../middlewares/link.middleware';
-import { userWithProfile } from '../templates/user.template';
+import { userWithToken } from '../templates/user.template';
 
 export interface LoginInput {
   email: string;
@@ -56,7 +56,7 @@ class AuthService implements IAuthService {
     const operation = {
       query: gql`
           mutation login($input: LoginInput) {
-              login(input: $input) ${userWithProfile}
+              login(input: $input) ${userWithToken}
           }
       `,
       variables: {
@@ -70,7 +70,7 @@ class AuthService implements IAuthService {
     const operation = {
       query: gql`
           mutation registration($input: UserInput) {
-              registration(input: $input) ${userWithProfile}
+              registration(input: $input) ${userWithToken}
           }
       `,
       variables: {
@@ -112,7 +112,7 @@ class AuthService implements IAuthService {
     const operation = {
       query: gql`
           mutation resetPasswordConfirm($input: ResetPasswordConfirmInput!) {
-              resetPasswordConfirm(input: $input) ${userWithProfile}
+              resetPasswordConfirm(input: $input) ${userWithToken}
           }
       `,
       variables: {

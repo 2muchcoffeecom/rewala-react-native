@@ -20,7 +20,7 @@ import { RequestError } from '../../../../../redux/request/states';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import navService from '../../../../../shared/services/nav.service';
-import { IUserModel } from '../../../../../shared/models/user.model';
+import { IUserModelWithToken } from '../../../../../shared/models/user.model';
 
 type LoginFormData = LoginInput;
 
@@ -36,7 +36,7 @@ type Props = StateProps & InjectedFormProps<LoginFormData>;
 
 class LoginScreen extends React.Component<Props> {
   submitLogin = (values: LoginFormData, dispatch: Dispatch<authActions>) => {
-    return new Promise<IUserModel>((resolve, reject) => {
+    return new Promise<IUserModelWithToken>((resolve, reject) => {
       dispatch(authActions.submitLogin(values, resolve, reject));
     })
       .catch((error: RequestError) => {

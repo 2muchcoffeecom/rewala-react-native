@@ -8,7 +8,7 @@ export const user = `{
   statusIn
 }`;
 
-export const userWithProfile = `{
+export const userWithToken = `{
   _id
   email
   authToken
