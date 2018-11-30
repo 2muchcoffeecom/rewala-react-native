@@ -9,7 +9,7 @@ import { FetchResult } from 'apollo-link';
 export const resetPasswordCodeRequestEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(fromActions.ActionTypes.RESET_PASSWORD_CODE),
   switchMap((action: ReturnType<typeof fromActions.Actions.resetPasswordCode>) =>
-    authService.resetPassword(action.payload.data).pipe(
+    authService.resetPasswordConfirmCode(action.payload.data).pipe(
       map((resp: FetchResult) => {
         const {resolve, reject} = action.payload;
 
