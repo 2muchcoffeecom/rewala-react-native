@@ -83,8 +83,8 @@ class AuthService implements IAuthService {
   resetPassword(email: string) {
     const operation = {
       query: gql`
-          mutation resetPassword($input: String!) {
-              resetPassword(input: $input)
+          mutation resetPassword($email: String!) {
+              resetPassword(email: $email)
           }
       `,
       variables: {
@@ -97,8 +97,8 @@ class AuthService implements IAuthService {
   resetPasswordConfirmCode(resetPasswordCode: string) {
     const operation = {
       query: gql`
-          mutation resetPasswordConfirmCode($input: String!) {
-              resetPasswordConfirmCode(input: $input)
+          mutation resetPasswordConfirmCode($resetPasswordCode: String!) {
+              resetPasswordConfirmCode(resetPasswordCode: $resetPasswordCode)
           }
       `,
       variables: {
@@ -108,7 +108,7 @@ class AuthService implements IAuthService {
     return from(execute(link, operation) as ObservableInput<any>);
   }
 
-  newPassword(resetPasswordConfirmInput: ResetPasswordConfirmInput) {
+  newPassword(input: ResetPasswordConfirmInput) {
     const operation = {
       query: gql`
           mutation resetPasswordConfirm($input: ResetPasswordConfirmInput!) {
@@ -116,7 +116,7 @@ class AuthService implements IAuthService {
           } ${userWithProfile}
       `,
       variables: {
-        resetPasswordConfirmInput,
+        input,
       },
     };
     return from(execute(link, operation) as ObservableInput<any>);
