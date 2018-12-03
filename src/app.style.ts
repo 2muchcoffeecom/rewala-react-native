@@ -20,5 +20,6 @@ export const headerTitleStyle: TextStyle = {
   alignSelf: 'center',
 };
 
+const deviceHeight = Dimensions.get('window').height;
 export const fullWidth = Dimensions.get('window').width - 20;
-export const fullHeight = Dimensions.get('window').height - 25;
+export const fullHeight = (deviceHeight - 25) < 638 ? 638 : deviceHeight - 25;
