@@ -9,7 +9,9 @@ const RegularButton: React.FunctionComponent<Props> = (props) => {
     <Button
       buttonStyle={style.button}
       containerViewStyle={style.container}
-      textStyle={style.buttonTitle}
+      textStyle={
+        props.fontSize ? [style.buttonTitle, {fontSize: props.fontSize}] : style.buttonTitle
+      }
       {...props}
     />
   );

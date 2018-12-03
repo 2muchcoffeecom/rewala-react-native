@@ -11,12 +11,14 @@ const style = StyleSheet.create({
     backgroundColor: mainColor,
   },
   container: {
+    width: '100%',
     marginLeft: 0,
     marginRight: 0,
   },
   buttonTitle: {
     fontFamily: fontFamilyBold,
     fontSize: 14,
+    textAlign: 'center',
     fontWeight: '700',
     color: whiteColor,
   },
