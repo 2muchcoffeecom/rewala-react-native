@@ -5,7 +5,8 @@ const HeaderLogo: React.FunctionComponent = () => {
   return (
     <Image
       source={require('../../../../assets/logo.png')}
-      style={{ width: 101, height: 21 }}
+      style={{ width: 100, height: 21 }}
+      resizeMode='contain'
     />
   );
 };
