@@ -4,7 +4,7 @@ import { fontFamilyRegular, errorColor } from '../../../app.style';
 const style = StyleSheet.create({
   textError: {
     position: 'absolute',
-    top: -35,
+    top: -45,
     left: 42,
     right: 42,
     fontFamily: fontFamilyRegular,
