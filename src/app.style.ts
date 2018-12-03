@@ -1,7 +1,8 @@
-import { Dimensions, TextStyle } from 'react-native';
+import { Dimensions, TextStyle, ViewStyle } from 'react-native';
 
 export const whiteColor = '#FFF';
 export const greyColor = '#9D9D9D';
+export const greyColorNoFriend = '#7D7D7D';
 export const blackTextColor = '#000';
 export const mainColor = '#708EFF';
 export const blackColor = '#1C1C1C';
@@ -18,6 +19,15 @@ export const headerTitleStyle: TextStyle = {
   fontSize: 17,
   color: blackColor,
   alignSelf: 'center',
+};
+
+export const headerStyle: ViewStyle = {
+  height: 77,
+  width: '100%',
+  paddingTop: 41,
+  paddingBottom: 15,
+  borderBottomWidth: 0.5,
+  borderBottomColor: 'rgba(0, 0, 0, 0.25)',
 };
 
 const deviceHeight = Dimensions.get('window').height;

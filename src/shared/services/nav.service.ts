@@ -1,17 +1,18 @@
+import React from 'react';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { headerTitleStyle, mainColor } from '../../app.style';
+import { headerTitleStyle, headerStyle } from '../../app.style';
 
 export interface NavOptions {
-  title?: string;
+  headerTitle?: string | React.ReactNode;
   headerTitleStyle?: TextStyle;
   headerTitleContainerStyle?: ViewStyle;
   headerTintColor?: string;
-  headerBackTitle: string | null;
+  headerBackTitle?: string | null;
   headerTransparent?: boolean;
   headerRight?: JSX.Element;
-  headerLeft?: JSX.Element;
+  headerLeft?: JSX.Element | null;
   headerStyle?: ViewStyle;
 }
 
@@ -20,7 +21,7 @@ interface INavService {
   setParams(key: string, params: any): void;
   navigate(routeName: string, params?: any): void;
   back(key?: string): void;
-  navigationOptions(title?: string): NavOptions;
+  navigationOptions(headerTitle?: string | React.ReactNode): NavOptions;
 }
 
 class NavService implements INavService {
@@ -56,18 +57,16 @@ class NavService implements INavService {
     );
   }
 
-  navigationOptions(title?: string): NavOptions {
+  navigationOptions(headerTitle?: string | React.ReactNode): NavOptions {
     return {
-      title,
+      headerTitle,
       headerTitleStyle,
-      headerStyle: {borderBottomWidth: 0},
+      headerStyle,
       headerTitleContainerStyle: {justifyContent: 'center'},
-      headerTintColor: mainColor,
-      headerBackTitle: null,
       headerTransparent: true,
+      headerLeft: null,
     };
   }
-
 }
 
 export default new NavService();
