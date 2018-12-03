@@ -22,10 +22,10 @@ export const headerTitleStyle: TextStyle = {
 };
 
 export const headerStyle: ViewStyle = {
-  height: 77,
+  height: 64,
   width: '100%',
-  paddingTop: 41,
-  paddingBottom: 15,
+  paddingTop: 29,
+  paddingBottom: 14,
   borderBottomWidth: 0.5,
   borderBottomColor: 'rgba(0, 0, 0, 0.25)',
 };

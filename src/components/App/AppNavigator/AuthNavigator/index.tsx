@@ -52,5 +52,5 @@ export default createStackNavigator({
     navigationOptions: navService.navigationOptions(<HeaderLogo/>),
   },
 }, {
-  initialRouteName: 'AddFriendsScreen',
+  initialRouteName: 'LoginScreen',
 });
