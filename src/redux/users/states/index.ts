@@ -1,9 +1,9 @@
-import { IUserModelWithToken } from '../../../shared/models/user.model';
+import { IUserModel } from '../../../shared/models/user.model';
 
-export interface FriendsState {
-  entities: IUserModelWithToken[];
+export interface UsersState {
+  entities: IUserModel[];
 }
 
-export const initialState: FriendsState = {
+export const initialState: UsersState = {
   entities: [],
 };

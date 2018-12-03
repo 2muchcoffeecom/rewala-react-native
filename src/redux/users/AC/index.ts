@@ -1,12 +1,12 @@
 import { createAction, ActionsUnion } from '../../../shared/helpers/createAction';
-import { IUserModelWithToken } from '../../../shared/models/user.model';
+import { IUserModel } from '../../../shared/models/user.model';
 
 export enum ActionTypes {
   SET_USERS_DATA = 'SET_USERS_DATA',
 }
 
 export const Actions = {
-  setUserContactsList: (data: IUserModelWithToken[]) => {
+  setUserData: (data: IUserModel[]) => {
     return createAction(ActionTypes.SET_USERS_DATA, {data});
   },
 };

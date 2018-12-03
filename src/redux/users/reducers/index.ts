@@ -1,8 +1,8 @@
 import { unionBy } from 'lodash-es';
 import * as fromActions from '../AC';
-import { initialState, FriendsState } from '../states';
+import { initialState, UsersState } from '../states';
 
-export function reducer(state = initialState, action: fromActions.Actions): FriendsState {
+export function reducer(state = initialState, action: fromActions.Actions): UsersState {
 
   switch (action.type) {
     case fromActions.ActionTypes.SET_USERS_DATA: {
@@ -10,7 +10,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Frie
 
       return {
         ...state,
-        entities: unionBy(data, state.entities, 'recordID'),
+        entities: unionBy(data, state.entities, '_id'),
       };
     }
 
