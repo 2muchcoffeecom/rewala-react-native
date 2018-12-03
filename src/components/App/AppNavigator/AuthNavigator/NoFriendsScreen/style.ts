@@ -5,7 +5,7 @@ const style = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 107,
+    paddingTop: 94,
     minHeight: fullHeight,
   },
   wraper: {
@@ -33,6 +33,7 @@ const style = StyleSheet.create({
     color: greyColorNoFriend,
   },
   buttonWraper: {
+    height: 40,
     width: 150,
   },
 });

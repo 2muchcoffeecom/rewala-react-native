@@ -7,6 +7,7 @@ import RegularButton from '../../../../../shared/components/RegularButton';
 import navService from '../../../../../shared/services/nav.service';
 
 class NoFriendsScreen extends React.PureComponent {
+
   toHomeBlankScreen = (): void => {
     navService.navigate('HomeBlankScreen');
   }

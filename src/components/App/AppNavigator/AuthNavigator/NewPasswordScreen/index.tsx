@@ -95,7 +95,7 @@ class NewPasswordScreen extends React.Component<Props> {
               isSecureTextEntry={true}
             />
           </View>
-          <View>
+          <View style={style.buttonWraper}>
             <RegularButton
               title='SAVE PASSWORD'
               disabled={

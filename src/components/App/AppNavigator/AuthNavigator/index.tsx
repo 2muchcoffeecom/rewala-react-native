@@ -7,6 +7,7 @@ import ForgotPasswordScreen from './ForgotPasswordScreen';
 import ResetPasswordCodeScreen from './ResetPasswordCodeScreen';
 import NewPasswordScreen from './NewPasswordScreen';
 import NoFriendsScreen from './NoFriendsScreen';
+import AddFriendsScreen from './AddFriendsScreen';
 
 import navService from '../../../../shared/services/nav.service';
 import HeaderLogo from '../../../../shared/components/HeaderLogo';
@@ -46,6 +47,10 @@ export default createStackNavigator({
     screen: NoFriendsScreen,
     navigationOptions: navService.navigationOptions(<HeaderLogo/>),
   },
+  AddFriendsScreen: {
+    screen: AddFriendsScreen,
+    navigationOptions: navService.navigationOptions(<HeaderLogo/>),
+  },
 }, {
-  initialRouteName: 'LoginScreen',
+  initialRouteName: 'AddFriendsScreen',
 });

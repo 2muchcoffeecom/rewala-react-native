@@ -177,7 +177,7 @@ class RegistrationScreen extends React.Component<Props, State> {
               isSecureTextEntry={true}
             />
           </View>
-          <View>
+          <View style={style.buttonWraper}>
             <RegularButton
               title='SIGN UP'
               disabled={

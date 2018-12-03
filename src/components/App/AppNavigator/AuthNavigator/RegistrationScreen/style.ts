@@ -62,6 +62,9 @@ const style = StyleSheet.create({
   passwordConfirmWraper: {
     marginBottom: 16,
   },
+  buttonWraper: {
+    height: 40,
+  },
   logInWraper: {
     position: 'absolute',
     bottom: 20,

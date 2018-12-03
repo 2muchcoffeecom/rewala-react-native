@@ -21,6 +21,7 @@ const style = StyleSheet.create({
     marginBottom: 16,
   },
   resetWraper: {
+    height: 40,
     marginBottom: 20,
   },
   loginWraper: {
