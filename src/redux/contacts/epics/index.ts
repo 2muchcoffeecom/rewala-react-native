@@ -77,9 +77,20 @@ const readContactsPermissionDeniedEpic = (action$: Observable<Action>) => action
   ignoreElements(),
 );
 
+const setContactsUserIdEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof contactsRequestAC.sendContacts.Actions.contactsSendSuccess>>(
+    contactsRequestAC.sendContacts.ActionTypes.CONTACTS_SEND_SUCCESS,
+  ),
+  map((action) => {
+    const contactsUserId = action.payload.data.map<string>((user) => user._id);
+    return fromActions.Actions.setContactsUserId(contactsUserId);
+  }),
+);
+
 export const contactsEpics = [
   checkReadContactsPermissionEpic,
   readContactsPermissionGrantedEpic,
   readContactsPermissionDeniedEpic,
   redirectToFriendsScreenEpic,
+  setContactsUserIdEpic,
 ];
