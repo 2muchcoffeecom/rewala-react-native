@@ -12,7 +12,7 @@ const setUsersDataEpic = (action$: Observable<Action>) => action$.pipe(
   map((action) => {
     const users = action.payload.data;
 
-    return fromActions.Actions.setUserData(users);
+    return fromActions.Actions.setUsersData(users);
   }),
 );
 

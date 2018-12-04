@@ -1,11 +1,27 @@
-import { IProfileModel } from './profile.model';
+import { ProfileModel } from './profile.model';
 
-export interface IUserModel {
+export class UserModel {
   _id: string;
   email: string;
-  profile: IProfileModel;
+  profileId: string;
+
+  constructor(obj: any) {
+    for (const field in obj) {
+      if (obj.hasOwnProperty(field) && typeof this[field] !== 'undefined') {
+        this[field] = obj[field];
+      }
+    }
+
+    if (obj.profile && obj.profile._id) {
+      this.profileId = obj.profile._id;
+    }
+  }
 }
 
-export interface IUserModelWithToken extends IUserModel{
+export class UserModelWithToken extends UserModel {
   authToken: string;
+}
+
+export interface UserResponse extends UserModelWithToken {
+  profile: ProfileModel;
 }

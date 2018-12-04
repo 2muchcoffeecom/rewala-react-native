@@ -1,7 +1,7 @@
-import { IUserModel } from '../../../shared/models/user.model';
+import { UserModel } from '../../../shared/models/user.model';
 
 export interface UsersState {
-  entities: IUserModel[];
+  entities: UserModel[];
 }
 
 export const initialState: UsersState = {

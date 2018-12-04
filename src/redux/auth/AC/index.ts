@@ -1,7 +1,7 @@
 import { createAction, ActionsUnion } from '../../../shared/helpers/createAction';
 import { LoginInput, UserInput, ResetPasswordConfirmInput } from '../../../shared/services/auth.service';
 import { Reject, Resolve } from '../../request/states';
-import { IUserModelWithToken } from '../../../shared/models/user.model';
+import { UserResponse } from '../../../shared/models/user.model';
 
 export enum ActionTypes {
   AUTH_SUBMIT_LOGIN = 'AUTH_SUBMIT_LOGIN',
@@ -13,10 +13,10 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-  submitLogin: (data: LoginInput, resolve: Resolve<IUserModelWithToken>, reject: Reject) => {
+  submitLogin: (data: LoginInput, resolve: Resolve<UserResponse>, reject: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_LOGIN, {data, resolve, reject});
   },
-  submitRegistration: (data: UserInput, resolve: Resolve<IUserModelWithToken>, reject: Reject) => {
+  submitRegistration: (data: UserInput, resolve: Resolve<UserResponse>, reject: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_REGISTRATION, {data, resolve, reject});
   },
   submitResetPassword: (data: string, resolve?: Resolve<boolean>, reject?: Reject) => {
@@ -25,7 +25,7 @@ export const Actions = {
   submitResetPasswordCode: (data: string, resolve: Resolve<boolean>, reject: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_RESET_PASSWORD_CODE, {data, resolve, reject});
   },
-  submitNewPassword: (data: ResetPasswordConfirmInput, resolve: Resolve<IUserModelWithToken>, reject: Reject) => {
+  submitNewPassword: (data: ResetPasswordConfirmInput, resolve: Resolve<UserResponse>, reject: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_NEW_PASSWORD, {data, resolve, reject});
   },
   setAuthorizedUserId: (data: string) => {

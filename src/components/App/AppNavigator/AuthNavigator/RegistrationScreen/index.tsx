@@ -23,7 +23,7 @@ import { UserInput } from '../../../../../shared/services/auth.service';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import deviceService from '../../../../../shared/services/device.service';
-import { IUserModelWithToken } from '../../../../../shared/models/user.model';
+import { UserResponse } from '../../../../../shared/models/user.model';
 import { RequestError } from '../../../../../redux/request/states';
 
 export interface RegistrationFormData {
@@ -61,7 +61,7 @@ class RegistrationScreen extends React.Component<Props, State> {
       },
     };
 
-    return new Promise<IUserModelWithToken>((resolve, reject) => {
+    return new Promise<UserResponse>((resolve, reject) => {
       dispatch(authActions.submitRegistration(userInput, resolve, reject));
     })
       .catch((error: RequestError) => {

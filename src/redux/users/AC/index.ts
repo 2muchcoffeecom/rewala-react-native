@@ -1,12 +1,12 @@
 import { createAction, ActionsUnion } from '../../../shared/helpers/createAction';
-import { IUserModel } from '../../../shared/models/user.model';
+import { UserModel } from '../../../shared/models/user.model';
 
 export enum ActionTypes {
   SET_USERS_DATA = 'SET_USERS_DATA',
 }
 
 export const Actions = {
-  setUserData: (data: IUserModel[]) => {
+  setUsersData: (data: UserModel[]) => {
     return createAction(ActionTypes.SET_USERS_DATA, {data});
   },
 };

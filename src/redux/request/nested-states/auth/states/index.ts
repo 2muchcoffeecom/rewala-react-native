@@ -4,14 +4,14 @@ import { initialState as resetPasswordState } from '../nested-states/resetPasswo
 import { initialState as resetPasswordCodeState } from '../nested-states/resetPasswordCode/states';
 import { initialState as newPasswordState } from '../nested-states/newPassword/states';
 
-import { IUserModelWithToken } from '../../../../../shared/models/user.model';
+import { UserModelWithToken } from '../../../../../shared/models/user.model';
 import { RequestError } from '../../../states';
 
 export interface RequestNestedState {
   loading: boolean;
   loaded: boolean;
   errors: RequestError | null;
-  data: IUserModelWithToken | boolean | null;
+  data: UserModelWithToken | boolean | null;
 }
 
 export interface AuthRequestState {
