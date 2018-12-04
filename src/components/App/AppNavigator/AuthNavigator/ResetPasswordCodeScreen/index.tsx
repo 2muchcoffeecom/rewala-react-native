@@ -24,7 +24,6 @@ export interface ResetPasswordCodeFormData {
 }
 
 interface StateProps {
-  formValues: ResetPasswordCodeFormData;
   forgotPasswordFormValues: ForgotPasswordFormData;
 }
 
@@ -33,7 +32,6 @@ interface DispatchProps {
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  formValues: getFormValues('resetPasswordCode')(state) as ResetPasswordCodeFormData,
   forgotPasswordFormValues: getFormValues('forgotPassword')(state) as ForgotPasswordFormData,
 });
 
@@ -67,7 +65,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, formValues, error, submitting} = this.props;
+    const {handleSubmit, invalid, error, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -102,7 +100,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
           <View style={style.changePasswordWraper}>
             <RegularButton
               title='CHANGE PASSWORD'
-              disabled={!formValues || !formValues.resetPasswordCode || submitting}
+              disabled={invalid || submitting}
               onPress={handleSubmit(this.submitResetPasswordCode)}
             />
           </View>

@@ -1,10 +1,9 @@
 import React from 'react';
-import { compose, Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import style from './style';
 
 import { View, ScrollView, Image, Text } from 'react-native';
-import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm, SubmissionError } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -21,7 +20,6 @@ import { passwordRegistration, confirmPassword } from '../../../../../shared/val
 import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { UserInput } from '../../../../../shared/services/auth.service';
-import { RootState } from '../../../../../redux/store';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import deviceService from '../../../../../shared/services/device.service';
@@ -36,20 +34,12 @@ export interface RegistrationFormData {
   passwordConfirm: string;
 }
 
-interface StateProps {
-  formValues: RegistrationFormData;
-}
-
-const mapStateToProps = (state: RootState): StateProps => ({
-  formValues: getFormValues('registration')(state) as RegistrationFormData,
-});
-
 interface State {
   cca2: string;
   callingCode: string;
 }
 
-type Props = StateProps & InjectedFormProps<RegistrationFormData>;
+type Props = InjectedFormProps<RegistrationFormData>;
 
 class RegistrationScreen extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -93,7 +83,7 @@ class RegistrationScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const {handleSubmit, formValues, error, submitting} = this.props;
+    const {handleSubmit, invalid, error, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -180,15 +170,7 @@ class RegistrationScreen extends React.Component<Props, State> {
           <View style={style.buttonWraper}>
             <RegularButton
               title='SIGN UP'
-              disabled={
-                !formValues ||
-                !formValues.fullName ||
-                !formValues.phone ||
-                !formValues.email ||
-                !formValues.password ||
-                !formValues.passwordConfirm ||
-                submitting
-              }
+              disabled={invalid || submitting}
               onPress={handleSubmit(this.submitRegistration)}
             />
           </View>
@@ -201,9 +183,6 @@ class RegistrationScreen extends React.Component<Props, State> {
   }
 }
 
-export default compose(
-  reduxForm<RegistrationFormData>({
-    form: 'registration',
-  }),
-  connect<StateProps>(mapStateToProps),
-)(RegistrationScreen);
+export default reduxForm<RegistrationFormData>({
+  form: 'registration',
+})(RegistrationScreen);
