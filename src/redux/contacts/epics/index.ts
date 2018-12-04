@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { Action } from 'redux';
 import { Observable, of } from 'rxjs';
 import { ofType } from 'redux-observable';
@@ -13,15 +14,20 @@ const checkReadContactsPermissionEpic = (action$: Observable<Action>) => action$
   ofType<ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess>>(
     authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
   ),
-  switchMap(() => deviceService.getReadContactsPermission().pipe(
-    map((result) => {
-      if (result === PermissionsAndroid.RESULTS.GRANTED) {
-        return fromActions.Actions.getReadContactsPermissionGranted();
-      } else {
-        return fromActions.Actions.getReadContactsPermissionDenied();
-      }
-    }),
-  )),
+  Platform.select({
+    android:
+      switchMap(() => deviceService.getReadContactsPermission().pipe(
+        map((result) => {
+          if (result === PermissionsAndroid.RESULTS.GRANTED) {
+            return fromActions.Actions.getReadContactsPermissionGranted();
+          } else {
+            return fromActions.Actions.getReadContactsPermissionDenied();
+          }
+        }),
+      )),
+    ios:
+      ignoreElements(),
+  }),
 );
 
 const readContactsPermissionGrantedEpic = (action$: Observable<Action>) => action$.pipe(
