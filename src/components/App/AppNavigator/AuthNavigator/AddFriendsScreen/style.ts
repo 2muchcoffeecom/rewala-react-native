@@ -40,6 +40,8 @@ const style = StyleSheet.create({
     width: 17.35,
     height: 17.99,
   },
+  listWraper: {},
+  friendList: {},
   buttonWraper: {
     width: 140,
     height: 40,
