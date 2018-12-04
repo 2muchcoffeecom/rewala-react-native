@@ -1,9 +1,9 @@
 import { FollowRequest } from '../../../shared/models/followRequest.model';
 
-export interface UsersState {
+export interface FriendsState {
   entities: FollowRequest[];
 }
 
-export const initialState: UsersState = {
+export const initialState: FriendsState = {
   entities: [],
 };

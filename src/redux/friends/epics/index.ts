@@ -3,27 +3,47 @@ import { Observable } from 'rxjs';
 import { ofType } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
-import { contactsRequestAC, authRequestAC } from '../../request/AC';
+import { friendsRequestAC } from '../../request/AC';
 
-const setUsersDataEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof contactsRequestAC.sendContacts.Actions.contactsSendSuccess> |
-    ReturnType<typeof authRequestAC.login.Actions.loginSuccess> |
-    ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess> |
-    ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess>>(
-    contactsRequestAC.sendContacts.ActionTypes.CONTACTS_SEND_SUCCESS,
-    authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
-    authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
-    authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_SUCCESS,
+const setFriendsDataEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof friendsRequestAC.create.Actions.createFriendFollowRequestSuccess> |
+    ReturnType<typeof friendsRequestAC.update.Actions.updateFriendFollowRequestSuccess>>(
+    friendsRequestAC.create.ActionTypes.FRIEND_CREATE_FOLLOW_REQUEST_SUCCESS,
+    friendsRequestAC.update.ActionTypes.FRIEND_UPDATE_FOLLOW_REQUEST_SUCCESS,
   ),
   map((action) => {
-    const users = Array.isArray(action.payload.data) ?
+    const followRequests = Array.isArray(action.payload.data) ?
       action.payload.data :
       [action.payload.data];
 
-    return fromActions.Actions.setUsersData(users);
+    return fromActions.Actions.setFriendsData(followRequests);
   }),
 );
 
-export const usersEpics = [
-  setUsersDataEpic,
+const addFriendEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.ADD_FRIEND,
+  ),
+  map((action: ReturnType<typeof fromActions.Actions.addFriend>) => {
+    const {data} = action.payload;
+
+    return friendsRequestAC.create.Actions.createFriendFollowRequest(data);
+  }),
+);
+
+const deleteFriendEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.DELETE_FRIEND,
+  ),
+  map((action: ReturnType<typeof fromActions.Actions.deleteFriend>) => {
+    const {data} = action.payload;
+
+    return friendsRequestAC.update.Actions.updateFriendFollowRequest(data);
+  }),
+);
+
+export const friendsEpics = [
+  setFriendsDataEpic,
+  addFriendEpic,
+  deleteFriendEpic,
 ];
