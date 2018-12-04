@@ -4,8 +4,6 @@ export const user = `{
   _id
   email
   profile ${profile}
-  status
-  statusIn
 }`;
 
 export const userWithToken = `{
@@ -13,8 +11,6 @@ export const userWithToken = `{
   email
   authToken
   profile ${profile}
-  status
-  statusIn
 }`;
 
 export const result = `{
