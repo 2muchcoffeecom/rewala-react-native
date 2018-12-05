@@ -1,7 +1,7 @@
 export interface ContactsState {
-  contactsUsersId: string[] | null;
+  contactsUsersIds: string[] | null;
 }
 
 export const initialState: ContactsState = {
-  contactsUsersId: null,
+  contactsUsersIds: null,
 };

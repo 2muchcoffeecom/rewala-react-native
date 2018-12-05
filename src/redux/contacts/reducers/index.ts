@@ -8,7 +8,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Cont
       const {data} = action.payload;
 
       return {
-        contactsUsersId: data,
+        contactsUsersIds: data,
       };
     }
 

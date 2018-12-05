@@ -6,7 +6,8 @@ import { catchError, ignoreElements, map, switchMap, tap } from 'rxjs/operators'
 import * as fromActions from '../AC';
 import { contactsRequestAC, authRequestAC } from '../../request/AC';
 import navService from '../../../shared/services/nav.service';
-import deviceService, { ContactInput } from '../../../shared/services/device.service';
+import deviceService from '../../../shared/services/device.service';
+import { ContactInput } from '../../../shared/services/contacts.service';
 import { PermissionsAndroid } from 'react-native';
 import { Contact } from 'react-native-contacts';
 

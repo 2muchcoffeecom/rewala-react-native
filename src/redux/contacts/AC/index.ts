@@ -1,5 +1,5 @@
 import { createAction, ActionsUnion } from '../../../shared/helpers/createAction';
-import { ContactInput } from '../../../shared/services/device.service';
+import { ContactInput } from '../../../shared/services/contacts.service';
 
 export enum ActionTypes {
   GET_READ_CONTACTS_PERMISSION_GRANTED = 'GET_READ_CONTACTS_PERMISSION_GRANTED',
