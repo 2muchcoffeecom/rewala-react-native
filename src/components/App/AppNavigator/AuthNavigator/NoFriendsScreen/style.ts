@@ -5,7 +5,7 @@ const style = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 94,
+    paddingTop: 69,
     minHeight: fullHeight,
   },
   wraper: {
