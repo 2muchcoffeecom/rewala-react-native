@@ -10,6 +10,12 @@ const style = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: mainColor,
   },
+  buttonInverted: {
+    borderWidth: 1,
+    borderColor: mainColor,
+    borderStyle: 'solid',
+    backgroundColor: whiteColor,
+  },
   container: {
     width: '100%',
     marginLeft: 0,
@@ -21,6 +27,9 @@ const style = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '700',
     color: whiteColor,
+  },
+  buttonTitleInverted: {
+    color: mainColor,
   },
   disabled: {
     opacity: 0.2,
