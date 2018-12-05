@@ -1,12 +1,12 @@
 import { createAction, ActionsUnion } from '../../../shared/helpers/createAction';
-import { ProfileModel } from '../../../shared/models/profile.model';
+import { UserResponse } from '../../../shared/models/user.model';
 
 export enum ActionTypes {
   SET_PROFILES_DATA = 'SET_PROFILES_DATA',
 }
 
 export const Actions = {
-  setProfilesData: (data: ProfileModel[]) => {
+  setProfilesData: (data: UserResponse[]) => {
     return createAction(ActionTypes.SET_PROFILES_DATA, {data});
   },
 };

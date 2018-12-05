@@ -8,6 +8,7 @@ import { reducer as toastReducer } from './toast/reducers';
 import { reducer as usersReducer } from './users/reducers';
 import { reducer as profilesReducer } from './profiles/reducers';
 import { reducer as friendsReducer } from './friends/reducers';
+import { reducer as contactsReducer } from './contacts/reducers';
 
 import { requestEpics } from './request/epics';
 import { authEpics } from './auth/epics';
@@ -24,6 +25,7 @@ import { ToastState } from './toast/states';
 import { UsersState } from './users/states';
 import { ProfilesState } from './profiles/states';
 import { FriendsState } from './friends/states';
+import { ContactsState } from './contacts/states';
 
 export interface RootState {
   request: RequestState;
@@ -33,6 +35,7 @@ export interface RootState {
   users: UsersState;
   profiles: ProfilesState;
   friends: FriendsState;
+  contacts: ContactsState;
 }
 
 const rootReducer = combineReducers({
@@ -43,6 +46,7 @@ const rootReducer = combineReducers({
   users: usersReducer,
   profiles: profilesReducer,
   friends: friendsReducer,
+  contacts: contactsReducer,
 });
 
 const rootEpic = combineEpics(

@@ -1,13 +1,13 @@
-import { ProfileModel } from './profile.model';
+import { ProfileResponse } from './profile.model';
 
 export class UserModel {
-  _id: string;
-  email: string;
-  profileId: string;
+  _id: string = '';
+  email: string = '';
+  profileId: string = '';
 
-  constructor(obj: any) {
+  constructor(obj: UserResponse) {
     for (const field in obj) {
-      if (obj.hasOwnProperty(field) && typeof this[field] !== 'undefined') {
+      if (typeof this[field] !== 'undefined') {
         this[field] = obj[field];
       }
     }
@@ -23,5 +23,5 @@ export class UserModelWithToken extends UserModel {
 }
 
 export interface UserResponse extends UserModelWithToken {
-  profile: ProfileModel;
+  profile: ProfileResponse;
 }

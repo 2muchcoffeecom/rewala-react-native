@@ -4,7 +4,6 @@ import { ofType } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import { contactsRequestAC, authRequestAC } from '../../request/AC';
-import { ProfileModel } from '../../../shared/models/profile.model';
 
 const setProfilesDataEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof contactsRequestAC.sendContacts.Actions.contactsSendSuccess> |
@@ -17,11 +16,11 @@ const setProfilesDataEpic = (action$: Observable<Action>) => action$.pipe(
     authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_SUCCESS,
   ),
   map((action) => {
-    const profiles = Array.isArray(action.payload.data) ?
-      action.payload.data.map<ProfileModel>((user) => user.profile) :
-      [action.payload.data.profile];
+    const users = Array.isArray(action.payload.data) ?
+      action.payload.data :
+      [action.payload.data];
 
-    return fromActions.Actions.setProfilesData(profiles);
+    return fromActions.Actions.setProfilesData(users);
   }),
 );
 

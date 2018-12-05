@@ -5,14 +5,14 @@ export enum FollowRequestStatus {
 }
 
 export class FollowRequest {
-  _id: string;
-  fromUserId: string;
-  toUserId: string;
-  status: FollowRequestStatus;
+  _id: string = '';
+  fromUserId: string = '';
+  toUserId: string = '';
+  status: FollowRequestStatus | null = null;
 
-  constructor(obj: any) {
+  constructor(obj: FollowRequest) {
     for (const field in obj) {
-      if (obj.hasOwnProperty(field) && typeof this[field] !== 'undefined') {
+      if (typeof this[field] !== 'undefined') {
         this[field] = obj[field];
       }
     }
