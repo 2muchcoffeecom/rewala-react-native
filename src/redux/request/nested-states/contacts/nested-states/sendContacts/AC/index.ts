@@ -1,7 +1,7 @@
 import { createAction, ActionsUnion } from '../../../../../../../shared/helpers/createAction';
 import { UserResponse } from '../../../../../../../shared/models/user.model';
 import { RequestError } from '../../../../../states';
-import { ContactInput } from '../../../../../../../shared/services/device.service';
+import { ContactInput } from '../../../../../../../shared/services/contacts.service';
 
 export enum ActionTypes {
   CONTACTS_SEND = 'CONTACTS_SEND',

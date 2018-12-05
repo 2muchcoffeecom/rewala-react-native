@@ -1,21 +1,12 @@
 import DeviceInfo from 'react-native-device-info';
 import { getAllCountries, Country } from 'react-native-country-picker-modal';
-import { from, Observable, ObservableInput } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import Contacts from 'react-native-contacts';
 import { PermissionsAndroid } from 'react-native';
-import gql from 'graphql-tag';
-import { user } from '../templates/user.template';
-import { execute } from 'apollo-link';
-import link from '../middlewares/link.middleware';
 
 interface UserCountryData {
   callingCode: string;
   cca2: string;
-}
-
-export interface ContactInput {
-  emails: string[];
-  phones: string[];
 }
 
 interface IDeviceService {
@@ -61,20 +52,6 @@ class DeviceService implements IDeviceService {
         });
       }),
     );
-  }
-
-  sendDeviceContactsToServer(input: ContactInput[]) {
-    const operation = {
-      query: gql`
-          mutation importContacts($input: [ContactInput]) {
-              importContacts(input: $input) ${user}
-          }
-      `,
-      variables: {
-        input,
-      },
-    };
-    return from(execute(link, operation) as ObservableInput<any>);
   }
 }
 
