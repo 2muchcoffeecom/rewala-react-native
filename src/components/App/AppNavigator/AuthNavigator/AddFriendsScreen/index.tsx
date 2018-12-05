@@ -1,13 +1,73 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import style from './style';
 
-import { View, ScrollView, TextInput, Image, FlatList, ListRenderItem } from 'react-native';
+import { View, ScrollView, TextInput, TouchableOpacity, Image, FlatList, ListRenderItem } from 'react-native';
 import RegularButton from '../../../../../shared/components/RegularButton';
-import FriendListItem, {OwnProps as IFriendListItem} from '../../../../../shared/components/FriendListItem';
+import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../shared/components/FriendListItem';
+
+import { RootState } from '../../../../../redux/store';
+import { ProfileModel } from '../../../../../shared/models/profile.model';
 
 import navService from '../../../../../shared/services/nav.service';
+import contactsService from '../../../../../shared/services/contacts.service';
 
-class AddFriendsScreen extends React.Component {
+interface StateProps {
+  profilesFromContacts: ProfileModel[];
+  state: RootState;
+}
+
+const mapStateToProps = (state: RootState): StateProps => ({
+  profilesFromContacts: contactsService.getProfilesFromContacts(state),
+  state
+});
+
+type Props = StateProps;
+
+interface State {
+  searchQuery: string;
+  filteredProfiles: ProfileModel[];
+}
+
+class AddFriendsScreen extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      searchQuery: '',
+      filteredProfiles: this.props.profilesFromContacts,
+    };
+  }
+
+  // componentDidUpdate(prevProps: Props, prevState: State) {
+  //   if (
+  //     prevState.searchQuery !== this.state.searchQuery ||
+  //     prevProps.profilesFromContacts !== this.props.profilesFromContacts
+  //   ) {
+  //     this.getFilteredProfiles();
+  //   }
+  // }
+
+  onChangeSearchValue = (value: string) => {
+    this.setState({
+      searchQuery: value.toLowerCase(),
+      filteredProfiles: this.getFilteredProfiles(value.toLowerCase()),
+    })
+  }
+
+  onPressSearchDeleteButton = () => {
+    this.setState({
+      searchQuery: '',
+    });
+  }
+
+  // filteredProfiles: ProfileModel[];
+
+  getFilteredProfiles = (query: string) => {
+    return this.props.profilesFromContacts.filter(
+      (profile) => profile.fullName.toLowerCase().includes(query),
+    );
+  }
 
   toHomeBlankScreen = (): void => {
     navService.navigate('HomeBlankScreen');
@@ -21,31 +81,50 @@ class AddFriendsScreen extends React.Component {
       <FriendListItem
         userId={item.userId}
         fullName={item.fullName}
-        avatarDir={item.avatarDir}
-        avatarFileName={item.avatarFileName}
+        avatarPath={item.avatarPath}
       />
     );
   }
 
   render() {
+    console.log('---', this.props.state, '===', this.props.profilesFromContacts)
+    console.log('========================', this.state.searchQuery)
     return (
       <ScrollView contentContainerStyle={style.root}>
         <View style={style.wraper}>
           <View style={style.seacrhWraper}>
-            <Image
-              source={require('../../../../../../assets/search.png')}
-              style={style.searchImage}
-            />
+            {
+              this.state.searchQuery === '' ?
+                <Image
+                  source={require('../../../../../../assets/search.png')}
+                  style={style.searchImage}
+                /> :
+                <TouchableOpacity
+                  onPress={this.onPressSearchDeleteButton}
+                  style={style.searchDeleteButton}
+                >
+                  <Image
+                    source={require('../../../../../../assets/delete-cross.png')}
+                    style={style.searchCrossImage}
+                  />
+                </TouchableOpacity>
+            }
             <TextInput
               style={style.searchInput}
               placeholderTextColor='#BCBCBF'
               placeholder='Search'
+              onChangeText={this.onChangeSearchValue}
+              value={this.state.searchQuery}
             />
           </View>
           <View style={style.listWraper}>
             <FlatList
               style={style.friendList}
-              data={}
+              data={
+                this.state.searchQuery === '' ?
+                  this.props.profilesFromContacts :
+                  this.state.filteredProfiles
+              }
               keyExtractor={this.keyExtractor}
               renderItem={this.renderItem}
             />
@@ -63,4 +142,4 @@ class AddFriendsScreen extends React.Component {
   }
 }
 
-export default AddFriendsScreen;
+export default connect<StateProps>(mapStateToProps)(AddFriendsScreen);
