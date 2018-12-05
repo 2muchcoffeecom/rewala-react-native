@@ -16,8 +16,7 @@ import { Actions as friendsActions } from '../../../redux/friends/AC';
 export interface OwnProps {
   userId: string;
   fullName: string;
-  avatarDir?: string;
-  avatarFileName?: string;
+  avatarPath?: string;
 }
 
 interface StateProps {
@@ -48,7 +47,7 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 const FriendListItem: React.FunctionComponent<Props> = (props) => {
   const {
-    avatarDir, avatarFileName, fullName, addFriend, userId, deleteFriend, friends,
+    avatarPath, fullName, addFriend, userId, deleteFriend, friends,
   } = props;
 
   const onPressAddFriend = () => {
@@ -71,8 +70,8 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
     <View style={style.friendListItem}>
       <View style={style.friendInfoWraper}>
         <Image
-          source={avatarDir && avatarFileName ?
-            {uri: `${apiEndpoint}/graphql/${avatarDir}/${avatarFileName}`} :
+          source={avatarPath ?
+            {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
             require('../../../../assets/avatar-placeholder.png')}
           style={style.friendAvatar}
         />
@@ -84,7 +83,8 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
       </View>
       <View style={style.friendButtonWraper}>
         <RegularButton
-          title='ADD FRIEND'
+          isInverted={isFriendAdded}
+          title={isFriendAdded ? 'DELETE FRIEND' : 'ADD FRIEND'}
           fontSize={9}
           onPress={isFriendAdded ? onPressDeleteFriend : onPressAddFriend}
         />
