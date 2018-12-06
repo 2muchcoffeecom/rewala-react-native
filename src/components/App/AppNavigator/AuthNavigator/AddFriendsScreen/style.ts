@@ -51,11 +51,11 @@ const style = StyleSheet.create({
     width: 10,
     height: 9.23,
   },
-  listWraper: {
+  friendList: {
+    flex: 1,
     paddingLeft: 4,
     paddingRight: 4,
   },
-  friendList: {},
   buttonWraper: {
     position: 'absolute',
     bottom: 50,

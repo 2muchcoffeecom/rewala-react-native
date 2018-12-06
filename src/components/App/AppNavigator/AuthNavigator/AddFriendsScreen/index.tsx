@@ -117,7 +117,7 @@ class AddFriendsScreen extends React.Component<Props, State> {
               value={this.state.searchQuery}
             />
           </View>
-          <View style={style.listWraper}>
+          <View>
             <FlatList
               style={style.friendList}
               data={
