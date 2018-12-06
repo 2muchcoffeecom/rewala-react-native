@@ -87,8 +87,6 @@ class AddFriendsScreen extends React.Component<Props, State> {
   }
 
   render() {
-    console.log('---', this.props.state, '===', this.props.profilesFromContacts)
-    console.log('========================', this.state.searchQuery)
     return (
       <ScrollView contentContainerStyle={style.root}>
         <View style={style.wraper}>

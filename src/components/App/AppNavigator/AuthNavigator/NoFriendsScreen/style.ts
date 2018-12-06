@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { greyColorNoFriend, fontFamilyRegular, fullHeight, mainColor } from '../../../../../app.style';
+import { greyColorText, fontFamilyRegular, fullHeight, mainColor } from '../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
@@ -30,7 +30,7 @@ const style = StyleSheet.create({
     fontWeight: '400',
     fontSize: 18,
     textAlign: 'center',
-    color: greyColorNoFriend,
+    color: greyColorText,
   },
   buttonWraper: {
     position: 'absolute',
