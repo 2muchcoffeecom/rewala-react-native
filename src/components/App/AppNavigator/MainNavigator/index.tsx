@@ -9,6 +9,7 @@ import {
 import style from './style';
 
 import HomeNavigator from './HomeNavigator';
+import ProfileNavigator from './ProfileNavigator';
 
 interface CustomBottomTabNavigatorConfig extends BottomTabNavigatorConfig {
   defaultNavigationOptions: NavigationScreenConfig<NavigationBottomTabScreenOptions>;
@@ -18,7 +19,7 @@ const Navigator = createBottomTabNavigator({
   HomeNavigator,
   SearchNavigator: HomeNavigator,
   NotificationNavigator: HomeNavigator,
-  ProfileNavigator: HomeNavigator,
+  ProfileNavigator,
 }, {
   initialRouteName: 'HomeNavigator',
   defaultNavigationOptions: ({navigation}) => ({
