@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { greyColorNoFriend, fontFamilyRegular, fullHeight } from '../../../../../app.style';
+import { greyColorNoFriend, fontFamilyRegular, fullHeight, mainColor } from '../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
@@ -33,8 +33,12 @@ const style = StyleSheet.create({
     color: greyColorNoFriend,
   },
   buttonWraper: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     height: 40,
-    width: 150,
+    backgroundColor: mainColor,
   },
 });
 

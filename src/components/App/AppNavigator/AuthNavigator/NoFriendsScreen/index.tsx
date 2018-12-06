@@ -28,13 +28,13 @@ class NoFriendsScreen extends React.PureComponent {
               You haven’t friends using Rewala right now.
             </Text>
           </View>
-          <View style={style.buttonWraper}>
-            <RegularButton
-              title='START USING APP'
-              onPress={this.toHomeBlankScreen}
-              fontSize={12}
-            />
-          </View>
+        </View>
+        <View style={style.buttonWraper}>
+          <RegularButton
+            title='START USING APP'
+            onPress={this.toHomeBlankScreen}
+            fontSize={12}
+          />
         </View>
       </ScrollView>
     );
