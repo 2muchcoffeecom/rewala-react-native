@@ -5,6 +5,7 @@ import {
 
 import SplashScreen from './SplashScreen';
 import AuthNavigator from './AuthNavigator';
+import MainNavigator from './MainNavigator';
 import DoubleBackExit from '../../../shared/components/DoubleBackExit';
 import RootToast from '../../../shared/components/RootToast';
 import navService from '../../../shared/services/nav.service';
@@ -12,8 +13,9 @@ import navService from '../../../shared/services/nav.service';
 const Navigator = createSwitchNavigator({
   SplashScreen,
   AuthNavigator,
+  MainNavigator,
 }, {
-  initialRouteName: 'SplashScreen',
+  initialRouteName: 'MainNavigator',
 });
 
 const NavigatorContainer = createNavigationContainer(Navigator); // until new @types
