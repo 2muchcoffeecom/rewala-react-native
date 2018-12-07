@@ -1,7 +1,7 @@
 export interface AuthState {
-  authorizedUserId: string | null;
+  authorizedUserId: string;
 }
 
 export const initialState: AuthState = {
-  authorizedUserId: null,
+  authorizedUserId: '',
 };
