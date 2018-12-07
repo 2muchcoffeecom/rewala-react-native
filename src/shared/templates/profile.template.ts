@@ -8,4 +8,6 @@ export const profile = `{
   notifications
   avatarId
   avatar ${avatar}
+  friendsCount
+  rewalsCount
 }`;

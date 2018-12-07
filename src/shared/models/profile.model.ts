@@ -8,6 +8,8 @@ export class ProfileModel {
   notifications: boolean = false;
   avatarPath: string = '';
   userId: string = '';
+  friendsCount: number = 0;
+  rewalsCount: number = 0;
 
   constructor(obj: UserResponse) {
     for (const field in obj.profile) {
