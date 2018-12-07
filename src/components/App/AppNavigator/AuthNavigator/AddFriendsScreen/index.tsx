@@ -11,16 +11,14 @@ import { RootState } from '../../../../../redux/store';
 import { ProfileModel } from '../../../../../shared/models/profile.model';
 
 import navService from '../../../../../shared/services/nav.service';
-import contactsService from '../../../../../shared/services/contacts.service';
+import selectorsService from '../../../../../shared/services/selectors.service';
 
 interface StateProps {
   profilesFromContacts: ProfileModel[];
-  state: RootState;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  profilesFromContacts: contactsService.getProfilesFromContacts(state),
-  state
+  profilesFromContacts: selectorsService.getProfilesFromContacts(state),
 });
 
 type Props = StateProps;
@@ -39,15 +37,6 @@ class AddFriendsScreen extends React.Component<Props, State> {
     };
   }
 
-  // componentDidUpdate(prevProps: Props, prevState: State) {
-  //   if (
-  //     prevState.searchQuery !== this.state.searchQuery ||
-  //     prevProps.profilesFromContacts !== this.props.profilesFromContacts
-  //   ) {
-  //     this.getFilteredProfiles();
-  //   }
-  // }
-
   onChangeSearchValue = (value: string) => {
     this.setState({
       searchQuery: value.toLowerCase(),
@@ -60,8 +49,6 @@ class AddFriendsScreen extends React.Component<Props, State> {
       searchQuery: '',
     });
   }
-
-  // filteredProfiles: ProfileModel[];
 
   getFilteredProfiles = (query: string) => {
     return this.props.profilesFromContacts.filter(
