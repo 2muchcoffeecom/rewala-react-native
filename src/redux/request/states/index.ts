@@ -2,6 +2,9 @@ import * as authState from '../nested-states/auth/states';
 import * as contactsState from '../nested-states/contacts/states';
 import * as friendsState from '../nested-states/friends/states';
 
+import { FollowRequest, FollowRequestResponse } from '../../../shared/models/followRequest.model';
+import { UserResponse } from '../../../shared/models/user.model';
+
 export interface FieldsError {
   email: {};
   password: {};
@@ -14,6 +17,21 @@ export interface FieldsError {
 export interface RequestError {
   fields?: FieldsError;
   message?: string;
+}
+
+export interface GraphQlResponse {
+  errors?: RequestError[];
+  data: {
+    login: UserResponse,
+    registration: UserResponse,
+    resetPasswordConfirm: UserResponse,
+    resetPassword: boolean,
+    resetPasswordConfirmCode: boolean,
+    importContacts: UserResponse[],
+    createFollowRequest: FollowRequest,
+    updateFollowRequest: FollowRequest,
+    myFollowRequests: FollowRequestResponse[],
+  };
 }
 
 export type Resolve<T> = (value?: T | PromiseLike<T>) => void;
