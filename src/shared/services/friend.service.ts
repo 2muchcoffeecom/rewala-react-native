@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { execute } from 'apollo-link';
 
 import link from '../middlewares/link.middleware';
-import { followRequest } from '../templates/followRequest.template';
+import { followRequest, myFollowRequest } from '../templates/followRequest.template';
 import { FollowRequestStatus } from '../models/followRequest.model';
 
 interface CreateFollowRequestInput {
@@ -18,6 +18,7 @@ export interface UpdateFollowRequestInput {
 interface IFriendService {
   createFollowRequest(input: CreateFollowRequestInput): Observable<any>;
   updateFollowRequest(input: UpdateFollowRequestInput): Observable<any>;
+  getMyFollowRequest(): Observable<any>;
 }
 
 class FriendService implements IFriendService {
@@ -49,6 +50,17 @@ class FriendService implements IFriendService {
       },
     };
 
+    return from(execute(link, operation) as ObservableInput<any>);
+  }
+
+  getMyFollowRequest() {
+    const operation = {
+      query: gql`
+        query {
+          myFollowRequests ${myFollowRequest}
+        }
+      `,
+    };
     return from(execute(link, operation) as ObservableInput<any>);
   }
 }
