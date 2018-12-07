@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import style from './style';
 
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, TouchableOpacity } from 'react-native';
 import RegularButton from '../RegularButton';
 
 import { RootState } from '../../../redux/store';
@@ -12,11 +12,17 @@ import { UpdateFollowRequestInput } from '../../services/friend.service';
 import { FollowRequest, FollowRequestStatus } from '../../models/followRequest.model';
 
 import { Actions as friendsActions } from '../../../redux/friends/AC';
+import navService from '../../services/nav.service';
+
+export interface FriendNavigationProps {
+  userId: string;
+}
 
 export interface OwnProps {
   userId: string;
   fullName: string;
   avatarPath?: string;
+  withFriendProfile?: boolean;
 }
 
 interface StateProps {
@@ -47,7 +53,7 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 const FriendListItem: React.FunctionComponent<Props> = (props) => {
   const {
-    avatarPath, fullName, addFriend, userId, deleteFriend, friends,
+    avatarPath, fullName, addFriend, userId, deleteFriend, friends, withFriendProfile,
   } = props;
 
   const onPressAddFriend = () => {
@@ -66,20 +72,51 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
     deleteFriend(input);
   };
 
+  const onPressFriend = () => {
+    const params: FriendNavigationProps = {
+      userId: props.userId,
+    };
+    navService.navigate('FriendProfileScreen', params);
+  };
+
   return (
     <View style={style.friendListItem}>
       <View style={style.friendInfoWraper}>
-        <Image
-          source={avatarPath ?
-            {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
-            require('../../../../assets/avatar-placeholder.png')}
-          style={style.friendAvatar}
-        />
-        <Text
-          style={style.friendName}
-        >
-          {fullName}
-        </Text>
+        {
+          withFriendProfile ?
+            (
+              <TouchableOpacity
+                onPress={onPressFriend}
+              >
+                <Image
+                  source={avatarPath ?
+                    {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
+                    require('../../../../assets/avatar-placeholder.png')}
+                  style={style.friendAvatar}
+                />
+                <Text
+                  style={style.friendName}
+                >
+                  {fullName}
+                </Text>
+              </TouchableOpacity>
+            ) :
+            (
+              <View>
+                <Image
+                  source={avatarPath ?
+                    {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
+                    require('../../../../assets/avatar-placeholder.png')}
+                  style={style.friendAvatar}
+                />
+                <Text
+                  style={style.friendName}
+                >
+                  {fullName}
+                </Text>
+              </View>
+            )
+        }
       </View>
       <View style={style.friendButtonWraper}>
         <RegularButton
