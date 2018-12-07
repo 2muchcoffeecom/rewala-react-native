@@ -12,8 +12,3 @@ export const userWithToken = `{
   authToken
   profile ${profile}
 }`;
-
-export const result = `{
-  result
-  error
-}`;

@@ -1,3 +1,5 @@
+import { UserResponse } from './user.model';
+
 export enum FollowRequestStatus {
   PENDING = 'PENDING',
   DECLINED = 'DECLINED',
@@ -17,4 +19,8 @@ export class FollowRequest {
       }
     }
   }
+}
+
+export interface FollowRequestResponse extends FollowRequest {
+  toUser: UserResponse;
 }
