@@ -10,6 +10,8 @@ export const shadowColor = '#CCCBCB';
 export const errorColor = '#FF7575';
 export const backgroundColor = '#F2F2F2';
 export const errorBorderColor = 'rgba(255, 117, 117, 0.5)';
+export const borderColor = '#B2B2B2';
+export const borderColorOpacity = 'rgba(117, 117, 117, 0.5)';
 
 export const fontFamilyRegular = 'Lato-Regular';
 export const fontFamilyBold = 'Lato-Bold';

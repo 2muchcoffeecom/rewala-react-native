@@ -1,19 +1,32 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import {
-  fontFamilyRegular, fontFamilyBold, blackTextColor, blackColor,
+  fontFamilyRegular, fontFamilyBold, blackTextColor, blackColor, borderColor, borderColorOpacity,
 } from '../../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
     flex: 1,
-    // alignItems: 'center',
-    paddingTop: 17,
   },
-  meInfo: {},
+  meInfo: {
+    ...Platform.select({
+      ios: {
+        shadowColor: borderColor,
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+      },
+      android: {
+        // elevation: 2,
+        borderBottomWidth: 2,
+        borderBottomColor: borderColorOpacity,
+      },
+    }),
+  },
   wraperMe: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // alignItems: 'center',
+    height: 113,
+    width: '100%',
     paddingLeft: 24,
     paddingRight: 29,
     paddingTop: 16,
@@ -27,13 +40,20 @@ const style = StyleSheet.create({
     color: blackColor,
   },
   meNameWraper: {
-    marginBottom: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 49,
   },
   avatarWraper: {
-    marginBottom: 37,
+  },
+  textAndButtonWraper: {
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    height: '100%',
   },
   textWraper: {
-    // width: 200,
+    flexDirection: 'row',
+    paddingTop: 4,
   },
   image: {
     width: 80,
@@ -49,6 +69,9 @@ const style = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     color: blackTextColor,
+  },
+  buttonFriend: {
+    marginRight: 13,
   },
   textBold: {
     fontFamily: fontFamilyBold,
