@@ -27,21 +27,53 @@ const Navigator = createBottomTabNavigator({
       const {routeName} = navigation.state;
 
       if (routeName === 'HomeNavigator') {
-        return focused ?
-          (<Image source={require('../../../../../assets/home-filled.png')} style={style.image}/>) :
-          (<Image source={require('../../../../../assets/home.png')} style={style.image}/>);
+        return (
+          <Image
+            source={
+              focused ?
+                require('../../../../../assets/home-filled.png') :
+                require('../../../../../assets/home.png')
+            }
+            resizeMode='contain'
+            style={style.homeImage}
+          />
+        );
       } else if (routeName === 'SearchNavigator') {
-        return focused ?
-          (<Image source={require('../../../../../assets/search-filled.png')} style={style.image}/>) :
-          (<Image source={require('../../../../../assets/search.png')} style={style.image}/>);
+        return (
+          <Image
+            source={
+              focused ?
+                require('../../../../../assets/search-filled.png') :
+                require('../../../../../assets/search.png')
+            }
+            resizeMode='contain'
+            style={style.searchImage}
+          />
+        );
       } else if (routeName === 'NotificationNavigator') {
-        return focused ?
-          (<Image source={require('../../../../../assets/notification-filled.png')} style={style.image}/>) :
-          (<Image source={require('../../../../../assets/notification.png')} style={style.image}/>);
+        return (
+          <Image
+            source={
+              focused ?
+                require('../../../../../assets/notification-filled.png') :
+                require('../../../../../assets/notification.png')
+            }
+            resizeMode='contain'
+            style={style.notificationImage}
+          />
+        );
       } else {
-        return focused ?
-          (<Image source={require('../../../../../assets/profile-filled.png')} style={style.image}/>) :
-          (<Image source={require('../../../../../assets/profile.png')} style={style.image}/>);
+        return (
+          <Image
+            source={
+              focused ?
+                require('../../../../../assets/profile-filled.png') :
+                require('../../../../../assets/profile.png')
+            }
+            resizeMode='contain'
+            style={style.profileImage}
+          />
+        );
       }
     },
   }),
