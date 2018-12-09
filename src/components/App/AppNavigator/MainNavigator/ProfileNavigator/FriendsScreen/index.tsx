@@ -84,7 +84,7 @@ class FriendsScreen extends React.Component<Props, State> {
                   style={style.searchDeleteButton}
                 >
                   <Image
-                    source={require('../../../../../../assets/delete-cross.png')}
+                    source={require('../../../../../../../assets/delete-cross.png')}
                     style={style.searchCrossImage}
                   />
                 </TouchableOpacity>
