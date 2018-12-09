@@ -6,6 +6,8 @@ export enum ActionTypes {
   SET_FRIEND_DATA = 'SET_FRIEND_DATA',
   ADD_FRIEND = 'ADD_FRIEND',
   DELETE_FRIEND = 'DELETE_FRIEND',
+  GET_MY_FRIENDS = 'GET_MY_FRIENDS',
+  SET_MY_FRIENDS_IDS = 'SET_MY_FRIENDS_IDS',
 }
 
 export const Actions = {
@@ -17,6 +19,12 @@ export const Actions = {
   },
   deleteFriend: (data: UpdateFollowRequestInput) => {
     return createAction(ActionTypes.DELETE_FRIEND, {data});
+  },
+  getMyFriends: () => {
+    return createAction(ActionTypes.GET_MY_FRIENDS);
+  },
+  setMyFriendsIds: (data: string[]) => {
+    return createAction(ActionTypes.SET_MY_FRIENDS_IDS, {data});
   },
 };
 

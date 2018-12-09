@@ -7,9 +7,11 @@ import { friendsRequestAC } from '../../request/AC';
 
 const setFriendsDataEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof friendsRequestAC.create.Actions.createFriendFollowRequestSuccess> |
-    ReturnType<typeof friendsRequestAC.update.Actions.updateFriendFollowRequestSuccess>>(
+    ReturnType<typeof friendsRequestAC.update.Actions.updateFriendFollowRequestSuccess> |
+    ReturnType<typeof friendsRequestAC.getMyFriends.Actions.getMyFriendFollowRequestSuccess>>(
     friendsRequestAC.create.ActionTypes.FRIEND_CREATE_FOLLOW_REQUEST_SUCCESS,
     friendsRequestAC.update.ActionTypes.FRIEND_UPDATE_FOLLOW_REQUEST_SUCCESS,
+    friendsRequestAC.getMyFriends.ActionTypes.FRIEND_GET_MY_FOLLOW_REQUEST_SUCCESS,
   ),
   map((action) => {
     const followRequests = Array.isArray(action.payload.data) ?
@@ -42,8 +44,28 @@ const deleteFriendEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const getMyFriendsEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.GET_MY_FRIENDS,
+  ),
+  map(() => friendsRequestAC.getMyFriends.Actions.getMyFriendFollowRequest()),
+);
+
+const setMyFriendsIdsEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof friendsRequestAC.getMyFriends.Actions.getMyFriendFollowRequestSuccess>>(
+    friendsRequestAC.getMyFriends.ActionTypes.FRIEND_GET_MY_FOLLOW_REQUEST_SUCCESS,
+  ),
+  map((action) => {
+    const myFriendsIds = action.payload.data.map((friend) => friend._id);
+
+    return fromActions.Actions.setMyFriendsIds(myFriendsIds);
+  }),
+);
+
 export const friendsEpics = [
   setFriendsDataEpic,
   addFriendEpic,
   deleteFriendEpic,
+  getMyFriendsEpic,
+  setMyFriendsIdsEpic,
 ];

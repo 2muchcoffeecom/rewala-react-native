@@ -17,6 +17,18 @@ export function reducer(state = initialState, action: fromActions.Actions): Frie
       };
     }
 
+    case fromActions.ActionTypes.SET_MY_FRIENDS_IDS: {
+      const {data} = action.payload;
+
+      return {
+        ...state,
+        myFriendsIds: [
+          ...state.myFriendsIds,
+          ...data,
+        ],
+      };
+    }
+
     default:
       return state;
   }
