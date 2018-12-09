@@ -39,7 +39,7 @@ class FriendsScreen extends React.Component<Props, State> {
     this.setState({
       searchQuery: value.toLowerCase(),
       filteredFriendProfiles: this.getFilteredProfiles(value.toLowerCase()),
-    })
+    });
   }
 
   onPressSearchDeleteButton = () => {

@@ -1,6 +1,9 @@
 import { createStackNavigator } from 'react-navigation';
 
 import ProfileScreen from './ProfileScreen';
+import FriendsScreen from './FriendsScreen';
+
+import navService from '../../../../../shared/services/nav.service';
 
 export default createStackNavigator({
     ProfileScreen: {
@@ -8,6 +11,10 @@ export default createStackNavigator({
       navigationOptions: {
         header: null,
       },
+    },
+    FriendsScreen: {
+      screen: FriendsScreen,
+      navigationOptions: navService.navigationOptions('Friends'),
     },
   }
   , {
