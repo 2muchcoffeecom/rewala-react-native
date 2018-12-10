@@ -5,7 +5,8 @@ import { TextStyle, ViewStyle } from 'react-native';
 import { headerTitleStyle, headerStyle, headerTitleContainerStyle } from '../../app.style';
 
 export interface NavOptions {
-  headerTitle?: string | React.ReactNode;
+  title?: string;
+  headerTitle?: React.ReactNode;
   headerTitleStyle?: TextStyle;
   headerTitleContainerStyle?: ViewStyle;
   headerTintColor?: string;
@@ -23,7 +24,8 @@ interface INavService {
   setParams(key: string, params: any): void;
   navigate(routeName: string, params?: any): void;
   back(key?: string): void;
-  navigationOptions(headerTitle?: string | React.ReactNode): NavOptions;
+  navigationOptions(title?: string, headerBackImage?: JSX.Element): NavOptions;
+  navigationOptionsHeaderLogo(headerTitle?: React.ReactNode, headerBackImage?: JSX.Element): NavOptions;
 }
 
 class NavService implements INavService {
@@ -59,7 +61,20 @@ class NavService implements INavService {
     );
   }
 
-  navigationOptions(headerTitle?: string | React.ReactNode, headerBackImage?: JSX.Element): NavOptions {
+  navigationOptions(title?: string, headerBackImage?: JSX.Element): NavOptions {
+    return {
+      title,
+      headerTitleStyle,
+      headerStyle,
+      headerTitleContainerStyle,
+      headerTransparent: true,
+      headerBackTitleVisible: false,
+      headerBackImage,
+      headerLeft: headerBackImage ? undefined : null,
+    };
+  }
+
+  navigationOptionsHeaderLogo(headerTitle?: React.ReactNode, headerBackImage?: JSX.Element): NavOptions {
     return {
       headerTitle,
       headerTitleStyle,
