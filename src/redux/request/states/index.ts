@@ -1,6 +1,7 @@
 import * as authState from '../nested-states/auth/states';
 import * as contactsState from '../nested-states/contacts/states';
 import * as friendsState from '../nested-states/friends/states';
+import * as usersState from '../nested-states/users/states';
 
 import { FollowRequest, FollowRequestResponse } from '../../../shared/models/followRequest.model';
 import { UserResponse } from '../../../shared/models/user.model';
@@ -31,6 +32,7 @@ export interface GraphQlResponse {
     createFollowRequest: FollowRequest,
     updateFollowRequest: FollowRequest,
     myFollowRequests: FollowRequestResponse[],
+    me: UserResponse,
   };
 }
 
@@ -41,10 +43,12 @@ export interface RequestState {
   auth: authState.AuthRequestState;
   contacts: contactsState.ContactsRequestState;
   friends: friendsState.FriendsRequestState;
+  users: usersState.UsersRequestState;
 }
 
 export const initialState: RequestState = {
   auth: authState.initialState,
   contacts: contactsState.initialState,
   friends: friendsState.initialState,
+  users: usersState.initialState,
 };
