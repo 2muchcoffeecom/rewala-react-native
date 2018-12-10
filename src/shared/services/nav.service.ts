@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { headerTitleStyle, headerStyle } from '../../app.style';
+import { headerTitleStyle, headerStyle, headerTitleContainerStyle } from '../../app.style';
 
 export interface NavOptions {
   headerTitle?: string | React.ReactNode;
@@ -14,6 +14,8 @@ export interface NavOptions {
   headerRight?: JSX.Element;
   headerLeft?: JSX.Element | null;
   headerStyle?: ViewStyle;
+  headerBackTitleVisible: boolean;
+  headerBackImage?: JSX.Element;
 }
 
 interface INavService {
@@ -57,14 +59,16 @@ class NavService implements INavService {
     );
   }
 
-  navigationOptions(headerTitle?: string | React.ReactNode): NavOptions {
+  navigationOptions(headerTitle?: string | React.ReactNode, headerBackImage?: JSX.Element): NavOptions {
     return {
       headerTitle,
       headerTitleStyle,
       headerStyle,
-      headerTitleContainerStyle: {justifyContent: 'center'},
+      headerTitleContainerStyle,
       headerTransparent: true,
-      headerLeft: null,
+      headerBackTitleVisible: false,
+      headerBackImage,
+      headerLeft: headerBackImage ? undefined : null,
     };
   }
 }

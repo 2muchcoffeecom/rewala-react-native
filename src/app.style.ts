@@ -32,6 +32,13 @@ export const headerStyle: ViewStyle = {
   borderBottomColor: 'rgba(0, 0, 0, 0.25)',
 };
 
+export const headerTitleContainerStyle: ViewStyle = {
+  position: 'absolute',
+  left: 0,
+  justifyContent: 'center',
+  width: '100%',
+};
+
 const deviceHeight = Dimensions.get('window').height;
 export const fullWidth = Dimensions.get('window').width - 20;
 export const fullHeight = (deviceHeight - 25) < 638 ? 638 : deviceHeight - 25;
