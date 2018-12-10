@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import style from './style';
 
 import { View, ScrollView, TextInput, TouchableOpacity, Image, FlatList, ListRenderItem } from 'react-native';
@@ -8,18 +7,34 @@ import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../../s
 
 import { RootState } from '../../../../../../redux/store';
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
+import { Dispatch } from 'redux';
 
 import selectorsService from '../../../../../../shared/services/selectors.service';
+import { Actions as friendsActions } from '../../../../../../redux/friends/AC';
 
 interface StateProps {
   friendsProfiles: ProfileModel[];
+  state: RootState,
+}
+
+interface DispatchProps {
+  getMyFriends(): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  friendsProfiles: selectorsService.getProfilesFromContacts(state),
+  friendsProfiles: selectorsService.getMyFriendsProfiles(state),
+  state
 });
 
-type Props = StateProps;
+const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps => (
+  {
+    getMyFriends: () => {
+      dispatch(friendsActions.getMyFriends());
+    },
+  }
+);
+
+type Props = StateProps & DispatchProps;
 
 interface State {
   searchQuery: string;
@@ -33,6 +48,10 @@ class FriendsScreen extends React.Component<Props, State> {
       searchQuery: '',
       filteredFriendProfiles: this.props.friendsProfiles,
     };
+  }
+
+  componentDidMount() {
+    this.props.getMyFriends();
   }
 
   onChangeSearchValue = (value: string) => {
@@ -68,7 +87,7 @@ class FriendsScreen extends React.Component<Props, State> {
     );
   }
 
-  render() {
+  render() {console.log(this.props.state)
     return (
       <ScrollView contentContainerStyle={style.root}>
         <View style={style.wraper}>
@@ -115,4 +134,4 @@ class FriendsScreen extends React.Component<Props, State> {
   }
 }
 
-export default connect<StateProps>(mapStateToProps)(FriendsScreen);
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(FriendsScreen);
