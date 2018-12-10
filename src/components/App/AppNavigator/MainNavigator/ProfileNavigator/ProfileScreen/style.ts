@@ -1,13 +1,15 @@
 import { Platform, StyleSheet } from 'react-native';
 import {
-  fontFamilyRegular, fontFamilyBold, blackTextColor, blackColor, borderColor, borderColorOpacity,
+  fontFamilyRegular, fontFamilyBold, blackTextColor, blackColor, borderColor, borderColorOpacity, fullHeight,
 } from '../../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
     flex: 1,
+    minHeight: fullHeight - 89,
   },
   meInfo: {
+    // marginTop: 49,
     ...Platform.select({
       ios: {
         shadowColor: borderColor,

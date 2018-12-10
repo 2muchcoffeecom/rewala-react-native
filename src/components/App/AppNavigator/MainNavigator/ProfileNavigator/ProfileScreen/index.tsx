@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import style from './style';
 
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
 import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
 import RegularButton from '../../../../../../shared/components/RegularButton';
-import ProfileScreenNavigator from './ProfileScreenNavigator';
+import ProfileTabs from '../../../../../../shared/components/ProfileTabs';
 
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
 import { RootState } from '../../../../../../redux/store';
@@ -38,11 +38,11 @@ class ProfileScreen extends React.Component<Props> {
     const {meProfile} = this.props;
 
     return (
-      <View style={style.root}>
+      <ScrollView contentContainerStyle={style.root}>
         <View style={style.meInfo}>
-          <View style={style.meNameWraper}>
-            <Text style={style.meName}>{meProfile && meProfile.fullName}</Text>
-          </View>
+          {/*<View style={style.meNameWraper}>*/}
+          {/*<Text style={style.meName}>{meProfile && meProfile.fullName}</Text>*/}
+          {/*</View>*/}
           <View style={style.wraperMe}>
             <View style={style.avatarWraper}>
               <Image
@@ -82,9 +82,9 @@ class ProfileScreen extends React.Component<Props> {
             </View>
           </View>
         </View>
-        <ProfileScreenNavigator/>
+        <ProfileTabs/>
         <AddRewalButton/>
-      </View>
+      </ScrollView>
     );
   }
 }

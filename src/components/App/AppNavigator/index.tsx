@@ -15,7 +15,7 @@ const Navigator = createSwitchNavigator({
   AuthNavigator,
   MainNavigator,
 }, {
-  initialRouteName: 'MainNavigator',
+  initialRouteName: 'SplashScreen',
 });
 
 const NavigatorContainer = createNavigationContainer(Navigator); // until new @types
