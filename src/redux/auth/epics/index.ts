@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ofType } from 'redux-observable';
 import { ignoreElements, map, switchMap, tap } from 'rxjs/operators';
 import * as fromActions from '../AC';
-import { authRequestAC } from '../../request/nested-states/auth/AC';
+import { authRequestAC, usersRequestAC } from '../../request/AC';
 import authService from '../../../shared/services/auth.service';
 import navService from '../../../shared/services/nav.service';
 
@@ -103,9 +103,11 @@ const setTokenEpic = (action$: Observable<Action>) => action$.pipe(
 
 const setAuthorizedUserIdEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess> |
-    ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess>>(
+    ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess> |
+    ReturnType<typeof usersRequestAC.getMe.Actions.getMeSuccess>>(
     authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
     authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
+    usersRequestAC.getMe.ActionTypes.GET_ME_SUCCESS,
   ),
   map((action) => {
     const user = action.payload.data;
@@ -117,7 +119,7 @@ const redirectToHomeScreenEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess>>(
     authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
   ),
-  tap(() => navService.navigate('HomeScreen')),
+  tap(() => navService.navigate('HomeBlankScreen')),
   ignoreElements(),
 );
 

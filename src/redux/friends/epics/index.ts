@@ -4,6 +4,7 @@ import { ofType } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import { friendsRequestAC } from '../../request/AC';
+import { FollowRequestStatus } from '../../../shared/models/followRequest.model';
 
 const setFriendsDataEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof friendsRequestAC.create.Actions.createFriendFollowRequestSuccess> |
@@ -56,7 +57,9 @@ const setMyFriendsIdsEpic = (action$: Observable<Action>) => action$.pipe(
     friendsRequestAC.getMyFriends.ActionTypes.FRIEND_GET_MY_FOLLOW_REQUEST_SUCCESS,
   ),
   map((action) => {
-    const myFriendsIds = action.payload.data.map((friend) => friend._id);
+    const myFriendsIds = action.payload.data
+      .filter((followRequest) => followRequest.status === FollowRequestStatus.ACCEPTED)
+      .map((friend) => friend.toUserId);
 
     return fromActions.Actions.setMyFriendsIds(myFriendsIds);
   }),

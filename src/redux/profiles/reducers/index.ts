@@ -7,7 +7,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Prof
 
   switch (action.type) {
     case fromActions.ActionTypes.SET_PROFILES_DATA: {
-      const profiles = action.payload.data.map<ProfileModel>((profile) => new ProfileModel(profile));
+      const profiles = action.payload.data.map<ProfileModel>((user) => new ProfileModel(user));
 
       return {
         ...state,

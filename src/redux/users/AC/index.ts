@@ -3,11 +3,15 @@ import { UserResponse } from '../../../shared/models/user.model';
 
 export enum ActionTypes {
   SET_USERS_DATA = 'SET_USERS_DATA',
+  GET_AUTHORIZED_USER = 'GET_AUTHORIZED_USER',
 }
 
 export const Actions = {
   setUsersData: (data: UserResponse[]) => {
     return createAction(ActionTypes.SET_USERS_DATA, {data});
+  },
+  getAuthorizedUser: () => {
+    return createAction(ActionTypes.GET_AUTHORIZED_USER);
   },
 };
 
