@@ -1,12 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import style from './style';
 import { Image } from 'react-native';
 import {
   createBottomTabNavigator,
   BottomTabNavigatorConfig,
   NavigationScreenConfig,
   NavigationBottomTabScreenOptions,
+  TabBarBottomProps,
 } from 'react-navigation';
-import style from './style';
+import { RootState } from '../../../../redux/store';
+import { Dispatch } from 'redux';
+
+import { Actions as usersActions } from '../../../../redux/users/AC';
 
 import HomeNavigator from './HomeNavigator';
 import ProfileNavigator from './ProfileNavigator';
@@ -84,10 +90,40 @@ const Navigator = createBottomTabNavigator({
   },
 } as CustomBottomTabNavigatorConfig);
 
-export default class MainNavigator extends React.Component<any> {
+interface StateProps {
+  authorisedUserId: string | null;
+}
+
+interface DispatchProps {
+  getAuthorisedUser(): void;
+}
+
+const mapStateToProps = (state: RootState): StateProps => ({
+  authorisedUserId: state.auth.authorizedUserId,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<usersActions>): DispatchProps => (
+  {
+    getAuthorisedUser: () => {
+      dispatch(usersActions.getAuthorizedUser());
+    },
+  }
+);
+
+type Props = StateProps & DispatchProps & TabBarBottomProps;
+
+class MainNavigator extends React.Component<Props> {
   static router = Navigator.router;
+
+  componentDidMount() {
+    if (this.props.authorisedUserId === '') {
+      this.props.getAuthorisedUser();
+    }
+  }
 
   render() {
     return <Navigator navigation={this.props.navigation}/>;
   }
 }
+
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(MainNavigator);
