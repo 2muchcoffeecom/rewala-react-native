@@ -81,43 +81,42 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
 
   return (
     <View style={style.friendListItem}>
-      <View style={style.friendInfoWraper}>
-        {
-          withFriendProfile ?
-            (
-              <TouchableOpacity
-                onPress={onPressFriend}
+      {
+        withFriendProfile ?
+          (
+            <TouchableOpacity
+              onPress={onPressFriend}
+              style={style.friendInfoWraper}
+            >
+              <Image
+                source={avatarPath ?
+                  {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
+                  require('../../../../assets/avatar-placeholder.png')}
+                style={style.friendAvatar}
+              />
+              <Text
+                style={style.friendName}
               >
-                <Image
-                  source={avatarPath ?
-                    {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
-                    require('../../../../assets/avatar-placeholder.png')}
-                  style={style.friendAvatar}
-                />
-                <Text
-                  style={style.friendName}
-                >
-                  {fullName}
-                </Text>
-              </TouchableOpacity>
-            ) :
-            (
-              <View>
-                <Image
-                  source={avatarPath ?
-                    {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
-                    require('../../../../assets/avatar-placeholder.png')}
-                  style={style.friendAvatar}
-                />
-                <Text
-                  style={style.friendName}
-                >
-                  {fullName}
-                </Text>
-              </View>
-            )
-        }
-      </View>
+                {fullName}
+              </Text>
+            </TouchableOpacity>
+          ) :
+          (
+            <View style={style.friendInfoWraper}>
+              <Image
+                source={avatarPath ?
+                  {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
+                  require('../../../../assets/avatar-placeholder.png')}
+                style={style.friendAvatar}
+              />
+              <Text
+                style={style.friendName}
+              >
+                {fullName}
+              </Text>
+            </View>
+          )
+      }
       <View style={style.friendButtonWraper}>
         <RegularButton
           isInverted={isFriendAdded}
