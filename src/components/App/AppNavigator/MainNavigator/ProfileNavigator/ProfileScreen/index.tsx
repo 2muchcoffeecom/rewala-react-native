@@ -96,7 +96,6 @@ class ProfileScreen extends React.Component<Props> {
                 <RegularButton
                   title='Profile Settings'
                   fontSize={13}
-                  disabled={meProfile === undefined}
                   onPress={this.onPressButtonSettings}
                   isInverted={true}
                 />
