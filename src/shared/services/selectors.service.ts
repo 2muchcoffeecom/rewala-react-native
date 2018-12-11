@@ -10,6 +10,8 @@ interface ISelectorsService {
     (res1: UserModel[], res2: ProfileModel[]) => ProfileModel[]>;
   getAuthorizedUserProfile: OutputSelector<RootState, ProfileModel | undefined,
     (res1: string | null, res2: ProfileModel[]) => ProfileModel | undefined>;
+  getAuthorizedUser: OutputSelector<RootState, UserModel | undefined,
+    (res1: string | null, res2: UserModel[]) => UserModel | undefined>;
   getMyFriendsProfiles: OutputSelector<RootState, ProfileModel[],
     (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
 }
@@ -55,6 +57,16 @@ class SelectorsService implements ISelectorsService {
     ],
     (userId, profiles) => {
       return profiles.find(profile => profile.userId === userId);
+    },
+  );
+
+  getAuthorizedUser = createSelector(
+    [
+      (state: RootState) => state.auth.authorizedUserId,
+      (state: RootState) => state.users.entities,
+    ],
+    (userId, users) => {
+      return users.find(user => user._id === userId);
     },
   );
 
