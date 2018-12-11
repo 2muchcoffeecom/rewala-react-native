@@ -7,6 +7,7 @@ import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
 import RegularButton from '../../../../../../shared/components/RegularButton';
 import ProfileTabs from '../../../../../../shared/components/ProfileTabs';
 
+import { NavigationInjectedProps, NavigationScreenConfig, NavigationStackScreenOptions } from 'react-navigation';
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
 import { RootState } from '../../../../../../redux/store';
 
@@ -22,9 +23,32 @@ const mapStateToProps = (state: RootState): StateProps => ({
   meProfile: selectorsService.getAuthorizedUserProfile(state),
 });
 
-type Props = StateProps;
+interface NavigationParams {
+  title: string;
+}
+
+type Props = StateProps & NavigationInjectedProps<NavigationParams>;
 
 class ProfileScreen extends React.Component<Props> {
+  static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = ({navigation}) => {
+    return {
+      headerTitle: navigation.getParam('title', ''),
+    };
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      title: this.props.meProfile ? this.props.meProfile.fullName : '',
+    });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.meProfile !== prevProps.meProfile) {
+      this.props.navigation.setParams({
+        title: this.props.meProfile ? this.props.meProfile.fullName : '',
+      });
+    }
+  }
 
   onPressButtonSettings = () => {
     navService.navigate('ProfileSettingsScreen');
@@ -40,9 +64,6 @@ class ProfileScreen extends React.Component<Props> {
     return (
       <ScrollView contentContainerStyle={style.root}>
         <View style={style.meInfo}>
-          {/*<View style={style.meNameWraper}>*/}
-          {/*<Text style={style.meName}>{meProfile && meProfile.fullName}</Text>*/}
-          {/*</View>*/}
           <View style={style.wraperMe}>
             <View style={style.avatarWraper}>
               <Image
@@ -75,6 +96,7 @@ class ProfileScreen extends React.Component<Props> {
                 <RegularButton
                   title='Profile Settings'
                   fontSize={13}
+                  disabled={meProfile === undefined}
                   onPress={this.onPressButtonSettings}
                   isInverted={true}
                 />

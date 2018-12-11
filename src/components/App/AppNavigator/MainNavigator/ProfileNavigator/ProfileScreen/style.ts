@@ -1,6 +1,6 @@
 import { Platform, StyleSheet } from 'react-native';
 import {
-  fontFamilyRegular, fontFamilyBold, blackTextColor, blackColor, borderColor, borderColorOpacity, fullHeight,
+  fontFamilyRegular, fontFamilyBold, blackTextColor, borderColor, borderColorOpacity, fullHeight,
 } from '../../../../../../app.style';
 
 const style = StyleSheet.create({
@@ -9,7 +9,7 @@ const style = StyleSheet.create({
     minHeight: fullHeight - 89,
   },
   meInfo: {
-    // marginTop: 49,
+    marginTop: 49,
     ...Platform.select({
       ios: {
         shadowColor: borderColor,
@@ -33,18 +33,6 @@ const style = StyleSheet.create({
     paddingRight: 29,
     paddingTop: 16,
     paddingBottom: 17,
-  },
-  meName: {
-    fontFamily: fontFamilyBold,
-    fontWeight: '700',
-    fontSize: 16,
-    textAlign: 'center',
-    color: blackColor,
-  },
-  meNameWraper: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 49,
   },
   avatarWraper: {
   },
