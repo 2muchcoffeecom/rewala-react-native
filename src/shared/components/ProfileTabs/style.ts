@@ -6,11 +6,13 @@ import {
   fontFamilyRegular,
   blackColor,
   greyColor,
-  borderColor,
+  borderColor, backgroundColor,
 } from '../../../app.style';
 
 const style = StyleSheet.create({
-  root: {flex: 1},
+  root: {
+    flex: 1,
+  },
   tabs: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -51,6 +53,8 @@ const style = StyleSheet.create({
     borderBottomColor: mainColor,
   },
   content: {
+    flex: 1,
+    backgroundColor,
   },
 });
 
