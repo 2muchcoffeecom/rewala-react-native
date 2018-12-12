@@ -39,6 +39,7 @@ const style = StyleSheet.create({
   },
   inputText: {
     width: '100%',
+    paddingRight: 25,
     fontFamily: fontFamilyRegular,
     fontSize: 12,
     fontWeight: '400',
