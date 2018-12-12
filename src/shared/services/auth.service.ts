@@ -28,6 +28,11 @@ export interface ResetPasswordConfirmInput {
   resetPasswordCode: string;
 }
 
+export interface ChangePasswordInput {
+  oldPassword: string;
+  newPassword: string;
+}
+
 interface IAuthService {
   getToken(): Observable<string | null>;
   setToken(token: string): Observable<void>;
@@ -114,6 +119,20 @@ class AuthService implements IAuthService {
           mutation resetPasswordConfirm($input: ResetPasswordConfirmInput!) {
               resetPasswordConfirm(input: $input) ${userWithToken}
           }
+      `,
+      variables: {
+        input,
+      },
+    };
+    return from(execute(link, operation) as ObservableInput<any>);
+  }
+
+  changePassword(input: ChangePasswordInput) { /*temporarily added password change (until the back-end changes)*/
+    const operation = {
+      query: gql`
+        mutation changePassword($input: ResetPasswordConfirmInput) {
+          changePassword(input: $input) ${userWithToken}
+        }
       `,
       variables: {
         input,
