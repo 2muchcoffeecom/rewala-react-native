@@ -13,15 +13,34 @@ const style = StyleSheet.create({
   },
   avatarButton: {
     alignItems: 'center',
+    alignSelf: 'center',
+    width: 80,
+    height: 80,
     marginTop: 16,
     marginBottom: 40,
   },
-  textAccountWraper: {
-    marginBottom: 15,
-  },
-  image: {
+  imageWraper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 80,
     height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(0,0,0,0.25)',
+  },
+  avatarImage: {
+    width: 80,
+    height: 80,
+  },
+  iconPhoto: {
+    width: 20,
+    height: 16,
+  },
+  textAccountWraper: {
+    marginBottom: 15,
   },
   text: {
     fontFamily: fontFamilyRegular,
@@ -39,7 +58,17 @@ const style = StyleSheet.create({
     fontSize: 16,
     color: blackTextColor,
   },
-  inputWraper: {},
+  inputWraper: {
+    zIndex: 0,
+  },
+  iconPencil: {
+    position: 'absolute',
+    top: 13,
+    right: 16,
+    zIndex: 10,
+    width: 12,
+    height: 13,
+  },
   notificationWraper: {
     justifyContent: 'space-between',
     alignItems: 'center',

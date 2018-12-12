@@ -140,6 +140,33 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
     });
   }
 
+  private setFormValues() {
+    const {meProfile, meUser} = this.props;
+
+    if (meProfile && meUser ) {
+      const initialFormValue: ProfileSettingsFormData = {
+        fullName: meProfile.fullName,
+        email: meUser.email,
+        notifications: meProfile.notifications,
+      };
+
+      this.props.initialize(initialFormValue);
+    }
+  }
+
+  public componentDidMount() {
+    this.setFormValues();
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (
+      (prevProps.meProfile !== this.props.meProfile) ||
+      (prevProps.meUser !== this.props.meUser)
+    ) {
+      this.setFormValues();
+    }
+  }
+
   render() {
     const {meProfile, handleSubmit} = this.props;
     const avatarUri = (this.state.avatar.uri !== '' && this.state.avatar.uri) ||
@@ -151,6 +178,13 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
           style={style.avatarButton}
           onPress={this.onChangeAvatar}
         >
+          <View style={style.imageWraper}>
+            <Image
+              source={require('../../../../../../../assets/photo.png')}
+              resizeMode='contain'
+              style={style.iconPhoto}
+            />
+          </View>
           <Image
             source={
               avatarUri ?
@@ -158,32 +192,46 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
                 require('../../../../../../../assets/avatar-placeholder.png')
             }
             resizeMode='contain'
-            style={style.image}
+            style={style.avatarImage}
           />
         </TouchableOpacity>
         <View style={style.textAccountWraper}>
           <Text style={style.textTitle}>Account</Text>
         </View>
-        <View style={style.inputWraper}>
-          <Field
-            name='email'
-            component={Input}
-            keyboard='email-address'
-            placeholder='Email'
-            validate={[required, email]}
+        <View>
+          <View style={style.inputWraper}>
+            <Field
+              name='email'
+              component={Input}
+              keyboard='email-address'
+              placeholder='Email'
+              validate={[required, email]}
+            />
+          </View>
+          <Image
+            source={require('../../../../../../../assets/pencil.png')}
+            resizeMode='contain'
+            style={style.iconPencil}
           />
         </View>
-        <View style={style.inputWraper}>
-          <Field
-            name='fullName'
-            component={Input}
-            placeholder='Full Name'
-            validate={[
-              required,
-              fullNameLetters,
-              minLengthFullName,
-              maxLengthFullName,
-            ]}
+        <View>
+          <View style={style.inputWraper}>
+            <Field
+              name='fullName'
+              component={Input}
+              placeholder='Full Name'
+              validate={[
+                required,
+                fullNameLetters,
+                minLengthFullName,
+                maxLengthFullName,
+              ]}
+            />
+          </View>
+          <Image
+            source={require('../../../../../../../assets/pencil.png')}
+            resizeMode='contain'
+            style={style.iconPencil}
           />
         </View>
         <View style={style.notificationWraper}>
