@@ -88,13 +88,19 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
     }));
   }
 
-  submitProfileSettings = (values: ProfileSettingsFormData, dispatch: Dispatch<usersActions>) => {
+  submitProfileSettings = (
+    values: ProfileSettingsFormData,
+    dispatch: Dispatch<usersActions | toastActions>,
+  ) => {
     const updateUserInput: UpdateUserInput = {
-      email: values.email,
+      email: values.email !== (this.props.meUser && this.props.meUser.email) ? values.email : undefined,
       profileInput: {
-        fullName: values.fullName,
-        notifications: values.notifications,
-        avatar: new ReactNativeFile(this.state.avatar),
+        fullName: values.fullName !== (this.props.meProfile && this.props.meProfile.fullName) ?
+          values.fullName : undefined,
+        notifications: values.notifications !== (this.props.meProfile && this.props.meProfile.notifications) ?
+          values.notifications : undefined,
+        avatar: this.state.avatar.uri !== '' ?
+          new ReactNativeFile(this.state.avatar) : undefined,
       },
     };
 
@@ -102,6 +108,8 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
       dispatch(usersActions.updateAuthorizedUser(updateUserInput, resolve, reject));
     })
       .catch((error: RequestError) => {
+        error.message && dispatch(toastActions.showToast(error.message));
+
         throw new SubmissionError<ProfileSettingsFormData>({
           email: getSubmissionError(error, 'email'),
           fullName: getSubmissionError(error, 'fullName'),
@@ -111,21 +119,37 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
   }
 
   onChangeAvatar = () => {
-    const imagePickerOptions = {
+    ImagePicker.showImagePicker({
       title: 'Select Avatar',
+      mediaType: 'photo',
+      maxWidth: 400,
+      maxHeight: 400,
       storageOptions: {
         skipBackup: true,
         path: 'images',
       },
-    };
-
-    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
+    }, (response) => {
       if (response.didCancel) {
         return;
       }
 
       if (response.error) {
         this.props.showToast(response.error);
+        return;
+      }
+
+      if (response.fileSize >= 4000000) {
+        this.props.showToast('Avatar must be maximum 4 MB');
+        return;
+      }
+
+      if (
+        response.height > 400 ||
+        response.height < 180 ||
+        response.width > 400 ||
+        response.width < 180
+      ) {
+        this.props.showToast('Maximum avatar size - 400 x 400 pixels, minimum size -  180 x 180 pixels.');
         return;
       }
 
@@ -143,7 +167,7 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
   private setFormValues() {
     const {meProfile, meUser} = this.props;
 
-    if (meProfile && meUser ) {
+    if (meProfile && meUser) {
       const initialFormValue: ProfileSettingsFormData = {
         fullName: meProfile.fullName,
         email: meUser.email,
@@ -170,7 +194,7 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
   render() {
     const {meProfile, handleSubmit} = this.props;
     const avatarUri = (this.state.avatar.uri !== '' && this.state.avatar.uri) ||
-      (meProfile && meProfile.avatarPath && `${apiEndpoint}/graphql/${meProfile.avatarPath}`);
+      (meProfile && meProfile.avatarPath && `${apiEndpoint}/uploads/${meProfile.avatarPath}`);
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -191,7 +215,6 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
                 {uri: avatarUri} :
                 require('../../../../../../../assets/avatar-placeholder.png')
             }
-            resizeMode='contain'
             style={style.avatarImage}
           />
         </TouchableOpacity>

@@ -32,6 +32,7 @@ const style = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.25)',
   },
   avatarImage: {
+    borderRadius: 40,
     width: 80,
     height: 80,
   },
