@@ -12,12 +12,37 @@ const style = StyleSheet.create({
     width: 292,
     height: 376,
     backgroundColor: whiteColor,
+    borderRadius: 4,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 13,
+    right: 13,
+  },
+  image: {
+    width: 15,
+    height: 15,
   },
   text: {
+    marginTop: 36,
+    marginBottom: 29,
     fontFamily: fontFamilyRegular,
     fontWeight: '400',
     fontSize: 16,
+    textAlign: 'center',
     color: blackTextColor,
+  },
+  fieldsWraper: {
+    paddingLeft: 21,
+    paddingRight: 21,
+  },
+  passwordConfirmWraper: {
+    marginBottom: 26,
+  },
+  buttonWraper: {
+    alignSelf: 'center',
+    width: 160,
+    height: 40,
   },
 });
 
