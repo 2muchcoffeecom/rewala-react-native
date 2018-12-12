@@ -7,15 +7,15 @@ import link from '../middlewares/link.middleware';
 import { user } from '../templates/user.template';
 
 interface ProfileInput {
-  fullName: string;
+  fullName?: string;
   phone?: string;
   countryCode?: string;
-  notifications: boolean;
-  avatar: InstanceType<typeof ReactNativeFile>;
+  notifications?: boolean;
+  avatar?: InstanceType<typeof ReactNativeFile>;
 }
 
 export interface UpdateUserInput {
-  email: string;
+  email?: string;
   profileInput: ProfileInput;
 }
 
