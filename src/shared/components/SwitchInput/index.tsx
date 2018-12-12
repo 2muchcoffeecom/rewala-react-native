@@ -13,7 +13,7 @@ export const SwitchInput: React.FunctionComponent<Props> = (props: Props) => {
     <Switch
       onValueChange={onChange}
       {...restInput}
-      thumbColor={mainColor}
+      thumbColor={restInput.value ? mainColor : '#D9D9D9'}
       trackColor={{false: '#D8D8D8', true: '#D8D8D8'}}
       {...restProps}
       style={style.switch}
