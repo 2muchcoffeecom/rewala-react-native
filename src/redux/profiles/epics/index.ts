@@ -12,12 +12,14 @@ const setProfilesDataEpic = (action$: Observable<Action>) => action$.pipe(
     ReturnType<typeof authRequestAC.login.Actions.loginSuccess> |
     ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess> |
     ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess> |
-    ReturnType<typeof usersRequestAC.getMe.Actions.getMeSuccess>>(
+    ReturnType<typeof usersRequestAC.getMe.Actions.getMeSuccess> |
+    ReturnType<typeof usersRequestAC.updateMe.Actions.updateMeSuccess>>(
     contactsRequestAC.sendContacts.ActionTypes.CONTACTS_SEND_SUCCESS,
     authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
     authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
     authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_SUCCESS,
     usersRequestAC.getMe.ActionTypes.GET_ME_SUCCESS,
+    usersRequestAC.updateMe.ActionTypes.UPDATE_ME_SUCCESS,
   ),
   map((action) => {
     const users = Array.isArray(action.payload.data) ?

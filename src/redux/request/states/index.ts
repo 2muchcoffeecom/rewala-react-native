@@ -33,6 +33,7 @@ export interface GraphQlResponse {
     updateFollowRequest: FollowRequest,
     myFollowRequests: FollowRequestResponse[],
     me: UserResponse,
+    updateMe: UserResponse,
   };
 }
 
