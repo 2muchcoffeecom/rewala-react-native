@@ -89,10 +89,12 @@ const redirectToNewPasswordScreenEpic = (action$: Observable<Action>) => action$
 const setTokenEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess> |
     ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess> |
-    ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess>>(
+    ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess> |
+    ReturnType<typeof authRequestAC.changePassword.Actions.changePasswordSuccess>>(
     authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
     authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
     authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_SUCCESS,
+    authRequestAC.changePassword.ActionTypes.CHANGE_PASSWORD_SUCCESS,
   ),
   switchMap((action) => {
     const user = action.payload.data;
@@ -123,6 +125,17 @@ const redirectToHomeScreenEpic = (action$: Observable<Action>) => action$.pipe(
   ignoreElements(),
 );
 
+const changePasswordEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.AUTH_SUBMIT_CHANGE_PASSWORD,
+  ),
+  map((action: ReturnType<typeof fromActions.Actions.submitChangePassword>) => {
+    const {data, resolve, reject} = action.payload;
+
+    return authRequestAC.changePassword.Actions.changePassword(data, resolve, reject);
+  }),
+);
+
 export const authEpics = [
   loginEpic,
   registrationEpic,
@@ -135,4 +148,5 @@ export const authEpics = [
   redirectToResetPasswordCodeScreenEpic,
   redirectToNewPasswordScreenEpic,
   redirectToHomeScreenEpic,
+  changePasswordEpic,
 ];

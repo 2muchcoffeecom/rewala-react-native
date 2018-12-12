@@ -3,6 +3,7 @@ import { initialState as registrationState } from '../nested-states/registration
 import { initialState as resetPasswordState } from '../nested-states/resetPassword/states';
 import { initialState as resetPasswordCodeState } from '../nested-states/resetPasswordCode/states';
 import { initialState as newPasswordState } from '../nested-states/newPassword/states';
+import { initialState as changePasswordState } from '../nested-states/changePassword/states';
 
 import { UserModelWithToken } from '../../../../../shared/models/user.model';
 import { RequestError } from '../../../states';
@@ -20,6 +21,7 @@ export interface AuthRequestState {
   resetPassword: RequestNestedState;
   resetPasswordCode: RequestNestedState;
   newPassword: RequestNestedState;
+  changePassword: RequestNestedState;
 }
 
 export const initialState: AuthRequestState = {
@@ -28,4 +30,5 @@ export const initialState: AuthRequestState = {
   resetPassword: resetPasswordState,
   resetPasswordCode: resetPasswordCodeState,
   newPassword: newPasswordState,
+  changePassword: changePasswordState,
 };

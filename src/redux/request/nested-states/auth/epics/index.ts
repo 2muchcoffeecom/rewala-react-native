@@ -3,6 +3,7 @@ import { registrationRequestEpic } from '../nested-states/registration/epics';
 import { resetPasswordRequestEpic } from '../nested-states/resetPassword/epics';
 import { resetPasswordCodeRequestEpic } from '../nested-states/resetPasswordCode/epics';
 import { newPasswordRequestEpic } from '../nested-states/newPassword/epics';
+import { changePasswordRequestEpic } from '../nested-states/changePassword/epics';
 
 export const authEpic = [
   loginRequestEpic,
@@ -10,4 +11,5 @@ export const authEpic = [
   resetPasswordRequestEpic,
   resetPasswordCodeRequestEpic,
   newPasswordRequestEpic,
+  changePasswordRequestEpic,
 ];

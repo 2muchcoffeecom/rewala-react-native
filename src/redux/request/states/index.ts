@@ -9,6 +9,8 @@ import { UserResponse } from '../../../shared/models/user.model';
 export interface FieldsError {
   email: {};
   password: {};
+  oldPassword: {};
+  newPassword: {};
   fullName: {};
   phone: {};
   countryCode: {};
@@ -34,6 +36,7 @@ export interface GraphQlResponse {
     myFollowRequests: FollowRequestResponse[],
     me: UserResponse,
     updateMe: UserResponse,
+    changePassword: UserResponse,
   };
 }
 

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ofType } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
-import { authRequestAC } from '../../request/nested-states/auth/AC';
+import { authRequestAC, usersRequestAC } from '../../request/AC';
 
 const showResetPasswordToastEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.resetPassword.Actions.resetPasswordSuccess>>(
@@ -16,6 +16,18 @@ const showResetPasswordToastEpic = (action$: Observable<Action>) => action$.pipe
   }),
 );
 
+const showUserUpdateToastEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof usersRequestAC.updateMe.Actions.updateMeSuccess>>(
+    usersRequestAC.updateMe.ActionTypes.UPDATE_ME_SUCCESS,
+  ),
+  map(() => {
+      return fromActions.Actions.showToast(
+        'Changes have been saved successfully',
+      );
+  }),
+);
+
 export const toastEpics = [
   showResetPasswordToastEpic,
+  showUserUpdateToastEpic,
 ];

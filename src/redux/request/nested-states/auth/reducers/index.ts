@@ -4,6 +4,7 @@ import { reducer as registrationReducer } from '../nested-states/registration/re
 import { reducer as resetPasswordReducer } from '../nested-states/resetPassword/reducers';
 import { reducer as resetPasswordCodeReducer } from '../nested-states/resetPasswordCode/reducers';
 import { reducer as newPasswordReducer } from '../nested-states/newPassword/reducers';
+import { reducer as changePasswordReducer } from '../nested-states/changePassword/reducers';
 
 export const authReducer = combineReducers({
   login: loginReducer,
@@ -11,4 +12,5 @@ export const authReducer = combineReducers({
   resetPassword: resetPasswordReducer,
   resetPasswordCode: resetPasswordCodeReducer,
   newPassword: newPasswordReducer,
+  changePassword: changePasswordReducer,
 });
