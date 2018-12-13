@@ -1,7 +1,11 @@
-import { createSelector, OutputSelector } from 'reselect';
+import { createSelector, OutputParametricSelector, OutputSelector } from 'reselect';
 import { RootState } from '../../redux/store';
 import { UserModel } from '../models/user.model';
 import { ProfileModel } from '../models/profile.model';
+import { NavigationInjectedProps } from 'react-navigation';
+import { FriendNavigationProps } from '../components/FriendListItem';
+import { OwnProps as FriendListItemOwnProp } from '../components/FriendListItem';
+import { FollowRequest } from '../models/followRequest.model';
 
 interface ISelectorsService {
   getUsersFromContacts: OutputSelector<RootState, UserModel[],
@@ -12,8 +16,18 @@ interface ISelectorsService {
     (res1: string | null, res2: ProfileModel[]) => ProfileModel | undefined>;
   getAuthorizedUser: OutputSelector<RootState, UserModel | undefined,
     (res1: string | null, res2: UserModel[]) => UserModel | undefined>;
+  getFollowRequestsWithMe: OutputSelector<RootState, FollowRequest[],
+    (res1: string, res2: FollowRequest[]) => FollowRequest[]>;
+  getFriendFollowRequestByUserId: OutputParametricSelector<RootState,
+    FriendListItemOwnProp,
+    FollowRequest | undefined,
+    (res1: FollowRequest[], res2: string) => FollowRequest | undefined>;
   getMyFriendsProfiles: OutputSelector<RootState, ProfileModel[],
     (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
+  getFriendProfileByUserId: OutputParametricSelector<RootState,
+    NavigationInjectedProps<FriendNavigationProps>,
+    ProfileModel | undefined,
+    (res1: ProfileModel[], res2: string) => ProfileModel | undefined>;
 }
 
 class SelectorsService implements ISelectorsService {
@@ -70,6 +84,31 @@ class SelectorsService implements ISelectorsService {
     },
   );
 
+  getFollowRequestsWithMe = createSelector(
+    [
+      (state: RootState) => state.auth.authorizedUserId,
+      (state: RootState) => state.friends.entities,
+    ],
+    (userId, followRequests) => {
+      return followRequests.filter(followRequest => {
+        return followRequest.toUserId === userId || followRequest.fromUserId === userId;
+      });
+    },
+  );
+
+  getFriendFollowRequestByUserId = createSelector(
+    [
+      (state: RootState) => state.friends.entities,
+      (
+        state: RootState,
+        props: FriendListItemOwnProp,
+      ) => props.userId,
+    ],
+    (followRequests, userId) => followRequests.find(
+      followRequest => followRequest.toUserId === userId || followRequest.fromUserId === userId,
+    ),
+  );
+
   getMyFriendsProfiles = createSelector(
     [
       (state: RootState) => state.friends.myFriendsIds,
@@ -84,6 +123,17 @@ class SelectorsService implements ISelectorsService {
         return [];
       }
     },
+  );
+
+  getFriendProfileByUserId = createSelector(
+    [
+      this.getMyFriendsProfiles,
+      (
+        state: RootState,
+        props: NavigationInjectedProps<FriendNavigationProps>,
+      ) => props.navigation.getParam('userId', ''),
+    ],
+    (profiles, userId) => profiles.find(profile => profile.userId === userId),
   );
 }
 
