@@ -13,4 +13,5 @@ export const myFollowRequest = `{
   toUserId
   status
   toUser ${user}
+  fromUser ${user}
 }`;

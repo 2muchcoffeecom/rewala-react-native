@@ -23,4 +23,5 @@ export class FollowRequest {
 
 export interface FollowRequestResponse extends FollowRequest {
   toUser: UserResponse;
+  fromUser: UserResponse;
 }

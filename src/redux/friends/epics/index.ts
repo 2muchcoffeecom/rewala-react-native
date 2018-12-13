@@ -1,10 +1,11 @@
 import { Action } from 'redux';
 import { Observable } from 'rxjs';
-import { ofType } from 'redux-observable';
+import { ofType, StateObservable } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import { friendsRequestAC } from '../../request/AC';
 import { FollowRequestStatus } from '../../../shared/models/followRequest.model';
+import { RootState } from '../../store';
 
 const setFriendsDataEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof friendsRequestAC.create.Actions.createFriendFollowRequestSuccess> |
@@ -52,14 +53,18 @@ const getMyFriendsEpic = (action$: Observable<Action>) => action$.pipe(
   map(() => friendsRequestAC.getMyFriends.Actions.getMyFriendFollowRequest()),
 );
 
-const setMyFriendsIdsEpic = (action$: Observable<Action>) => action$.pipe(
+const setMyFriendsIdsEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
   ofType<ReturnType<typeof friendsRequestAC.getMyFriends.Actions.getMyFriendFollowRequestSuccess>>(
     friendsRequestAC.getMyFriends.ActionTypes.FRIEND_GET_MY_FOLLOW_REQUEST_SUCCESS,
   ),
   map((action) => {
     const myFriendsIds = action.payload.data
       .filter((followRequest) => followRequest.status === FollowRequestStatus.ACCEPTED)
-      .map((friend) => friend.toUserId);
+      .map((friend) => {
+        const {authorizedUserId} = state$.value.auth;
+
+        return friend.toUserId !== authorizedUserId ? friend.toUserId : friend.fromUserId;
+      });
 
     return fromActions.Actions.setMyFriendsIds(myFriendsIds);
   }),

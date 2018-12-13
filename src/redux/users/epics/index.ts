@@ -1,11 +1,12 @@
 import { Action } from 'redux';
 import { Observable } from 'rxjs';
-import { ofType } from 'redux-observable';
+import { ofType, StateObservable } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import {
   contactsRequestAC, authRequestAC, friendsRequestAC, usersRequestAC,
 } from '../../request/AC';
+import { RootState } from '../../store';
 
 const setUsersDataEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof contactsRequestAC.sendContacts.Actions.contactsSendSuccess> |
@@ -30,12 +31,21 @@ const setUsersDataEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
-const setUsersDataFromFollowRequestEpic = (action$: Observable<Action>) => action$.pipe(
+const setUsersDataFromFollowRequestEpic = (
+  action$: Observable<Action>,
+  state$: StateObservable<RootState>,
+) => action$.pipe(
   ofType<ReturnType<typeof friendsRequestAC.getMyFriends.Actions.getMyFriendFollowRequestSuccess>>(
     friendsRequestAC.getMyFriends.ActionTypes.FRIEND_GET_MY_FOLLOW_REQUEST_SUCCESS,
   ),
   map((action) => {
-    const users = action.payload.data.map((followRequest) => followRequest.toUser);
+    const users = action.payload.data.map(
+      (followRequest) => {
+        const {authorizedUserId} = state$.value.auth;
+
+        return followRequest.toUserId === authorizedUserId ? followRequest.fromUser : followRequest.toUser;
+      },
+    );
 
     return fromActions.Actions.setUsersData(users);
   }),
