@@ -13,9 +13,11 @@ import { FollowRequest, FollowRequestStatus } from '../../models/followRequest.m
 
 import { Actions as friendsActions } from '../../../redux/friends/AC';
 import navService from '../../services/nav.service';
+import selectorsService from '../../services/selectors.service';
 
 export interface FriendNavigationProps {
   userId: string;
+  friendFollowRequest: FollowRequest | undefined;
 }
 
 export interface OwnProps {
@@ -26,7 +28,7 @@ export interface OwnProps {
 }
 
 interface StateProps {
-  friends: FollowRequest[];
+  friend: FollowRequest | undefined;
 }
 
 interface DispatchProps {
@@ -34,8 +36,8 @@ interface DispatchProps {
   deleteFriend(data: UpdateFollowRequestInput): void;
 }
 
-const mapStateToProps = (state: RootState): StateProps => ({
-  friends: state.friends.entities,
+const mapStateToProps = (state: RootState, props: Props): StateProps => ({
+  friend: selectorsService.getFriendFollowRequestByUserId(state, props),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps => (
@@ -53,14 +55,13 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 const FriendListItem: React.FunctionComponent<Props> = (props) => {
   const {
-    avatarPath, fullName, addFriend, userId, deleteFriend, friends, withFriendProfile,
+    avatarPath, fullName, addFriend, userId, deleteFriend, friend, withFriendProfile,
   } = props;
 
   const onPressAddFriend = () => {
     addFriend(userId);
   };
 
-  const friend = friends.find((friendItem) => friendItem.toUserId === userId);
   const isFriendAdded = !!(friend && friend.status !== FollowRequestStatus.DECLINED);
 
   const onPressDeleteFriend = () => {
@@ -75,8 +76,9 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
   const onPressFriend = () => {
     const params: FriendNavigationProps = {
       userId: props.userId,
+      friendFollowRequest: props.friend,
     };
-    navService.navigate('FriendProfileScreen', params);
+    navService.navigate('ProfileFriendScreen', params);
   };
 
   return (

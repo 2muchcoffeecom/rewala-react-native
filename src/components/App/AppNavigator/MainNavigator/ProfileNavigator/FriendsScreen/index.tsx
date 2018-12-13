@@ -14,7 +14,6 @@ import { Actions as friendsActions } from '../../../../../../redux/friends/AC';
 
 interface StateProps {
   friendsProfiles: ProfileModel[];
-  state: RootState,
 }
 
 interface DispatchProps {
@@ -23,7 +22,6 @@ interface DispatchProps {
 
 const mapStateToProps = (state: RootState): StateProps => ({
   friendsProfiles: selectorsService.getMyFriendsProfiles(state),
-  state
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps => (
@@ -87,7 +85,7 @@ class FriendsScreen extends React.Component<Props, State> {
     );
   }
 
-  render() {console.log(this.props.state)
+  render() {
     return (
       <ScrollView contentContainerStyle={style.root}>
         <View style={style.wraper}>
