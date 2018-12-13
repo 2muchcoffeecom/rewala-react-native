@@ -1,4 +1,4 @@
-import { unionBy } from 'lodash-es';
+import { unionBy, uniq } from 'lodash-es';
 import * as fromActions from '../AC';
 import { initialState, FriendsState } from '../states';
 import { FollowRequest } from '../../../shared/models/followRequest.model';
@@ -22,10 +22,10 @@ export function reducer(state = initialState, action: fromActions.Actions): Frie
 
       return {
         ...state,
-        myFriendsIds: [
+        myFriendsIds: uniq([
           ...state.myFriendsIds,
           ...data,
-        ],
+        ]),
       };
     }
 
