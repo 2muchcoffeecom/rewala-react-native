@@ -3,9 +3,8 @@ import { RootState } from '../../redux/store';
 import { UserModel } from '../models/user.model';
 import { ProfileModel } from '../models/profile.model';
 import { NavigationInjectedProps } from 'react-navigation';
-import { FriendNavigationProps } from '../components/FriendListItem';
-import { OwnProps as FriendListItemOwnProp } from '../components/FriendListItem';
-import { FollowRequest } from '../models/followRequest.model';
+import { FriendNavigationProps, OwnProps as FriendListItemOwnProp } from '../components/FriendListItem';
+import { FollowRequest, FollowRequestStatus } from '../models/followRequest.model';
 
 interface ISelectorsService {
   getUsersFromContacts: OutputSelector<RootState, UserModel[],
@@ -22,6 +21,10 @@ interface ISelectorsService {
     FriendListItemOwnProp,
     FollowRequest | undefined,
     (res1: FollowRequest[], res2: string) => FollowRequest | undefined>;
+  getFriendFollowRequestById: OutputParametricSelector<RootState,
+    NavigationInjectedProps<FriendNavigationProps>,
+    FollowRequest | undefined,
+    (res1: FollowRequest[], res2: string, res3: string) => FollowRequest | undefined>;
   getMyFriendsProfiles: OutputSelector<RootState, ProfileModel[],
     (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
   getFriendProfileByUserId: OutputParametricSelector<RootState,
@@ -107,6 +110,41 @@ class SelectorsService implements ISelectorsService {
     (followRequests, userId) => followRequests.find(
       followRequest => followRequest.toUserId === userId || followRequest.fromUserId === userId,
     ),
+  );
+
+  getFriendFollowRequestById = createSelector(
+    [
+      (state: RootState) => state.friends.entities,
+      (state: RootState) => state.auth.authorizedUserId,
+      (
+        state: RootState,
+        props: NavigationInjectedProps<FriendNavigationProps>,
+      ) => props.navigation.getParam('friendFollowRequestId', ''),
+    ],
+    (followRequests, authorizedUserId, followRequestId) => {
+      const currentFollowRequest = followRequests.find(
+        followRequest => followRequest._id === followRequestId,
+      );
+      console.log(followRequests)
+      const newFollowRequest = followRequests
+        .filter(followRequest => followRequest._id !== followRequestId)
+        .find((followRequest) => {
+          let toUserId;
+          if (currentFollowRequest) {
+            toUserId = currentFollowRequest.toUserId === authorizedUserId ?
+              currentFollowRequest.fromUserId :
+              currentFollowRequest.toUserId;
+          }
+
+          return followRequest.fromUserId === authorizedUserId &&
+            followRequest.toUserId === toUserId &&
+            followRequest.status !== FollowRequestStatus.DECLINED;
+        });
+      console.log('new---', newFollowRequest)
+
+      return currentFollowRequest && currentFollowRequest.status !== FollowRequestStatus.DECLINED ?
+        currentFollowRequest : newFollowRequest;
+    },
   );
 
   getMyFriendsProfiles = createSelector(
