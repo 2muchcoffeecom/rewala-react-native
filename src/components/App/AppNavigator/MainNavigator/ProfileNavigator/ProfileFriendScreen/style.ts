@@ -62,6 +62,10 @@ const style = StyleSheet.create({
     width: 85,
     height: 32,
   },
+  buttonCancelWraper: {
+    width: 110,
+    height: 32,
+  },
   text: {
     fontFamily: fontFamilyRegular,
     fontWeight: '400',

@@ -69,7 +69,7 @@ class ProfileScreen extends React.Component<Props> {
               <Image
                 source={
                   meProfile && meProfile.avatarPath ?
-                    {uri: `${apiEndpoint}/graphql/${meProfile.avatarPath}`} :
+                    {uri: `${apiEndpoint}/${meProfile.avatarPath}`} :
                     require('../../../../../../../assets/avatar-placeholder.png')
                 }
                 resizeMode='contain'

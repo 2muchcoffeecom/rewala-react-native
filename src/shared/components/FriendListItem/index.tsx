@@ -17,7 +17,7 @@ import selectorsService from '../../services/selectors.service';
 
 export interface FriendNavigationProps {
   userId: string;
-  friendFollowRequest: FollowRequest | undefined;
+  friendFollowRequestId: string;
 }
 
 export interface OwnProps {
@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps =
       dispatch(friendsActions.addFriend(data));
     },
     deleteFriend: (data) => {
-      dispatch(friendsActions.deleteFriend(data));
+      dispatch(friendsActions.updateFriend(data));
     },
   }
 );
@@ -76,7 +76,7 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
   const onPressFriend = () => {
     const params: FriendNavigationProps = {
       userId: props.userId,
-      friendFollowRequest: props.friend,
+      friendFollowRequestId: props.friend ? props.friend._id : '',
     };
     navService.navigate('ProfileFriendScreen', params);
   };
@@ -92,7 +92,7 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
             >
               <Image
                 source={avatarPath ?
-                  {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
+                  {uri: `${apiEndpoint}/${avatarPath}`} :
                   require('../../../../assets/avatar-placeholder.png')}
                 style={style.friendAvatar}
               />
@@ -107,7 +107,7 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
             <View style={style.friendInfoWraper}>
               <Image
                 source={avatarPath ?
-                  {uri: `${apiEndpoint}/graphql/${avatarPath}`} :
+                  {uri: `${apiEndpoint}/${avatarPath}`} :
                   require('../../../../assets/avatar-placeholder.png')}
                 style={style.friendAvatar}
               />

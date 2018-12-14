@@ -17,7 +17,7 @@ export const Actions = {
   addFriend: (data: string) => {
     return createAction(ActionTypes.ADD_FRIEND, {data});
   },
-  deleteFriend: (data: UpdateFollowRequestInput) => {
+  updateFriend: (data: UpdateFollowRequestInput) => {
     return createAction(ActionTypes.DELETE_FRIEND, {data});
   },
   getMyFriends: () => {

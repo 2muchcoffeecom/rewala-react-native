@@ -194,7 +194,7 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
   render() {
     const {meProfile, handleSubmit} = this.props;
     const avatarUri = (this.state.avatar.uri !== '' && this.state.avatar.uri) ||
-      (meProfile && meProfile.avatarPath && `${apiEndpoint}/uploads/${meProfile.avatarPath}`);
+      (meProfile && meProfile.avatarPath && `${apiEndpoint}/${meProfile.avatarPath}`);
 
     return (
       <ScrollView contentContainerStyle={style.root}>

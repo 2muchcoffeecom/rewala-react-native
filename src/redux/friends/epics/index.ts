@@ -39,7 +39,7 @@ const deleteFriendEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
     fromActions.ActionTypes.DELETE_FRIEND,
   ),
-  map((action: ReturnType<typeof fromActions.Actions.deleteFriend>) => {
+  map((action: ReturnType<typeof fromActions.Actions.updateFriend>) => {
     const {data} = action.payload;
 
     return friendsRequestAC.update.Actions.updateFriendFollowRequest(data);

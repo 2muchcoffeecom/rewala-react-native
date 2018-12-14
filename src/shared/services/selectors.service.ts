@@ -125,7 +125,6 @@ class SelectorsService implements ISelectorsService {
       const currentFollowRequest = followRequests.find(
         followRequest => followRequest._id === followRequestId,
       );
-      console.log(followRequests)
       const newFollowRequest = followRequests
         .filter(followRequest => followRequest._id !== followRequestId)
         .find((followRequest) => {
@@ -140,7 +139,6 @@ class SelectorsService implements ISelectorsService {
             followRequest.toUserId === toUserId &&
             followRequest.status !== FollowRequestStatus.DECLINED;
         });
-      console.log('new---', newFollowRequest)
 
       return currentFollowRequest && currentFollowRequest.status !== FollowRequestStatus.DECLINED ?
         currentFollowRequest : newFollowRequest;
