@@ -5,9 +5,10 @@ import { UpdateFollowRequestInput } from '../../../shared/services/friend.servic
 export enum ActionTypes {
   SET_FRIEND_DATA = 'SET_FRIEND_DATA',
   ADD_FRIEND = 'ADD_FRIEND',
-  DELETE_FRIEND = 'DELETE_FRIEND',
+  UPDATE_FRIEND = 'UPDATE_FRIEND',
   GET_MY_FRIENDS = 'GET_MY_FRIENDS',
   SET_MY_FRIENDS_IDS = 'SET_MY_FRIENDS_IDS',
+  DELETE_MY_FRIEND_ID = 'DELETE_MY_FRIEND_ID',
 }
 
 export const Actions = {
@@ -18,13 +19,16 @@ export const Actions = {
     return createAction(ActionTypes.ADD_FRIEND, {data});
   },
   updateFriend: (data: UpdateFollowRequestInput) => {
-    return createAction(ActionTypes.DELETE_FRIEND, {data});
+    return createAction(ActionTypes.UPDATE_FRIEND, {data});
   },
   getMyFriends: () => {
     return createAction(ActionTypes.GET_MY_FRIENDS);
   },
   setMyFriendsIds: (data: string[]) => {
     return createAction(ActionTypes.SET_MY_FRIENDS_IDS, {data});
+  },
+  deleteMyFriendId: (data: string) => {
+    return createAction(ActionTypes.DELETE_MY_FRIEND_ID, {data});
   },
 };
 

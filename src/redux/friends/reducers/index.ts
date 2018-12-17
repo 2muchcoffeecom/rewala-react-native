@@ -29,6 +29,15 @@ export function reducer(state = initialState, action: fromActions.Actions): Frie
       };
     }
 
+    case fromActions.ActionTypes.DELETE_MY_FRIEND_ID: {
+      const {data} = action.payload;
+
+      return {
+        ...state,
+        myFriendsIds: state.myFriendsIds.filter((myFriendsId) => myFriendsId !== data),
+      };
+    }
+
     default:
       return state;
   }

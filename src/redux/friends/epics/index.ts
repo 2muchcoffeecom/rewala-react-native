@@ -35,9 +35,9 @@ const addFriendEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
-const deleteFriendEpic = (action$: Observable<Action>) => action$.pipe(
+const updateFriendEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
-    fromActions.ActionTypes.DELETE_FRIEND,
+    fromActions.ActionTypes.UPDATE_FRIEND,
   ),
   map((action: ReturnType<typeof fromActions.Actions.updateFriend>) => {
     const {data} = action.payload;
@@ -54,26 +54,44 @@ const getMyFriendsEpic = (action$: Observable<Action>) => action$.pipe(
 );
 
 const setMyFriendsIdsEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
-  ofType<ReturnType<typeof friendsRequestAC.getMyFriends.Actions.getMyFriendFollowRequestSuccess>>(
+  ofType<ReturnType<typeof friendsRequestAC.getMyFriends.Actions.getMyFriendFollowRequestSuccess> |
+    ReturnType<typeof friendsRequestAC.update.Actions.updateFriendFollowRequestSuccess>>(
     friendsRequestAC.getMyFriends.ActionTypes.FRIEND_GET_MY_FOLLOW_REQUEST_SUCCESS,
+    friendsRequestAC.update.ActionTypes.FRIEND_UPDATE_FOLLOW_REQUEST_SUCCESS,
   ),
   map((action) => {
-    const myFriendsIds = action.payload.data
-      .filter((followRequest) => followRequest.status === FollowRequestStatus.ACCEPTED)
-      .map((friend) => {
-        const {authorizedUserId} = state$.value.auth;
+    const {authorizedUserId} = state$.value.auth;
 
-        return friend.toUserId !== authorizedUserId ? friend.toUserId : friend.fromUserId;
-      });
+    if (action.type === friendsRequestAC.getMyFriends.ActionTypes.FRIEND_GET_MY_FOLLOW_REQUEST_SUCCESS) {
+      const myFriendsIds = action.payload.data
+        .filter((followRequest) => followRequest.status === FollowRequestStatus.ACCEPTED)
+        .map((friend) => {
 
-    return fromActions.Actions.setMyFriendsIds(myFriendsIds);
+          return friend.toUserId !== authorizedUserId ? friend.toUserId : friend.fromUserId;
+        });
+
+      return fromActions.Actions.setMyFriendsIds(myFriendsIds);
+    } else {
+      const updatedFriend = action.payload.data;
+      const friendId = updatedFriend.toUserId === authorizedUserId ?
+        updatedFriend.fromUserId :
+        updatedFriend.toUserId;
+
+      if (updatedFriend.status === FollowRequestStatus.DECLINED) {
+        return fromActions.Actions.deleteMyFriendId(friendId);
+      } else if (updatedFriend.status === FollowRequestStatus.ACCEPTED) {
+        return fromActions.Actions.setMyFriendsIds([friendId]);
+      } else {
+        return fromActions.Actions.setMyFriendsIds([]);
+      }
+    }
   }),
 );
 
 export const friendsEpics = [
   setFriendsDataEpic,
   addFriendEpic,
-  deleteFriendEpic,
+  updateFriendEpic,
   getMyFriendsEpic,
   setMyFriendsIdsEpic,
 ];
