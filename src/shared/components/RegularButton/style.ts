@@ -7,6 +7,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '100%',
+    padding: 4,
     borderRadius: 4,
     backgroundColor: mainColor,
   },
