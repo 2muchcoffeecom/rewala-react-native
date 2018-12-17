@@ -15,6 +15,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
   },
   friendAvatar: {
+    borderRadius: 24,
     height: 48,
     width: 48,
     marginRight: 8,

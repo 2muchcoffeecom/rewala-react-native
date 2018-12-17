@@ -1,17 +1,14 @@
 import React from 'react';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import style from './style';
 
 import { Image, Text, View, TouchableOpacity } from 'react-native';
-import RegularButton from '../RegularButton';
+import ButtonFollowRequest from '../ButtonFollowRequest';
 
 import { RootState } from '../../../redux/store';
 import { apiEndpoint } from '../../constants/apiEndpoint';
-import { UpdateFollowRequestInput } from '../../services/friend.service';
 import { FollowRequest, FollowRequestStatus } from '../../models/followRequest.model';
 
-import { Actions as friendsActions } from '../../../redux/friends/AC';
 import navService from '../../services/nav.service';
 import selectorsService from '../../services/selectors.service';
 
@@ -31,47 +28,20 @@ interface StateProps {
   friend: FollowRequest | undefined;
 }
 
-interface DispatchProps {
-  addFriend(data: string): void;
-  deleteFriend(data: UpdateFollowRequestInput): void;
-}
-
 const mapStateToProps = (state: RootState, props: Props): StateProps => ({
   friend: selectorsService.getFriendFollowRequestByUserId(state, props),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps => (
-  {
-    addFriend: (data) => {
-      dispatch(friendsActions.addFriend(data));
-    },
-    deleteFriend: (data) => {
-      dispatch(friendsActions.updateFriend(data));
-    },
-  }
-);
-
-type Props = OwnProps & StateProps & DispatchProps;
+type Props = OwnProps & StateProps;
 
 const FriendListItem: React.FunctionComponent<Props> = (props) => {
   const {
-    avatarPath, fullName, addFriend, userId, deleteFriend, friend, withFriendProfile,
+    avatarPath, fullName, userId, friend, withFriendProfile,
   } = props;
 
-  const onPressAddFriend = () => {
-    addFriend(userId);
-  };
-
-  const isFriendAdded = !!(friend && friend.status !== FollowRequestStatus.DECLINED);
-
-  const onPressDeleteFriend = () => {
-    const input: UpdateFollowRequestInput = {
-      status: FollowRequestStatus.DECLINED,
-      _id: friend ? friend._id : '',
-    };
-
-    deleteFriend(input);
-  };
+  const isFriendAccepted = !!(friend && friend.status === FollowRequestStatus.ACCEPTED);
+  const isFriendDeclined = !!(friend && friend.status === FollowRequestStatus.DECLINED);
+  const isFriendPendingForUser = !!(friend && friend.status === FollowRequestStatus.PENDING);
 
   const onPressFriend = () => {
     const params: FriendNavigationProps = {
@@ -120,15 +90,16 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
           )
       }
       <View style={style.friendButtonWraper}>
-        <RegularButton
-          isInverted={isFriendAdded}
-          title={isFriendAdded ? 'DELETE FRIEND' : 'ADD FRIEND'}
-          fontSize={9}
-          onPress={isFriendAdded ? onPressDeleteFriend : onPressAddFriend}
+        <ButtonFollowRequest
+          isFriendFollowRequestDeclined={isFriendDeclined}
+          isFriendFollowRequestAccepted={isFriendAccepted}
+          isFriendFollowRequestPendingForUser={isFriendPendingForUser}
+          friendFollowRequest={friend}
+          userId={userId}
         />
       </View>
     </View>
   );
 };
 
-export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(FriendListItem);
+export default connect<StateProps>(mapStateToProps)(FriendListItem);
