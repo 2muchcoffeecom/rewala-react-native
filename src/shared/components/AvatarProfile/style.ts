@@ -12,7 +12,12 @@ const style = StyleSheet.create({
   avatarWraper: {
     borderRadius: 40,
   },
-  image: {
+  avatarMini: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  avatarFullScreen: {
     width: Dimensions.get('window').width,
     height: '100%',
   },

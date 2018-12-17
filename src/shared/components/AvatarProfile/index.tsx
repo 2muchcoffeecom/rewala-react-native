@@ -34,7 +34,7 @@ const AvatarProfile: React.FunctionComponent<Props> = (props) => {
       >
         <Image
           source={{uri: `${apiEndpoint}/${profile.avatarPath}`}}
-          style={style.image}
+          style={style.avatarMini}
         />
       </TouchableOpacity>
       <Modal
@@ -50,7 +50,7 @@ const AvatarProfile: React.FunctionComponent<Props> = (props) => {
               source={{uri: avatarUri}}
               resizeMode='contain'
               style={
-                [style.image, {height: avatarHeight}]
+                [style.avatarFullScreen, {height: avatarHeight}]
               }
             />
           </View>
