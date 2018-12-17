@@ -17,8 +17,10 @@ const showResetPasswordToastEpic = (action$: Observable<Action>) => action$.pipe
 );
 
 const showUserUpdateToastEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof usersRequestAC.updateMe.Actions.updateMeSuccess>>(
+  ofType<ReturnType<typeof usersRequestAC.updateMe.Actions.updateMeSuccess> |
+    ReturnType<typeof authRequestAC.changePassword.Actions.changePasswordSuccess>>(
     usersRequestAC.updateMe.ActionTypes.UPDATE_ME_SUCCESS,
+    authRequestAC.changePassword.ActionTypes.CHANGE_PASSWORD_SUCCESS,
   ),
   map(() => {
       return fromActions.Actions.showToast(

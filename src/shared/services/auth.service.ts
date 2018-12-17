@@ -42,6 +42,7 @@ interface IAuthService {
   resetPassword(email: string): Observable<any>;
   resetPasswordConfirmCode(resetPasswordCode: string): Observable<any>;
   newPassword(resetPasswordConfirmInput: ResetPasswordConfirmInput): Observable<any>;
+  changePassword(input: ChangePasswordInput): Observable<any>;
 }
 
 class AuthService implements IAuthService {
@@ -127,10 +128,10 @@ class AuthService implements IAuthService {
     return from(execute(link, operation) as ObservableInput<any>);
   }
 
-  changePassword(input: ChangePasswordInput) { /*temporarily added password change (until the back-end changes)*/
+  changePassword(input: ChangePasswordInput) {
     const operation = {
       query: gql`
-        mutation changePassword($input: ResetPasswordConfirmInput) {
+        mutation changePassword($input: ChangePasswordInput) {
           changePassword(input: $input) ${userWithToken}
         }
       `,
