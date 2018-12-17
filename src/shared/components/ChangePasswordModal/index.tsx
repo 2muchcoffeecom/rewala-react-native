@@ -17,6 +17,7 @@ import { Actions as toastActions } from '../../../redux/toast/AC';
 import required from '../../validators/required';
 import { confirmPassword, passwordRegistration } from '../../validators/password';
 import { getSubmissionError } from '../../validators/getSubmissionError';
+import ErrorRequestText from '../ErrorRequestText';
 
 export interface ChangePasswordFormData {
   oldPassword: string;
@@ -44,29 +45,37 @@ const ChangePasswordModal: React.FunctionComponent<Props> = (props) => {
     return new Promise<UserResponse>((resolve, reject) => {
       dispatch(authActions.submitChangePassword(changePasswordInput, resolve, reject));
     })
-      .catch((error: RequestError) => {
-        error.message && dispatch(toastActions.showToast(error.message));
+      .then((response) => {
+        response && onCloseModal();
+      })
+      .catch((errors: RequestError) => {
+        errors.message && dispatch(toastActions.showToast(errors.message));
 
         throw new SubmissionError<ChangePasswordFormData>({
-          oldPassword: getSubmissionError(error, 'oldPassword'),
-          newPassword: getSubmissionError(error, 'newPassword'),
-          _error: error.message ? error.message : undefined,
+          oldPassword: getSubmissionError(errors, 'oldPassword'),
+          newPassword: getSubmissionError(errors, 'newPassword'),
+          _error: errors.message ? errors.message : undefined,
         });
       });
   };
 
-  const {isVisible, handleSubmit, toggleVisibility} = props;
+  const onCloseModal = () => {
+    props.toggleVisibility();
+    props.destroy();
+  };
+
+  const {isVisible, handleSubmit, error, invalid, submitting} = props;
 
   return (
     <Modal
       animationType='slide'
       transparent={true}
       visible={isVisible}
-      onRequestClose={toggleVisibility}>
+      onRequestClose={onCloseModal}>
       <View style={style.root}>
         <View style={style.modalContainer}>
           <TouchableOpacity
-            onPress={toggleVisibility}
+            onPress={onCloseModal}
             style={style.closeButton}
           >
             <Image
@@ -77,6 +86,11 @@ const ChangePasswordModal: React.FunctionComponent<Props> = (props) => {
           </TouchableOpacity>
           <Text style={style.text}>Change Password</Text>
           <View style={style.fieldsWraper}>
+            {
+              error && <ErrorRequestText top={-20}>
+                {error}
+              </ErrorRequestText>
+            }
             <View>
               <Field
                 name='oldPassword'
@@ -88,7 +102,7 @@ const ChangePasswordModal: React.FunctionComponent<Props> = (props) => {
             </View>
             <View>
               <Field
-                name='password'
+                name='newPassword'
                 component={Input}
                 placeholder='New Password'
                 validate={[required, passwordRegistration]}
@@ -109,7 +123,7 @@ const ChangePasswordModal: React.FunctionComponent<Props> = (props) => {
             <RegularButton
               title='SAVE PASSWORD'
               fontSize={12}
-              // disabled={invalid || submitting}
+              disabled={invalid || submitting}
               onPress={handleSubmit(submitChangePassword)}
             />
           </View>

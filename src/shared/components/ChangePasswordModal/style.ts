@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { blackTextColor, fontFamilyRegular, whiteColor } from '../../../app.style';
+import { blackTextColor, fontFamilyRegular, whiteColor, modalBackgroundColorOpacity } from '../../../app.style';
 
 const style = StyleSheet.create({
   root: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(24,24,24,0.74)',
+    backgroundColor: modalBackgroundColorOpacity,
   },
   modalContainer: {
     width: 292,
