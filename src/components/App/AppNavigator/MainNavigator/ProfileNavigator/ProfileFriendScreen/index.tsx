@@ -131,7 +131,6 @@ class ProfileFriendScreen extends React.Component<Props> {
                     {uri: `${apiEndpoint}/${friendProfile.avatarPath}`} :
                     require('../../../../../../../assets/avatar-placeholder.png')
                 }
-                resizeMode='contain'
                 style={style.image}
               />
             </View>

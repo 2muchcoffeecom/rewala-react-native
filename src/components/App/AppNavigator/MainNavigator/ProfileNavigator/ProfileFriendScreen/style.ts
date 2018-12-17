@@ -48,6 +48,7 @@ const style = StyleSheet.create({
   image: {
     width: 80,
     height: 80,
+    borderRadius: 40,
   },
   buttonsAddDeleteWraper: {
     width: 100,
