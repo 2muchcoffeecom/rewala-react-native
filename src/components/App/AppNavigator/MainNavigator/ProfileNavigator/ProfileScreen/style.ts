@@ -35,6 +35,7 @@ const style = StyleSheet.create({
     paddingBottom: 17,
   },
   avatarWraper: {
+    borderRadius: 40,
   },
   textAndButtonWraper: {
     justifyContent: 'space-between',
@@ -48,6 +49,7 @@ const style = StyleSheet.create({
   image: {
     width: 80,
     height: 80,
+    borderRadius: 40,
   },
   buttonSettingsWraper: {
     width: 128,
