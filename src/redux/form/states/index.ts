@@ -6,4 +6,6 @@ export interface FormsState {
   forgotPassword: FormsState;
   newPassword: FormsState;
   resetPasswordCode: FormsState;
+  ProfileSettings: FormsState;
+  changePassword: FormsState;
 }
