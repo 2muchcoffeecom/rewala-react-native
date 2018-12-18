@@ -6,6 +6,7 @@ export enum ActionTypes {
   GET_READ_CONTACTS_PERMISSION_DENIED = 'GET_READ_CONTACTS_PERMISSION_DENIED',
   SEND_CONTACTS_TO_SERVER = 'SEND_CONTACTS_TO_SERVER',
   SET_CONTACTS_USER_ID = 'SET_CONTACTS_USER_ID',
+  DELETE_CONTACTS_USER_ID = 'DELETE_CONTACTS_USER_ID',
 }
 
 export const Actions = {
@@ -20,6 +21,9 @@ export const Actions = {
   },
   setContactsUserId: (data: string[]) => {
     return createAction(ActionTypes.SET_CONTACTS_USER_ID, {data});
+  },
+  deleteContactsUserId: () => {
+    return createAction(ActionTypes.DELETE_CONTACTS_USER_ID);
   },
 };
 

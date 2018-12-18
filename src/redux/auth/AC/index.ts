@@ -11,6 +11,8 @@ export enum ActionTypes {
   AUTH_SUBMIT_NEW_PASSWORD = 'AUTH_SUBMIT_NEW_PASSWORD',
   AUTH_SUBMIT_CHANGE_PASSWORD = 'AUTH_SUBMIT_CHANGE_PASSWORD',
   SET_AUTHORIZED_USER_ID = 'SET_AUTHORIZED_USER_ID',
+  DELETE_AUTHORIZED_USER_ID = 'DELETE_AUTHORIZED_USER_ID',
+  AUTH_LOGOUT = 'AUTH_LOGOUT',
 }
 
 export const Actions = {
@@ -32,9 +34,13 @@ export const Actions = {
   setAuthorizedUserId: (data: string) => {
     return createAction(ActionTypes.SET_AUTHORIZED_USER_ID, {data});
   },
+  deleteAuthorizedUserId: () => {
+    return createAction(ActionTypes.DELETE_AUTHORIZED_USER_ID);
+  },
   submitChangePassword: (data: ChangePasswordInput, resolve?: Resolve<UserResponse>, reject?: Reject) => {
     return createAction(ActionTypes.AUTH_SUBMIT_CHANGE_PASSWORD, {data, resolve, reject});
   },
+  logout: () => createAction(ActionTypes.AUTH_LOGOUT),
 };
 
 export type Actions = ActionsUnion<typeof Actions>;

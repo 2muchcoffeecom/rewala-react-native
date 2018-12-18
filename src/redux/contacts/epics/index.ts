@@ -88,10 +88,20 @@ const setContactsUserIdEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const deleteContactsUserIdEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.logout.Actions.logoutSuccess>>(
+    authRequestAC.logout.ActionTypes.LOGOUT_SUCCESS,
+  ),
+  map(() => {
+    return fromActions.Actions.deleteContactsUserId();
+  }),
+);
+
 export const contactsEpics = [
   checkReadContactsPermissionEpic,
   readContactsPermissionGrantedEpic,
   readContactsPermissionDeniedEpic,
   redirectToFriendsScreenEpic,
   setContactsUserIdEpic,
+  deleteContactsUserIdEpic,
 ];

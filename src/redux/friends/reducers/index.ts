@@ -38,6 +38,14 @@ export function reducer(state = initialState, action: fromActions.Actions): Frie
       };
     }
 
+    case fromActions.ActionTypes.DELETE_ALL_MY_FRIEND_IDS: {
+
+      return {
+        ...state,
+        myFriendsIds: [],
+      };
+    }
+
     default:
       return state;
   }

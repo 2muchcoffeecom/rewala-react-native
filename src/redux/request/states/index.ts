@@ -37,6 +37,7 @@ export interface GraphQlResponse {
     me: UserResponse,
     updateMe: UserResponse,
     changePassword: UserResponse,
+    logout: boolean,
   };
 }
 

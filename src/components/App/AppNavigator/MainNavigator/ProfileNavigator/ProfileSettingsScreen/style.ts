@@ -86,7 +86,10 @@ const style = StyleSheet.create({
     marginRight: 12,
   },
   changePasswordButton: {
-    marginBottom: 107,
+    marginBottom: 34,
+  },
+  logOutButton: {
+    marginBottom: 54,
   },
   confirmButtonWraper: {
     alignSelf: 'center',

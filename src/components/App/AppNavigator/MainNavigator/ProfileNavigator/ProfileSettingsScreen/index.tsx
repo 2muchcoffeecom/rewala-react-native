@@ -23,6 +23,7 @@ import selectorsService from '../../../../../../shared/services/selectors.servic
 import { apiEndpoint } from '../../../../../../shared/constants/apiEndpoint';
 import { Actions as usersActions } from '../../../../../../redux/users/AC';
 import { Actions as toastActions } from '../../../../../../redux/toast/AC';
+import { Actions as authActions } from '../../../../../../redux/auth/AC';
 
 import required from '../../../../../../shared/validators/required';
 import email from '../../../../../../shared/validators/email';
@@ -43,6 +44,7 @@ interface StateProps {
 
 interface DispatchProps {
   showToast(message: string): void;
+  logout(): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
@@ -50,10 +52,13 @@ const mapStateToProps = (state: RootState): StateProps => ({
   meUser: selectorsService.getAuthorizedUser(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<toastActions>): DispatchProps => (
+const mapDispatchToProps = (dispatch: Dispatch<toastActions | authActions>): DispatchProps => (
   {
     showToast: (message) => {
       dispatch(toastActions.showToast(message));
+    },
+    logout: () => {
+      dispatch(authActions.logout());
     },
   }
 );
@@ -86,6 +91,10 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
     this.setState((state) => ({
       isVisibleModal: !state.isVisibleModal,
     }));
+  }
+
+  onPressLogOut = () => {
+    this.props.logout();
   }
 
   submitProfileSettings = (
@@ -276,6 +285,12 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
           onPress={this.toggleModalVisibility}
         >
           <Text style={[style.text, style.textLink]}>Change Password</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={style.logOutButton}
+          onPress={this.onPressLogOut}
+        >
+          <Text style={[style.text, style.textLink]}>Log Out</Text>
         </TouchableOpacity>
         <View style={style.confirmButtonWraper}>
           <RegularButton

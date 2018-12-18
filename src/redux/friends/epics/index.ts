@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ofType, StateObservable } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
-import { friendsRequestAC } from '../../request/AC';
+import { authRequestAC, friendsRequestAC } from '../../request/AC';
 import { FollowRequestStatus } from '../../../shared/models/followRequest.model';
 import { RootState } from '../../store';
 
@@ -88,10 +88,20 @@ const setMyFriendsIdsEpic = (action$: Observable<Action>, state$: StateObservabl
   }),
 );
 
+const deleteAllMyFriendsIdsEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.logout.Actions.logoutSuccess>>(
+    authRequestAC.logout.ActionTypes.LOGOUT_SUCCESS,
+  ),
+  map(() => {
+    return fromActions.Actions.deleteAllMyFriendIds();
+  }),
+);
+
 export const friendsEpics = [
   setFriendsDataEpic,
   addFriendEpic,
   updateFriendEpic,
   getMyFriendsEpic,
   setMyFriendsIdsEpic,
+  deleteAllMyFriendsIdsEpic,
 ];

@@ -19,8 +19,10 @@ const loginEpic = (action$: Observable<Action>) => action$.pipe(
 );
 
 const redirectToLoginScreenEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess>>(
+  ofType<ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess> |
+    ReturnType<typeof authRequestAC.logout.Actions.logoutSuccess>>(
     authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_SUCCESS,
+    authRequestAC.logout.ActionTypes.LOGOUT_SUCCESS,
   ),
   tap(() => navService.navigate('LoginScreen')),
   ignoreElements(),
@@ -103,6 +105,16 @@ const setTokenEpic = (action$: Observable<Action>) => action$.pipe(
   ignoreElements(),
 );
 
+const deleteTokenEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.logout.Actions.logoutSuccess>>(
+    authRequestAC.logout.ActionTypes.LOGOUT_SUCCESS,
+  ),
+  switchMap(() => {
+    return authService.removeToken();
+  }),
+  ignoreElements(),
+);
+
 const setAuthorizedUserIdEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess> |
     ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess> |
@@ -114,6 +126,15 @@ const setAuthorizedUserIdEpic = (action$: Observable<Action>) => action$.pipe(
   map((action) => {
     const user = action.payload.data;
     return fromActions.Actions.setAuthorizedUserId(user._id);
+  }),
+);
+
+const deleteAuthorizedUserIdEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof authRequestAC.logout.Actions.logoutSuccess>>(
+    authRequestAC.logout.ActionTypes.LOGOUT_SUCCESS,
+  ),
+  map(() => {
+    return fromActions.Actions.deleteAuthorizedUserId();
   }),
 );
 
@@ -136,10 +157,16 @@ const changePasswordEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const logoutEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(fromActions.ActionTypes.AUTH_LOGOUT),
+  map(() => authRequestAC.logout.Actions.logout()),
+);
+
 export const authEpics = [
   loginEpic,
   registrationEpic,
   setTokenEpic,
+  deleteTokenEpic,
   setAuthorizedUserIdEpic,
   resetPasswordEpic,
   resetPasswordCodeEpic,
@@ -149,4 +176,6 @@ export const authEpics = [
   redirectToNewPasswordScreenEpic,
   redirectToHomeScreenEpic,
   changePasswordEpic,
+  logoutEpic,
+  deleteAuthorizedUserIdEpic,
 ];

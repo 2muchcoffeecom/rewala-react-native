@@ -12,6 +12,13 @@ export function reducer(state = initialState, action: fromActions.Actions): Cont
       };
     }
 
+    case fromActions.ActionTypes.DELETE_CONTACTS_USER_ID: {
+
+      return {
+        contactsUsersIds: null,
+      };
+    }
+
     default:
       return state;
   }

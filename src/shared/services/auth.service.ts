@@ -38,6 +38,7 @@ interface IAuthService {
   setToken(token: string): Observable<void>;
   removeToken(): Observable<void>;
   login(input: LoginInput): Observable<any>;
+  logout(): Observable<any>;
   registration(input: UserInput): Observable<any>;
   resetPassword(email: string): Observable<any>;
   resetPasswordConfirmCode(resetPasswordCode: string): Observable<any>;
@@ -68,6 +69,17 @@ class AuthService implements IAuthService {
       variables: {
         input,
       },
+    };
+    return from(execute(link, operation) as ObservableInput<any>);
+  }
+
+  logout() {
+    const operation = {
+      query: gql`
+        mutation logout {
+          logout
+        }
+      `,
     };
     return from(execute(link, operation) as ObservableInput<any>);
   }

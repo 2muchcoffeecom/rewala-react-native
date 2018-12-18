@@ -9,6 +9,7 @@ export enum ActionTypes {
   GET_MY_FRIENDS = 'GET_MY_FRIENDS',
   SET_MY_FRIENDS_IDS = 'SET_MY_FRIENDS_IDS',
   DELETE_MY_FRIEND_ID = 'DELETE_MY_FRIEND_ID',
+  DELETE_ALL_MY_FRIEND_IDS = 'DELETE_ALL_MY_FRIEND_IDS',
 }
 
 export const Actions = {
@@ -29,6 +30,9 @@ export const Actions = {
   },
   deleteMyFriendId: (data: string) => {
     return createAction(ActionTypes.DELETE_MY_FRIEND_ID, {data});
+  },
+  deleteAllMyFriendIds: () => {
+    return createAction(ActionTypes.DELETE_ALL_MY_FRIEND_IDS);
   },
 };
 

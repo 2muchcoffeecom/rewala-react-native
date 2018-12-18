@@ -12,6 +12,13 @@ export function reducer(state = initialState, action: fromActions.Actions): Auth
       };
     }
 
+    case fromActions.ActionTypes.DELETE_AUTHORIZED_USER_ID: {
+
+      return {
+        authorizedUserId: '',
+      };
+    }
+
     default:
       return state;
   }
