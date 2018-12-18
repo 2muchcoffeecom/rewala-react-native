@@ -16,6 +16,7 @@ import { Actions as usersActions } from '../../../../redux/users/AC';
 
 import HomeNavigator from './HomeNavigator';
 import ProfileNavigator from './ProfileNavigator';
+import SearchNavigator from './SearchNavigator';
 
 interface CustomBottomTabNavigatorConfig extends BottomTabNavigatorConfig {
   defaultNavigationOptions: NavigationScreenConfig<NavigationBottomTabScreenOptions>;
@@ -23,7 +24,7 @@ interface CustomBottomTabNavigatorConfig extends BottomTabNavigatorConfig {
 
 const Navigator = createBottomTabNavigator({
   HomeNavigator,
-  SearchNavigator: HomeNavigator,
+  SearchNavigator,
   NotificationNavigator: HomeNavigator,
   ProfileNavigator,
 }, {

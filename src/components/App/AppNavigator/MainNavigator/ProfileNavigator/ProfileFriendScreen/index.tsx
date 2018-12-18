@@ -109,7 +109,7 @@ class ProfileFriendScreen extends React.Component<Props, State> {
   }
 
   onPressButtonFriends = () => {
-    navService.navigate('UserFriendsScreen');
+    navService.navigate('FriendsScreen');
   }
 
   isFriendFollowRequestAccepted = (): boolean => {
