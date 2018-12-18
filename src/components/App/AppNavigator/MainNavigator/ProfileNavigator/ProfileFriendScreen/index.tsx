@@ -6,6 +6,7 @@ import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
 import FriendUserRewals from '../../../../../../shared/components/FriendUserRewals';
 import NoRewals from '../../../../../../shared/components/NoRewals';
 import ButtonFollowRequest from '../../../../../../shared/components/ButtonFollowRequest';
+import AvatarProfile from '../../../../../../shared/components/AvatarProfile';
 
 import { NavigationInjectedProps, NavigationScreenConfig, NavigationStackScreenOptions } from 'react-navigation';
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
@@ -35,10 +36,23 @@ interface NavigationParams extends FriendNavigationProps {
 
 type Props = StateProps & NavigationInjectedProps<NavigationParams>;
 
-class ProfileFriendScreen extends React.Component<Props> {
+interface State {
+  isVisibleAvatarModal: boolean;
+  avatarRatio: number;
+}
+
+class ProfileFriendScreen extends React.Component<Props, State> {
   static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = ({navigation}) => {
     return {
       headerTitle: navigation.getParam('title', ''),
+    };
+  }
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      isVisibleAvatarModal: false,
+      avatarRatio: 1,
     };
   }
 
@@ -48,6 +62,20 @@ class ProfileFriendScreen extends React.Component<Props> {
     this.props.navigation.setParams({
       title: friendProfile ? friendProfile.fullName : '',
     });
+
+    if (this.props.friendProfile) {
+      Image.getSize(
+        `${apiEndpoint}/${this.props.friendProfile.avatarPath}`,
+        ((width, height) => {
+            this.setState({
+              avatarRatio: width / height,
+            });
+          }
+        ),
+        () => {
+        },
+      );
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -57,7 +85,27 @@ class ProfileFriendScreen extends React.Component<Props> {
       this.props.navigation.setParams({
         title: friendProfile ? friendProfile.fullName : '',
       });
+
+      if (this.props.friendProfile) {
+        Image.getSize(
+          `${apiEndpoint}/${this.props.friendProfile.avatarPath}`,
+          ((width, height) => {
+              this.setState({
+                avatarRatio: width / height,
+              });
+            }
+          ),
+          () => {
+          },
+        );
+      }
     }
+  }
+
+  toggleModalVisibility = () => {
+    this.setState((state) => ({
+      isVisibleAvatarModal: !state.isVisibleAvatarModal,
+    }));
   }
 
   onPressButtonFriends = () => {
@@ -125,14 +173,26 @@ class ProfileFriendScreen extends React.Component<Props> {
         <View style={style.userInfo}>
           <View style={style.wraperUser}>
             <View style={style.avatarWraper}>
-              <Image
-                source={
-                  friendProfile && friendProfile.avatarPath ?
-                    {uri: `${apiEndpoint}/${friendProfile.avatarPath}`} :
-                    require('../../../../../../../assets/avatar-placeholder.png')
-                }
-                style={style.image}
-              />
+              {
+                friendProfile && friendProfile.avatarPath ?
+                  (
+                    <AvatarProfile
+                      profile={friendProfile}
+                      isVisible={this.state.isVisibleAvatarModal}
+                      avatarRatio={this.state.avatarRatio}
+                      toggleVisibility={this.toggleModalVisibility}
+                    />
+                  ) : (
+                    <View
+                      style={style.avatarWraper}
+                    >
+                      <Image
+                        source={require('../../../../../../../assets/avatar-placeholder.png')}
+                        style={style.image}
+                      />
+                    </View>
+                  )
+              }
             </View>
             <View style={style.textAndButtonWraper}>
               <View style={style.textWraper}>
