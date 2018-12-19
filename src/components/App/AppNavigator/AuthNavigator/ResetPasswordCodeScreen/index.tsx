@@ -10,7 +10,6 @@ import RegularButton from '../../../../../shared/components/RegularButton';
 import LogInLink from '../../../../../shared/components/LogInLink';
 import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
-import { resetPasswordCode } from '../../../../../shared/validators/resetPasswordCode';
 import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { RootState } from '../../../../../redux/store';
@@ -65,7 +64,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, invalid, error, submitting} = this.props;
+    const {handleSubmit, error, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -88,7 +87,6 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
               component={Input}
               maxLength={8}
               placeholder='Enter Code From Email'
-              validate={resetPasswordCode}
             />
           </View>
           <View style={style.textCheckEmailWraper}>
@@ -100,7 +98,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
           <View style={style.changePasswordWraper}>
             <RegularButton
               title='CHANGE PASSWORD'
-              disabled={invalid || submitting}
+              disabled={submitting}
               onPress={handleSubmit(this.submitResetPasswordCode)}
             />
           </View>
