@@ -29,8 +29,6 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     height: 40,
     width: 76,
-    paddingLeft: 10,
-    paddingRight: 10,
     marginRight: 8,
     borderRadius: 5,
     ...Platform.select({
@@ -46,15 +44,26 @@ const style = StyleSheet.create({
     }),
   },
   countryPickerText: {
+    position: 'absolute',
+    right: 10,
+    top: 14,
+    zIndex: -1,
     fontFamily: fontFamilyRegular,
     fontWeight: '400',
     fontSize: 12,
     color: blackTextColor,
   },
   countryPickerImg: {
+    position: 'absolute',
+    left: -20,
+    top: -5,
     width: 20,
     height: 13.3,
     marginTop: -2,
+  },
+  countryPickerTouchFlag: {
+    width: 73,
+    height: 35,
   },
   phoneField: {
     flex: 1,
@@ -67,7 +76,7 @@ const style = StyleSheet.create({
   },
   logInWraper: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
   },
   image: {
     width: 160,

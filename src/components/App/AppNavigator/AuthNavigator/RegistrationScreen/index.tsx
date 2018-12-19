@@ -125,6 +125,7 @@ class RegistrationScreen extends React.Component<Props, State> {
                 translation='eng'
                 styles={{
                   imgStyle: style.countryPickerImg,
+                  touchFlag: style.countryPickerTouchFlag,
                 }}
               />
               <Text style={style.countryPickerText}>{this.state.callingCode}</Text>

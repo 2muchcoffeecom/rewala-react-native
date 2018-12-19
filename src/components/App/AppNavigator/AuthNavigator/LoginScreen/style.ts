@@ -22,17 +22,19 @@ const style = StyleSheet.create({
   },
   signInWraper: {
     height: 40,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   singUpWraper: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
   },
   image: {
     width: 160,
     height: 33,
   },
   text: {
+    paddingTop: 10,
+    paddingBottom: 10,
     fontFamily: fontFamilyRegular,
     fontWeight: '400',
     fontSize: 11,
