@@ -91,7 +91,7 @@ const FriendListItem: React.FunctionComponent<Props> = (props) => {
       }
       <View style={style.friendButtonWraper}>
         <ButtonFollowRequest
-          isFriendFollowRequestDeclined={isFriendDeclined}
+          isFriendFollowRequestDeclined={!friend || isFriendDeclined}
           isFriendFollowRequestAccepted={isFriendAccepted}
           isFriendFollowRequestPendingForUser={isFriendPendingForUser}
           friendFollowRequest={friend}

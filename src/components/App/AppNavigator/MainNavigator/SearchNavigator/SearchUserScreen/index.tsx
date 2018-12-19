@@ -4,30 +4,39 @@ import style from './style';
 
 import { View, ScrollView, TextInput, TouchableOpacity, Image, FlatList, ListRenderItem } from 'react-native';
 import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../../shared/components/FriendListItem/index';
+import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
 
+import { Dispatch } from 'redux';
 import { RootState } from '../../../../../../redux/store';
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
-import { Dispatch } from 'redux';
+import { SearchUserInput } from '../../../../../../shared/services/user.service';
+import { PagedUsersOptions } from '../../../../../../redux/users/states';
 
 import selectorsService from '../../../../../../shared/services/selectors.service';
-import { Actions as friendsActions } from '../../../../../../redux/friends/AC/index';
+import { Actions as usersActions } from '../../../../../../redux/users/AC';
 
 interface StateProps {
-  friendsProfiles: ProfileModel[];
+  pagedUsersProfiles: ProfileModel[];
+  pagedUsersOptions: PagedUsersOptions;
 }
 
 interface DispatchProps {
-  getMyFriends(): void;
+  search(input: SearchUserInput): void;
+  deleteSearchResults(): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  friendsProfiles: selectorsService.getMyFriendsProfiles(state),
+  pagedUsersProfiles: selectorsService.getPagedUsersProfiles(state),
+  pagedUsersOptions: state.users.pagedUsersOptions,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps => (
+const mapDispatchToProps = (dispatch: Dispatch<usersActions>): DispatchProps => (
   {
-    getMyFriends: () => {
-      dispatch(friendsActions.getMyFriends());
+    search: (input) => {
+      dispatch(usersActions.searchUsers(input));
+    },
+    deleteSearchResults: () => {
+      dispatch(usersActions.deletePagedUsersIds());
     },
   }
 );
@@ -36,7 +45,6 @@ type Props = StateProps & DispatchProps;
 
 interface State {
   searchQuery: string;
-  filteredFriendProfiles: ProfileModel[];
 }
 
 class SearchUserScreen extends React.Component<Props, State> {
@@ -44,31 +52,36 @@ class SearchUserScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       searchQuery: '',
-      filteredFriendProfiles: this.props.friendsProfiles,
     };
   }
 
-  componentDidMount() {
-    this.props.getMyFriends();
+  onChangeSearchValue = (value: string) => {
+    this.props.search({
+      fullName: value,
+      limit: 10,
+    });
+    this.props.deleteSearchResults();
+    this.setState({
+      searchQuery: value,
+    });
   }
 
-  onChangeSearchValue = (value: string) => {
-    this.setState({
-      searchQuery: value.toLowerCase(),
-      filteredFriendProfiles: this.getFilteredProfiles(value.toLowerCase()),
-    });
+  onEndReached = () => {
+    const {pagedUsersOptions} = this.props;
+
+    if (pagedUsersOptions.hasNext && pagedUsersOptions.next) {
+      this.props.search({
+        fullName: this.state.searchQuery,
+        limit: 10,
+        next: pagedUsersOptions.next,
+      });
+    }
   }
 
   onPressSearchDeleteButton = () => {
     this.setState({
       searchQuery: '',
     });
-  }
-
-  getFilteredProfiles = (query: string) => {
-    return this.props.friendsProfiles.filter(
-      (profile) => profile.fullName.toLowerCase().includes(query),
-    );
   }
 
   private keyExtractor = (item: IFriendListItem) => `${item.userId}`;
@@ -119,14 +132,19 @@ class SearchUserScreen extends React.Component<Props, State> {
               style={style.friendList}
               data={
                 this.state.searchQuery === '' ?
-                  this.props.friendsProfiles :
-                  this.state.filteredFriendProfiles
+                  [] :
+                  this.props.pagedUsersProfiles
               }
               keyExtractor={this.keyExtractor}
               renderItem={this.renderItem}
+              onEndReached={this.onEndReached}
+              initialNumToRender={10}
+              maxToRenderPerBatch={2}
+              onEndReachedThreshold={0.5}
             />
           </View>
         </View>
+        <AddRewalButton/>
       </ScrollView>
     );
   }

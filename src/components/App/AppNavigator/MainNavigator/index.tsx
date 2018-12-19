@@ -29,6 +29,7 @@ const Navigator = createBottomTabNavigator({
   ProfileNavigator,
 }, {
   initialRouteName: 'HomeNavigator',
+
   defaultNavigationOptions: ({navigation}) => ({
     tabBarIcon: ({focused}) => {
       const {routeName} = navigation.state;

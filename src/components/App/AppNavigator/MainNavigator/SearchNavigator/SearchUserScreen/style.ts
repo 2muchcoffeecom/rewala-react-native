@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { fontFamilyRegular, fullHeight, blackTextColor } from '../../../../../../app.style';
+import { fontFamilyRegular, blackTextColor } from '../../../../../../app.style';
 
 const style = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
     paddingTop: 9,
-    minHeight: fullHeight,
+    // minHeight: fullHeight,
   },
   wraper: {
     alignItems: 'center',
@@ -60,6 +60,7 @@ const style = StyleSheet.create({
     flex: 1,
     paddingLeft: 4,
     paddingRight: 4,
+    marginBottom: 40,
   },
 });
 
