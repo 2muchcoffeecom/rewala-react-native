@@ -15,7 +15,7 @@ import { Actions as authActions } from '../../../redux/auth/AC';
 import { Actions as toastActions } from '../../../redux/toast/AC';
 
 import required from '../../validators/required';
-import { confirmPassword, passwordRegistration } from '../../validators/password';
+import { confirmPasswordModal, passwordRegistration } from '../../validators/password';
 import { getSubmissionError } from '../../validators/getSubmissionError';
 import ErrorRequestText from '../ErrorRequestText';
 
@@ -114,7 +114,7 @@ const ChangePasswordModal: React.FunctionComponent<Props> = (props) => {
                 name='passwordConfirm'
                 component={Input}
                 placeholder='Confirm Password'
-                validate={[required, confirmPassword]}
+                validate={[required, confirmPasswordModal]}
                 isSecureTextEntry={true}
               />
             </View>
