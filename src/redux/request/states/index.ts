@@ -5,6 +5,7 @@ import * as usersState from '../nested-states/users/states';
 
 import { FollowRequest, FollowRequestResponse } from '../../../shared/models/followRequest.model';
 import { UserResponse } from '../../../shared/models/user.model';
+import { PagedUserModel } from '../../../shared/models/pagedUser.model';
 
 export interface FieldsError {
   email: {};
@@ -38,6 +39,7 @@ export interface GraphQlResponse {
     updateMe: UserResponse,
     changePassword: UserResponse,
     logout: boolean,
+    search: PagedUserModel,
   };
 }
 

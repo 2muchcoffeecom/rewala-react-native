@@ -27,6 +27,8 @@ interface ISelectorsService {
     (res1: FollowRequest[], res2: string, res3: string) => FollowRequest | undefined>;
   getMyFriendsProfiles: OutputSelector<RootState, ProfileModel[],
     (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
+  getPagedUsersProfiles: OutputSelector<RootState, ProfileModel[],
+    (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
   getFriendProfileByUserId: OutputParametricSelector<RootState,
     NavigationInjectedProps<FriendNavigationProps>,
     ProfileModel | undefined,
@@ -148,6 +150,22 @@ class SelectorsService implements ISelectorsService {
   getMyFriendsProfiles = createSelector(
     [
       (state: RootState) => state.friends.myFriendsIds,
+      (state: RootState) => state.profiles.entities,
+    ],
+    (userIds, profiles) => {
+      if (userIds.length !== 0) {
+        return profiles.filter(profile => {
+          return !!userIds.find((userId) => userId === profile.userId);
+        });
+      } else {
+        return [];
+      }
+    },
+  );
+
+  getPagedUsersProfiles = createSelector(
+    [
+      (state: RootState) => state.users.pagedUsersIds,
       (state: RootState) => state.profiles.entities,
     ],
     (userIds, profiles) => {

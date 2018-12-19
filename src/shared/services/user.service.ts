@@ -4,7 +4,7 @@ import { execute } from 'apollo-link';
 import { ReactNativeFile } from 'apollo-upload-client';
 
 import link from '../middlewares/link.middleware';
-import { user } from '../templates/user.template';
+import { user, pagedUsers } from '../templates/user.template';
 
 interface ProfileInput {
   fullName?: string;
@@ -19,9 +19,17 @@ export interface UpdateUserInput {
   profileInput: ProfileInput;
 }
 
+export interface SearchUserInput {
+  fullName: string;
+  limit: number;
+  next?: string;
+  previous?: string;
+}
+
 interface IUserService {
   getMe(): Observable<any>;
   updateMe(input: UpdateUserInput): Observable<any>;
+  search(fullName: string, limit: number, next?: string, previous?: string): Observable<any>;
 }
 
 class UserService implements IUserService {
@@ -46,6 +54,25 @@ class UserService implements IUserService {
       `,
       variables: {
         input,
+      },
+    };
+    return from(execute(link, operation) as ObservableInput<any>);
+  }
+
+  search(fullName: string, limit: number, next?: string, previous?: string) {
+    const operation = {
+      query: gql`
+        query search($fullName: String, $next: String, $previous: String, $limit: Int) {
+          search(
+            fullName: $fullName,
+            next: $next,
+            previous: $previous,
+            limit: $limit,
+          ) ${pagedUsers}
+        }
+      `,
+      variables: {
+        fullName, next, previous, limit,
       },
     };
     return from(execute(link, operation) as ObservableInput<any>);

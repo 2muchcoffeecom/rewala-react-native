@@ -12,3 +12,11 @@ export const userWithToken = `{
   authToken
   profile ${profile}
 }`;
+
+export const pagedUsers = `{
+  results ${user}
+  next
+  hasNext
+  previous
+  hasPrevious
+}`;

@@ -69,9 +69,57 @@ const updateAuthorizedUserEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const searchUsersEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<fromActions.Actions>(
+    fromActions.ActionTypes.SEARCH_USERS,
+  ),
+  map((action: ReturnType<typeof fromActions.Actions.searchUsers>) => {
+    const {data} = action.payload;
+
+    return usersRequestAC.search.Actions.search(data);
+  }),
+);
+
+const setUsersDataFromPagedUsersEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof usersRequestAC.search.Actions.searchSuccess>>(
+    usersRequestAC.search.ActionTypes.SEARCH_SUCCESS,
+  ),
+  map((action) => {
+    const users = action.payload.data.results;
+
+    return fromActions.Actions.setUsersData(users);
+  }),
+);
+
+const setPagedUsersIdsEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof usersRequestAC.search.Actions.searchSuccess>>(
+    usersRequestAC.search.ActionTypes.SEARCH_SUCCESS,
+  ),
+  map((action) => {
+    const pagedUsersData = action.payload.data;
+
+    return fromActions.Actions.setPagedUsersIds(pagedUsersData);
+  }),
+);
+
+const setPagedUsersOptionsEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof usersRequestAC.search.Actions.searchSuccess>>(
+    usersRequestAC.search.ActionTypes.SEARCH_SUCCESS,
+  ),
+  map((action) => {
+    const pagedUsersData = action.payload.data;
+
+    return fromActions.Actions.setPagedUsersOptions(pagedUsersData);
+  }),
+);
+
 export const usersEpics = [
   setUsersDataEpic,
   setUsersDataFromFollowRequestEpic,
   getAuthorizedUserEpic,
   updateAuthorizedUserEpic,
+  searchUsersEpic,
+  setUsersDataFromPagedUsersEpic,
+  setPagedUsersIdsEpic,
+  setPagedUsersOptionsEpic,
 ];
