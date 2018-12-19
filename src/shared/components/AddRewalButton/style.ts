@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
+import { shadowColor } from '../../../app.style';
 
 const style = StyleSheet.create({
   image: {
@@ -12,6 +13,17 @@ const style = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 4,
+    ...Platform.select({
+      ios: {
+        shadowColor,
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
 });
 
