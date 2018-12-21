@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 import { Observable } from 'rxjs';
 import { ofType, StateObservable } from 'redux-observable';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import {
   contactsRequestAC, authRequestAC, friendsRequestAC, usersRequestAC,
@@ -73,16 +73,23 @@ const searchUsersEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
     fromActions.ActionTypes.SEARCH_USERS,
   ),
+  debounceTime(500),
   map((action: ReturnType<typeof fromActions.Actions.searchUsers>) => {
     const {data} = action.payload;
 
-    return usersRequestAC.search.Actions.search(data);
+    if (data.next) {
+      return usersRequestAC.search.Actions.newSearchPage(data);
+    } else {
+      return usersRequestAC.search.Actions.newSearch(data);
+    }
   }),
 );
 
 const setUsersDataFromPagedUsersEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof usersRequestAC.search.Actions.searchSuccess>>(
-    usersRequestAC.search.ActionTypes.SEARCH_SUCCESS,
+  ofType<ReturnType<typeof usersRequestAC.search.Actions.newSearchSuccess> |
+    ReturnType<typeof usersRequestAC.search.Actions.newSearchPageSuccess>>(
+    usersRequestAC.search.ActionTypes.NEW_SEARCH_SUCCESS,
+    usersRequestAC.search.ActionTypes.NEW_SEARCH_PAGE_SUCCESS,
   ),
   map((action) => {
     const users = action.payload.data.results;
@@ -92,19 +99,27 @@ const setUsersDataFromPagedUsersEpic = (action$: Observable<Action>) => action$.
 );
 
 const setPagedUsersIdsEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof usersRequestAC.search.Actions.searchSuccess>>(
-    usersRequestAC.search.ActionTypes.SEARCH_SUCCESS,
+  ofType<ReturnType<typeof usersRequestAC.search.Actions.newSearchSuccess> |
+    ReturnType<typeof usersRequestAC.search.Actions.newSearchPageSuccess>>(
+    usersRequestAC.search.ActionTypes.NEW_SEARCH_SUCCESS,
+    usersRequestAC.search.ActionTypes.NEW_SEARCH_PAGE_SUCCESS,
   ),
   map((action) => {
     const pagedUsersData = action.payload.data;
 
-    return fromActions.Actions.setPagedUsersIds(pagedUsersData);
+    if (action.type === usersRequestAC.search.ActionTypes.NEW_SEARCH_SUCCESS) {
+      return fromActions.Actions.setPagedUsersIdsAfterNewSearch(pagedUsersData);
+    } else {
+      return fromActions.Actions.setPagedUsersIdsAfterNewSearchPage(pagedUsersData);
+    }
   }),
 );
 
 const setPagedUsersOptionsEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof usersRequestAC.search.Actions.searchSuccess>>(
-    usersRequestAC.search.ActionTypes.SEARCH_SUCCESS,
+  ofType<ReturnType<typeof usersRequestAC.search.Actions.newSearchSuccess> |
+    ReturnType<typeof usersRequestAC.search.Actions.newSearchPageSuccess>>(
+    usersRequestAC.search.ActionTypes.NEW_SEARCH_SUCCESS,
+    usersRequestAC.search.ActionTypes.NEW_SEARCH_PAGE_SUCCESS,
   ),
   map((action) => {
     const pagedUsersData = action.payload.data;

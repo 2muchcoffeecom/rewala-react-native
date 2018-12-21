@@ -7,11 +7,18 @@ export function reducer(state = initialState, action: fromActions.Actions): Prof
 
   switch (action.type) {
     case fromActions.ActionTypes.SET_PROFILES_DATA: {
-      const profiles = action.payload.data.map<ProfileModel>((user) => new ProfileModel(user));
+      const profilesFromAction = action.payload.data.map<ProfileModel>((user) => new ProfileModel(user));
+
+      const entities = unionBy(state.entities, profilesFromAction, '_id');
+      const newEntities = entities.map<ProfileModel>((entity) => {
+        const newProfile = profilesFromAction.find(profileFromAction => profileFromAction._id === entity._id);
+
+        return newProfile ? Object.assign({}, entity, newProfile) : entity;
+      });
 
       return {
         ...state,
-        entities: unionBy(profiles, state.entities, '_id'),
+        entities: newEntities,
       };
     }
 
