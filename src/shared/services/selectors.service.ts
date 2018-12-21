@@ -181,7 +181,7 @@ class SelectorsService implements ISelectorsService {
 
   getFriendProfileByUserId = createSelector(
     [
-      this.getMyFriendsProfiles,
+      (state: RootState) => state.profiles.entities,
       (
         state: RootState,
         props: NavigationInjectedProps<FriendNavigationProps>,
