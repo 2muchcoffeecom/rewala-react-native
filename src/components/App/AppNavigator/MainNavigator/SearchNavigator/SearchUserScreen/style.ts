@@ -6,13 +6,10 @@ const style = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingTop: 9,
-    // minHeight: fullHeight,
   },
   wraper: {
     alignItems: 'center',
     width: '100%',
-    paddingLeft: 20,
-    paddingRight: 20,
   },
   seacrhWraper: {
     width: '100%',
@@ -48,9 +45,13 @@ const style = StyleSheet.create({
   },
   searchDeleteButton: {
     position: 'absolute',
-    right: 30,
-    top: 12,
+    right: 23,
+    top: 5,
     zIndex: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 24,
+    height: 22.46,
   },
   searchCrossImage: {
     width: 10,
@@ -58,9 +59,16 @@ const style = StyleSheet.create({
   },
   friendList: {
     flex: 1,
-    paddingLeft: 4,
-    paddingRight: 4,
+    paddingLeft: 24,
+    paddingRight: 24,
     marginBottom: 40,
+  },
+  emptyText: {
+    fontFamily: fontFamilyRegular,
+    fontWeight: '400',
+    fontSize: 13,
+    textAlign: 'center',
+    color: blackTextColor,
   },
 });
 
