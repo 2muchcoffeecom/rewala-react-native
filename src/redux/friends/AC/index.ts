@@ -4,6 +4,7 @@ import { UpdateFollowRequestInput } from '../../../shared/services/friend.servic
 
 export enum ActionTypes {
   SET_FRIEND_DATA = 'SET_FRIEND_DATA',
+  DELETE_FRIEND_DATA = 'DELETE_FRIEND_DATA',
   ADD_FRIEND = 'ADD_FRIEND',
   UPDATE_FRIEND = 'UPDATE_FRIEND',
   GET_MY_FRIENDS = 'GET_MY_FRIENDS',
@@ -15,6 +16,9 @@ export enum ActionTypes {
 export const Actions = {
   setFriendsData: (data: FollowRequest[]) => {
     return createAction(ActionTypes.SET_FRIEND_DATA, {data});
+  },
+  deleteFriendData: (data: FollowRequest) => {
+    return createAction(ActionTypes.DELETE_FRIEND_DATA, {data});
   },
   addFriend: (data: string) => {
     return createAction(ActionTypes.ADD_FRIEND, {data});

@@ -16,11 +16,16 @@ const setFriendsDataEpic = (action$: Observable<Action>) => action$.pipe(
     friendsRequestAC.getMyFriends.ActionTypes.FRIEND_GET_MY_FOLLOW_REQUEST_SUCCESS,
   ),
   map((action) => {
-    const followRequests = Array.isArray(action.payload.data) ?
-      action.payload.data :
-      [action.payload.data];
 
-    return fromActions.Actions.setFriendsData(followRequests);
+    if (Array.isArray(action.payload.data)) {
+      return fromActions.Actions.setFriendsData(action.payload.data);
+    } else {
+      if (action.payload.data.status === FollowRequestStatus.DECLINED) {
+        return fromActions.Actions.deleteFriendData(action.payload.data);
+      } else {
+        return fromActions.Actions.setFriendsData([action.payload.data]);
+      }
+    }
   }),
 );
 
