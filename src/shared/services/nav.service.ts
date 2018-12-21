@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
+import { NavigationActions, NavigationContainerComponent, StackActions } from 'react-navigation';
 import { TextStyle, ViewStyle } from 'react-native';
 
 import { headerTitleStyle, headerStyle, headerTitleContainerStyle } from '../../app.style';
@@ -47,6 +47,15 @@ class NavService implements INavService {
   navigate(routeName: string, params?: any) {
     this.navigator && this.navigator.dispatch(
       NavigationActions.navigate({
+        routeName,
+        params,
+      }),
+    );
+  }
+
+  push(routeName: string, params?: any) {
+    this.navigator && this.navigator.dispatch(
+      StackActions.push({
         routeName,
         params,
       }),
