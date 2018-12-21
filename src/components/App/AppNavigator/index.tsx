@@ -1,4 +1,5 @@
 import React from 'react';
+import {View} from 'react-native';
 import {
   createNavigationContainer, createSwitchNavigator, NavigationContainerComponent,
 } from 'react-navigation';
@@ -6,7 +7,6 @@ import {
 import SplashScreen from './SplashScreen';
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
-import DoubleBackExit from '../../../shared/components/DoubleBackExit';
 import RootToast from '../../../shared/components/RootToast';
 import navService from '../../../shared/services/nav.service';
 
@@ -27,12 +27,12 @@ export default class AppNavigator extends React.Component {
 
   render() {
     return (
-      <DoubleBackExit>
+      <View style={{flex: 1}}>
         <NavigatorContainer
           ref={this.setNavigator}
         />
         <RootToast/>
-      </DoubleBackExit>
+      </View>
     );
   }
 }
