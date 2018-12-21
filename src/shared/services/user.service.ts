@@ -30,6 +30,7 @@ interface IUserService {
   getMe(): Observable<any>;
   updateMe(input: UpdateUserInput): Observable<any>;
   search(fullName: string, limit: number, next?: string, previous?: string): Observable<any>;
+  getUserFriends(userId: string): Observable<any>;
 }
 
 class UserService implements IUserService {
@@ -73,6 +74,20 @@ class UserService implements IUserService {
       `,
       variables: {
         fullName, next, previous, limit,
+      },
+    };
+    return from(execute(link, operation) as ObservableInput<any>);
+  }
+
+  getUserFriends(input?: string) {
+    const operation = {
+      query: gql`
+        query userFriends($input: String){
+          userFriends(input: $input) ${user}
+        }
+      `,
+      variables: {
+        input,
       },
     };
     return from(execute(link, operation) as ObservableInput<any>);

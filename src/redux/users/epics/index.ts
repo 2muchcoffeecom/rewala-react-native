@@ -14,13 +14,15 @@ const setUsersDataEpic = (action$: Observable<Action>) => action$.pipe(
     ReturnType<typeof authRequestAC.registration.Actions.registrationSuccess> |
     ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordSuccess> |
     ReturnType<typeof usersRequestAC.getMe.Actions.getMeSuccess> |
-    ReturnType<typeof usersRequestAC.updateMe.Actions.updateMeSuccess>>(
+    ReturnType<typeof usersRequestAC.updateMe.Actions.updateMeSuccess> |
+    ReturnType<typeof usersRequestAC.userFriends.Actions.getUserFriendsSuccess>>(
     contactsRequestAC.sendContacts.ActionTypes.CONTACTS_SEND_SUCCESS,
     authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
     authRequestAC.registration.ActionTypes.REGISTRATION_SUCCESS,
     authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_SUCCESS,
     usersRequestAC.getMe.ActionTypes.GET_ME_SUCCESS,
     usersRequestAC.updateMe.ActionTypes.UPDATE_ME_SUCCESS,
+    usersRequestAC.userFriends.ActionTypes.GET_USER_FRIENDS_SUCCESS,
   ),
   map((action) => {
     const users = Array.isArray(action.payload.data) ?
@@ -128,6 +130,28 @@ const setPagedUsersOptionsEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const getFriendsOfUserEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof fromActions.Actions.getFrinedsOfUser>>(
+    fromActions.ActionTypes.GET_FRIENDS_OF_USER,
+  ),
+  map((action) => {
+    const {data} = action.payload;
+
+    return usersRequestAC.userFriends.Actions.getUserFriends(data);
+  }),
+);
+
+const setFriendsIdsOfUserEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof usersRequestAC.userFriends.Actions.getUserFriendsSuccess>>(
+    usersRequestAC.userFriends.ActionTypes.GET_USER_FRIENDS_SUCCESS,
+  ),
+  map((action) => {
+    const friendsIds: string[] = action.payload.data.map<string>((user) => user._id);
+
+    return fromActions.Actions.setFriendsIdsOfUser(friendsIds);
+  }),
+);
+
 export const usersEpics = [
   setUsersDataEpic,
   setUsersDataFromFollowRequestEpic,
@@ -137,4 +161,6 @@ export const usersEpics = [
   setUsersDataFromPagedUsersEpic,
   setPagedUsersIdsEpic,
   setPagedUsersOptionsEpic,
+  getFriendsOfUserEpic,
+  setFriendsIdsOfUserEpic,
 ];

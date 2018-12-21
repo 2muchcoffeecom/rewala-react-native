@@ -61,6 +61,15 @@ export function reducer(state = initialState, action: fromActions.Actions): User
       };
     }
 
+    case fromActions.ActionTypes.SET_FRIENDS_IDS_OF_USER: {
+      const {data} = action.payload;
+
+      return {
+        ...state,
+        userFriendsIds: data,
+      };
+    }
+
     default:
       return state;
   }

@@ -40,6 +40,7 @@ export interface GraphQlResponse {
     changePassword: UserResponse,
     logout: boolean,
     search: PagedUserModel,
+    userFriends: UserResponse[],
   };
 }
 

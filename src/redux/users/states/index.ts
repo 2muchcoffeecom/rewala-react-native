@@ -10,6 +10,7 @@ export interface PagedUsersOptions {
 export interface UsersState {
   pagedUsersIds: string[];
   pagedUsersOptions: PagedUsersOptions;
+  userFriendsIds: string[];
   entities: UserModel[];
 }
 
@@ -21,5 +22,6 @@ export const initialState: UsersState = {
     previous: null,
     hasPrevious: false,
   },
+  userFriendsIds: [],
   entities: [],
 };

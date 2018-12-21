@@ -8,9 +8,11 @@ export enum ActionTypes {
   SET_USERS_DATA = 'SET_USERS_DATA',
   SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH = 'SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH',
   SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH_PAGE = 'SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH_PAGE',
+  SET_FRIENDS_IDS_OF_USER = 'SET_FRIENDS_IDS_OF_USER',
   DELETE_PAGED_USERS_IDS = 'DELETE_PAGED_USERS_IDS',
   SET_PAGED_USERS_OPTIONS = 'SET_PAGED_USERS_OPTIONS',
   GET_AUTHORIZED_USER = 'GET_AUTHORIZED_USER',
+  GET_FRIENDS_OF_USER = 'GET_FRIENDS_OF_USER',
   UPDATE_AUTHORIZED_USER = 'UPDATE_AUTHORIZED_USER',
   SEARCH_USERS = 'SEARCH_USERS',
 }
@@ -25,6 +27,9 @@ export const Actions = {
   setPagedUsersIdsAfterNewSearchPage: (data: PagedUserModel) => {
     return createAction(ActionTypes.SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH_PAGE, {data});
   },
+  setFriendsIdsOfUser: (data: string[]) => {
+    return createAction(ActionTypes.SET_FRIENDS_IDS_OF_USER, {data});
+  },
   deletePagedUsersIds: () => {
     return createAction(ActionTypes.DELETE_PAGED_USERS_IDS);
   },
@@ -33,6 +38,9 @@ export const Actions = {
   },
   getAuthorizedUser: () => {
     return createAction(ActionTypes.GET_AUTHORIZED_USER);
+  },
+  getFrinedsOfUser: (data?: string) => {
+    return createAction(ActionTypes.GET_FRIENDS_OF_USER, {data});
   },
   updateAuthorizedUser: (data: UpdateUserInput, resolve?: Resolve<UserResponse>, reject?: Reject) => {
     return createAction(ActionTypes.UPDATE_AUTHORIZED_USER, {data, resolve, reject});
