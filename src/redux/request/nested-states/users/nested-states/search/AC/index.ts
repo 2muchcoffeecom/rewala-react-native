@@ -4,18 +4,28 @@ import { SearchUserInput } from '../../../../../../../shared/services/user.servi
 import { RequestError } from '../../../../../states';
 
 export enum ActionTypes {
-  SEARCH = 'SEARCH',
-  SEARCH_SUCCESS = 'SEARCH_SUCCESS',
-  SEARCH_FAIL = 'SEARCH_FAIL',
+  NEW_SEARCH = 'NEW_SEARCH',
+  NEW_SEARCH_SUCCESS = 'NEW_SEARCH_SUCCESS',
+  NEW_SEARCH_FAIL = 'NEW_SEARCH_FAIL',
+  NEW_SEARCH_PAGE = 'NEW_SEARCH_PAGE',
+  NEW_SEARCH_PAGE_SUCCESS = 'NEW_SEARCH_PAGE_SUCCESS',
+  NEW_SEARCH_PAGE_FAIL = 'NEW_SEARCH_PAGE_FAIL',
 }
 
 export const Actions = {
-  search: (data: SearchUserInput) => createAction(ActionTypes.SEARCH, {data}),
-  searchSuccess: (data: PagedUserModel) => {
-    return createAction(ActionTypes.SEARCH_SUCCESS, {data});
+  newSearch: (data: SearchUserInput) => createAction(ActionTypes.NEW_SEARCH, {data}),
+  newSearchSuccess: (data: PagedUserModel) => {
+    return createAction(ActionTypes.NEW_SEARCH_SUCCESS, {data});
   },
-  searchFail: (errors: RequestError | string) => {
-    return createAction(ActionTypes.SEARCH_FAIL, {errors});
+  newSearchFail: (errors: RequestError | string) => {
+    return createAction(ActionTypes.NEW_SEARCH_FAIL, {errors});
+  },
+  newSearchPage: (data: SearchUserInput) => createAction(ActionTypes.NEW_SEARCH_PAGE, {data}),
+  newSearchPageSuccess: (data: PagedUserModel) => {
+    return createAction(ActionTypes.NEW_SEARCH_PAGE_SUCCESS, {data});
+  },
+  newSearchPageFail: (errors: RequestError | string) => {
+    return createAction(ActionTypes.NEW_SEARCH_PAGE_FAIL, {errors});
   },
 };
 

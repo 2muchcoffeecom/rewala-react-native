@@ -6,7 +6,8 @@ import { Reject, Resolve } from '../../request/states';
 
 export enum ActionTypes {
   SET_USERS_DATA = 'SET_USERS_DATA',
-  SET_PAGED_USERS_IDS = 'SET_PAGED_USERS_IDS',
+  SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH = 'SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH',
+  SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH_PAGE = 'SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH_PAGE',
   DELETE_PAGED_USERS_IDS = 'DELETE_PAGED_USERS_IDS',
   SET_PAGED_USERS_OPTIONS = 'SET_PAGED_USERS_OPTIONS',
   GET_AUTHORIZED_USER = 'GET_AUTHORIZED_USER',
@@ -18,8 +19,11 @@ export const Actions = {
   setUsersData: (data: UserResponse[]) => {
     return createAction(ActionTypes.SET_USERS_DATA, {data});
   },
-  setPagedUsersIds: (data: PagedUserModel) => {
-    return createAction(ActionTypes.SET_PAGED_USERS_IDS, {data});
+  setPagedUsersIdsAfterNewSearch: (data: PagedUserModel) => {
+    return createAction(ActionTypes.SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH, {data});
+  },
+  setPagedUsersIdsAfterNewSearchPage: (data: PagedUserModel) => {
+    return createAction(ActionTypes.SET_PAGED_USERS_IDS_AFTER_NEW_SEARCH_PAGE, {data});
   },
   deletePagedUsersIds: () => {
     return createAction(ActionTypes.DELETE_PAGED_USERS_IDS);

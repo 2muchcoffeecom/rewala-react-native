@@ -5,7 +5,8 @@ import { RequestNestedState } from '../../../states';
 export function reducer(state = initialState, action: fromActions.Actions): RequestNestedState {
 
   switch (action.type) {
-    case fromActions.ActionTypes.SEARCH:
+    case fromActions.ActionTypes.NEW_SEARCH:
+    case fromActions.ActionTypes.NEW_SEARCH_PAGE:
       return {
         loading: true,
         loaded: false,
@@ -13,7 +14,8 @@ export function reducer(state = initialState, action: fromActions.Actions): Requ
         data: null,
       };
 
-    case fromActions.ActionTypes.SEARCH_SUCCESS: {
+    case fromActions.ActionTypes.NEW_SEARCH_SUCCESS:
+    case fromActions.ActionTypes.NEW_SEARCH_PAGE_SUCCESS: {
       const {payload} = action;
 
       return {
@@ -24,7 +26,8 @@ export function reducer(state = initialState, action: fromActions.Actions): Requ
       };
     }
 
-    case fromActions.ActionTypes.SEARCH_FAIL: {
+    case fromActions.ActionTypes.NEW_SEARCH_FAIL:
+    case fromActions.ActionTypes.NEW_SEARCH_PAGE_FAIL: {
       const {payload} = action;
 
       return {

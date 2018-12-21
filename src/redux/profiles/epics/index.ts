@@ -52,8 +52,10 @@ const setProfilesDataFromFollowRequestEpic = (
 );
 
 const setProfilesDataFromPagedUsersEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof usersRequestAC.search.Actions.searchSuccess>>(
-    usersRequestAC.search.ActionTypes.SEARCH_SUCCESS,
+  ofType<ReturnType<typeof usersRequestAC.search.Actions.newSearchSuccess> |
+    ReturnType<typeof usersRequestAC.search.Actions.newSearchPageSuccess>>(
+    usersRequestAC.search.ActionTypes.NEW_SEARCH_SUCCESS,
+    usersRequestAC.search.ActionTypes.NEW_SEARCH_PAGE_SUCCESS,
   ),
   map((action) => {
     const users = action.payload.data.results;
