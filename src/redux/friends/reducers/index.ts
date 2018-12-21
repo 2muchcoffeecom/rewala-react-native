@@ -7,13 +7,22 @@ export function reducer(state = initialState, action: fromActions.Actions): Frie
 
   switch (action.type) {
     case fromActions.ActionTypes.SET_FRIEND_DATA: {
-      const followRequests = action.payload.data.map<FollowRequest>(
+      const followRequestsFromAction = action.payload.data.map<FollowRequest>(
         (followRequest) => new FollowRequest(followRequest),
       );
 
+      const entities = unionBy(state.entities, followRequestsFromAction, '_id');
+      const newEntities = entities.map<FollowRequest>((entity) => {
+        const newFollowRequest = followRequestsFromAction.find(
+          followRequestFromAction => followRequestFromAction._id === entity._id,
+        );
+
+        return newFollowRequest ? Object.assign({}, entity, newFollowRequest) : entity;
+      });
+
       return {
         ...state,
-        entities: unionBy(followRequests, state.entities, '_id'),
+        entities: newEntities,
       };
     }
 
