@@ -4,7 +4,7 @@ import { UserModel } from '../models/user.model';
 import { ProfileModel } from '../models/profile.model';
 import { NavigationInjectedProps } from 'react-navigation';
 import { FriendNavigationProps, OwnProps as FriendListItemOwnProp } from '../components/FriendListItem';
-import { FollowRequest, FollowRequestStatus } from '../models/followRequest.model';
+import { FollowRequest } from '../models/followRequest.model';
 
 interface ISelectorsService {
   getUsersFromContacts: OutputSelector<RootState, UserModel[],
@@ -20,12 +20,14 @@ interface ISelectorsService {
   getFriendFollowRequestByUserId: OutputParametricSelector<RootState,
     FriendListItemOwnProp,
     FollowRequest | undefined,
-    (res1: FollowRequest[], res2: string) => FollowRequest | undefined>;
-  getFriendFollowRequestById: OutputParametricSelector<RootState,
+    (res1: FollowRequest[], res2: string, res3: string) => FollowRequest | undefined>;
+  getFriendFollowRequestByUserIdFromNavProps: OutputParametricSelector<RootState,
     NavigationInjectedProps<FriendNavigationProps>,
     FollowRequest | undefined,
     (res1: FollowRequest[], res2: string, res3: string) => FollowRequest | undefined>;
   getMyFriendsProfiles: OutputSelector<RootState, ProfileModel[],
+    (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
+  getUserFriendsProfiles: OutputSelector<RootState, ProfileModel[],
     (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
   getPagedUsersProfiles: OutputSelector<RootState, ProfileModel[],
     (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
@@ -104,52 +106,58 @@ class SelectorsService implements ISelectorsService {
   getFriendFollowRequestByUserId = createSelector(
     [
       (state: RootState) => state.friends.entities,
+      (state: RootState) => state.auth.authorizedUserId,
       (
         state: RootState,
         props: FriendListItemOwnProp,
       ) => props.userId,
     ],
-    (followRequests, userId) => followRequests.find(
-      followRequest => followRequest.toUserId === userId || followRequest.fromUserId === userId,
-    ),
+    (followRequests, authorizedUserId, userId) => {
+      return followRequests.find(followRequest => {
+          return (followRequest.toUserId === userId && followRequest.fromUserId === authorizedUserId) ||
+            (followRequest.fromUserId === userId && followRequest.toUserId === authorizedUserId);
+        },
+      );
+    },
   );
 
-  getFriendFollowRequestById = createSelector(
+  getFriendFollowRequestByUserIdFromNavProps = createSelector(
     [
       (state: RootState) => state.friends.entities,
       (state: RootState) => state.auth.authorizedUserId,
       (
         state: RootState,
         props: NavigationInjectedProps<FriendNavigationProps>,
-      ) => props.navigation.getParam('friendFollowRequestId', ''),
+      ) => props.navigation.getParam('userId', ''),
     ],
-    (followRequests, authorizedUserId, followRequestId) => {
-      const currentFollowRequest = followRequests.find(
-        followRequest => followRequest._id === followRequestId,
+    (followRequests, authorizedUserId, userId) => {
+      return followRequests.find(followRequest => {
+          return (followRequest.toUserId === userId && followRequest.fromUserId === authorizedUserId) ||
+            (followRequest.fromUserId === userId && followRequest.toUserId === authorizedUserId);
+        },
       );
-      const newFollowRequest = followRequests
-        .filter(followRequest => followRequest._id !== followRequestId)
-        .find((followRequest) => {
-          let toUserId;
-          if (currentFollowRequest) {
-            toUserId = currentFollowRequest.toUserId === authorizedUserId ?
-              currentFollowRequest.fromUserId :
-              currentFollowRequest.toUserId;
-          }
-
-          return followRequest.fromUserId === authorizedUserId &&
-            followRequest.toUserId === toUserId &&
-            followRequest.status !== FollowRequestStatus.DECLINED;
-        });
-
-      return currentFollowRequest && currentFollowRequest.status !== FollowRequestStatus.DECLINED ?
-        currentFollowRequest : newFollowRequest;
     },
   );
 
   getMyFriendsProfiles = createSelector(
     [
       (state: RootState) => state.friends.myFriendsIds,
+      (state: RootState) => state.profiles.entities,
+    ],
+    (userIds, profiles) => {
+      if (userIds.length !== 0) {
+        return profiles.filter(profile => {
+          return !!userIds.find((userId) => userId === profile.userId);
+        });
+      } else {
+        return [];
+      }
+    },
+  );
+
+  getUserFriendsProfiles = createSelector(
+    [
+      (state: RootState) => state.users.userFriendsIds,
       (state: RootState) => state.profiles.entities,
     ],
     (userIds, profiles) => {

@@ -11,7 +11,6 @@ export const getUserFriendsRequestEpic = (action$: Observable<Action>) => action
   switchMap((action: ReturnType<typeof fromActions.Actions.getUserFriends>) =>
     userService.getUserFriends(action.payload.data).pipe(
       map((resp: GraphQlResponse) => {
-        console.log(resp);
         if (resp.errors) {
 
           return fromActions.Actions.getUserFriendsFail(resp.errors[0]);

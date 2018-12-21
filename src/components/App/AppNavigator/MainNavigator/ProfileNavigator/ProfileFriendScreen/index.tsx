@@ -27,7 +27,7 @@ interface StateProps {
 const mapStateToProps = (state: RootState, props: Props): StateProps => ({
   friendProfile: selectorsService.getFriendProfileByUserId(state, props),
   authorizedUserId: state.auth.authorizedUserId,
-  friendFollowRequest: selectorsService.getFriendFollowRequestById(state, props),
+  friendFollowRequest: selectorsService.getFriendFollowRequestByUserIdFromNavProps(state, props),
 });
 
 interface NavigationParams extends FriendNavigationProps {
