@@ -54,15 +54,14 @@ const style = StyleSheet.create({
     color: blackTextColor,
   },
   countryPickerImg: {
-    position: 'absolute',
-    left: -20,
-    top: -5,
     width: 20,
     height: 13.3,
     marginTop: -2,
   },
   countryPickerTouchFlag: {
-    width: 73,
+    alignItems: 'flex-start',
+    marginLeft: 15,
+    width: 58,
     height: 35,
   },
   phoneField: {
