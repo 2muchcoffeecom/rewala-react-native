@@ -26,10 +26,6 @@ const style = StyleSheet.create({
     fontSize: 13,
     color: blackTextColor,
   },
-  friendButtonWraper: {
-    width: 100,
-    height: 30,
-  },
 });
 
 export default style;

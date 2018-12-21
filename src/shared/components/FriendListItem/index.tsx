@@ -7,7 +7,7 @@ import ButtonFollowRequest from '../ButtonFollowRequest';
 
 import { RootState } from '../../../redux/store';
 import { apiEndpoint } from '../../constants/apiEndpoint';
-import { FollowRequest, FollowRequestStatus } from '../../models/followRequest.model';
+import { FollowRequest } from '../../models/followRequest.model';
 
 import navService from '../../services/nav.service';
 import selectorsService from '../../services/selectors.service';
@@ -34,72 +34,68 @@ const mapStateToProps = (state: RootState, props: Props): StateProps => ({
 
 type Props = OwnProps & StateProps;
 
-const FriendListItem: React.FunctionComponent<Props> = (props) => {
-  const {
-    avatarPath, fullName, userId, friend, withFriendProfile,
-  } = props;
+class FriendListItem extends React.PureComponent<Props> {
+  render() {
 
-  const isFriendAccepted = !!(friend && friend.status === FollowRequestStatus.ACCEPTED);
-  const isFriendDeclined = !!(friend && friend.status === FollowRequestStatus.DECLINED);
-  const isFriendPendingForUser = !!(friend && friend.status === FollowRequestStatus.PENDING);
+    const {
+      avatarPath, fullName, userId, friend, withFriendProfile,
+    } = this.props;
 
-  const onPressFriend = () => {
-    const params: FriendNavigationProps = {
-      userId: props.userId,
-      friendFollowRequestId: props.friend ? props.friend._id : '',
+    const onPressFriend = () => {
+      const params: FriendNavigationProps = {
+        userId: this.props.userId,
+        friendFollowRequestId: this.props.friend ? this.props.friend._id : '',
+      };
+      navService.push('ProfileFriendScreen', params);
     };
-    navService.navigate('ProfileFriendScreen', params);
-  };
 
-  return (
-    <View style={style.friendListItem}>
-      {
-        withFriendProfile ?
-          (
-            <TouchableOpacity
-              onPress={onPressFriend}
-              style={style.friendInfoWraper}
-            >
-              <Image
-                source={avatarPath ?
-                  {uri: `${apiEndpoint}/${avatarPath}`} :
-                  require('../../../../assets/avatar-placeholder.png')}
-                style={style.friendAvatar}
-              />
-              <Text
-                style={style.friendName}
+    return (
+      <View style={style.friendListItem}>
+        {
+          withFriendProfile ?
+            (
+              <TouchableOpacity
+                onPress={onPressFriend}
+                style={style.friendInfoWraper}
               >
-                {fullName}
-              </Text>
-            </TouchableOpacity>
-          ) :
-          (
-            <View style={style.friendInfoWraper}>
-              <Image
-                source={avatarPath ?
-                  {uri: `${apiEndpoint}/${avatarPath}`} :
-                  require('../../../../assets/avatar-placeholder.png')}
-                style={style.friendAvatar}
-              />
-              <Text
-                style={style.friendName}
-              >
-                {fullName}
-              </Text>
-            </View>
-          )
-      }
-      <View style={style.friendButtonWraper}>
-        <ButtonFollowRequest
-          isFriendFollowRequestDeclined={!friend || isFriendDeclined}
-          isFriendFollowRequestAccepted={isFriendAccepted}
-          isFriendFollowRequestPendingForUser={isFriendPendingForUser}
-          friendFollowRequest={friend}
-          userId={userId}
-        />
+                <Image
+                  source={avatarPath ?
+                    {uri: `${apiEndpoint}/${avatarPath}`} :
+                    require('../../../../assets/avatar-placeholder.png')}
+                  style={style.friendAvatar}
+                />
+                <Text
+                  style={style.friendName}
+                >
+                  {fullName}
+                </Text>
+              </TouchableOpacity>
+            ) :
+            (
+              <View style={style.friendInfoWraper}>
+                <Image
+                  source={avatarPath ?
+                    {uri: `${apiEndpoint}/${avatarPath}`} :
+                    require('../../../../assets/avatar-placeholder.png')}
+                  style={style.friendAvatar}
+                />
+                <Text
+                  style={style.friendName}
+                >
+                  {fullName}
+                </Text>
+              </View>
+            )
+        }
+        <View>
+          <ButtonFollowRequest
+            friendFollowRequest={friend}
+            userId={userId}
+          />
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+}
 
 export default connect<StateProps>(mapStateToProps)(FriendListItem);

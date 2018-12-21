@@ -8,22 +8,27 @@ import RegularButton from '../RegularButton';
 import { UpdateFollowRequestInput } from '../../services/friend.service';
 import { Dispatch } from 'redux';
 import { FollowRequest, FollowRequestStatus } from '../../models/followRequest.model';
+import { RootState } from '../../../redux/store';
 
 import { Actions as friendsActions } from '../../../redux/friends/AC';
 
 interface OwnProps {
   userId: string;
   friendFollowRequest?: FollowRequest;
-  isFriendFollowRequestAccepted?: boolean;
-  isFriendFollowRequestDeclined?: boolean;
-  isFriendFollowRequestPendingForMe?: boolean;
-  isFriendFollowRequestPendingForUser?: boolean;
+}
+
+interface StateProps {
+  authorizedUserId: string;
 }
 
 interface DispatchProps {
   addFriend(data: string): void;
   updateFriend(data: UpdateFollowRequestInput): void;
 }
+
+const mapStateToProps = (state: RootState): StateProps => ({
+  authorizedUserId: state.auth.authorizedUserId,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps => (
   {
@@ -36,15 +41,25 @@ const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps =
   }
 );
 
-type Props = OwnProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 const FriendsRewals: React.FunctionComponent<Props> = (props) => {
   const {
-    isFriendFollowRequestAccepted,
-    isFriendFollowRequestDeclined,
-    isFriendFollowRequestPendingForMe,
-    isFriendFollowRequestPendingForUser,
+    friendFollowRequest, authorizedUserId,
   } = props;
+
+  const isFriendFollowRequestAccepted = !!friendFollowRequest &&
+    friendFollowRequest.status === FollowRequestStatus.ACCEPTED;
+  const isFriendFollowRequestDeclined = !friendFollowRequest ||
+    (!!friendFollowRequest &&
+      friendFollowRequest.status === FollowRequestStatus.DECLINED);
+  const isFriendFollowRequestPendingForUser = !!friendFollowRequest &&
+    friendFollowRequest.status === FollowRequestStatus.PENDING &&
+    friendFollowRequest.fromUserId === authorizedUserId;
+
+  const isFriendFollowRequestPendingForMe = !!friendFollowRequest &&
+    friendFollowRequest.status === FollowRequestStatus.PENDING &&
+    friendFollowRequest.toUserId === authorizedUserId;
 
   const onPressAddFriend = () => {
     props.addFriend(props.userId);
@@ -67,6 +82,10 @@ const FriendsRewals: React.FunctionComponent<Props> = (props) => {
 
     props.updateFriend(input);
   };
+
+  if (props.userId === props.authorizedUserId) {
+    return null;
+  }
 
   return (
     <View>
@@ -130,4 +149,4 @@ const FriendsRewals: React.FunctionComponent<Props> = (props) => {
   );
 };
 
-export default connect<null, DispatchProps>(null, mapDispatchToProps)(FriendsRewals);
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(FriendsRewals);

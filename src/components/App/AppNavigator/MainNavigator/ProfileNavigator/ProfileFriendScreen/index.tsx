@@ -109,32 +109,16 @@ class ProfileFriendScreen extends React.Component<Props, State> {
   }
 
   onPressButtonFriends = () => {
-    navService.navigate('FriendsScreen');
+    const params: FriendNavigationProps = {
+      userId: this.props.navigation.getParam('userId'),
+      friendFollowRequestId: this.props.navigation.getParam('friendFollowRequestId'),
+    };
+    navService.push('FriendsScreen', params);
   }
 
   isFriendFollowRequestAccepted = (): boolean => {
     const {friendFollowRequest} = this.props;
     return !!friendFollowRequest && friendFollowRequest.status === FollowRequestStatus.ACCEPTED;
-  }
-
-  isFriendFollowRequestPendingForMe = (): boolean => {
-    const {friendFollowRequest} = this.props;
-    return !!friendFollowRequest &&
-      friendFollowRequest.status === FollowRequestStatus.PENDING &&
-      friendFollowRequest.toUserId === this.props.authorizedUserId;
-  }
-
-  isFriendFollowRequestPendingForUser = (): boolean => {
-    const {friendFollowRequest} = this.props;
-    return !!friendFollowRequest &&
-      friendFollowRequest.status === FollowRequestStatus.PENDING &&
-      friendFollowRequest.fromUserId === this.props.authorizedUserId;
-  }
-
-  isFriendFollowRequestDeclined = (): boolean => {
-    const {friendFollowRequest} = this.props;
-    return (!!friendFollowRequest &&
-      friendFollowRequest.status === FollowRequestStatus.DECLINED) || !friendFollowRequest;
   }
 
   getButtonShowFriend() {
@@ -205,10 +189,6 @@ class ProfileFriendScreen extends React.Component<Props, State> {
               <ButtonFollowRequest
                 userId={userId}
                 friendFollowRequest={friendFollowRequest}
-                isFriendFollowRequestAccepted={this.isFriendFollowRequestAccepted()}
-                isFriendFollowRequestDeclined={this.isFriendFollowRequestDeclined()}
-                isFriendFollowRequestPendingForMe={this.isFriendFollowRequestPendingForMe()}
-                isFriendFollowRequestPendingForUser={this.isFriendFollowRequestPendingForUser()}
               />
             </View>
           </View>
