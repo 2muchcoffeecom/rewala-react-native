@@ -47,12 +47,9 @@ const FriendsRewals: React.FunctionComponent<Props> = (props) => {
   const {
     friendFollowRequest, authorizedUserId,
   } = props;
-
   const isFriendFollowRequestAccepted = !!friendFollowRequest &&
     friendFollowRequest.status === FollowRequestStatus.ACCEPTED;
-  const isFriendFollowRequestDeclined = !friendFollowRequest ||
-    (!!friendFollowRequest &&
-      friendFollowRequest.status === FollowRequestStatus.DECLINED);
+  const isFriendFollowRequestDeclined = !friendFollowRequest;
   const isFriendFollowRequestPendingForUser = !!friendFollowRequest &&
     friendFollowRequest.status === FollowRequestStatus.PENDING &&
     friendFollowRequest.fromUserId === authorizedUserId;
