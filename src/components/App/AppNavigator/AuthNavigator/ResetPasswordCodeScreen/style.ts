@@ -22,11 +22,11 @@ const style = StyleSheet.create({
   },
   changePasswordWraper: {
     height: 40,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   loginWraper: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
   },
   image: {
     width: 160,
@@ -40,6 +40,8 @@ const style = StyleSheet.create({
     color: greyColor,
   },
   textLink: {
+    paddingTop: 10,
+    paddingBottom: 10,
     fontSize: 11,
     color: mainColor,
   },

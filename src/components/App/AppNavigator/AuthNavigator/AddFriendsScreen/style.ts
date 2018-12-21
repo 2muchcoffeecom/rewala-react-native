@@ -43,9 +43,13 @@ const style = StyleSheet.create({
   },
   searchDeleteButton: {
     position: 'absolute',
-    right: 10,
-    top: 12,
+    right: 3,
+    top: 5,
     zIndex: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 24,
+    height: 22.46,
   },
   searchCrossImage: {
     width: 10,

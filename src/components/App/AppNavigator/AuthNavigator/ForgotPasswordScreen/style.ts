@@ -26,7 +26,7 @@ const style = StyleSheet.create({
   },
   loginWraper: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
   },
   image: {
     width: 160,
