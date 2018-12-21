@@ -3,36 +3,47 @@ import { connect } from 'react-redux';
 import style from './style';
 
 import { View, ScrollView, TextInput, TouchableOpacity, Image, FlatList, ListRenderItem } from 'react-native';
-import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../../shared/components/FriendListItem';
+import FriendListItem, {
+  FriendNavigationProps,
+  OwnProps as IFriendListItem,
+} from '../../../../../../shared/components/FriendListItem';
 
+import { NavigationInjectedProps } from 'react-navigation';
 import { RootState } from '../../../../../../redux/store';
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
 import { Dispatch } from 'redux';
 
 import selectorsService from '../../../../../../shared/services/selectors.service';
 import { Actions as friendsActions } from '../../../../../../redux/friends/AC';
+import { Actions as usersActions } from '../../../../../../redux/users/AC';
 
 interface StateProps {
-  friendsProfiles: ProfileModel[];
+  myFriendsProfiles: ProfileModel[];
+  userFriendsProfiles: ProfileModel[];
 }
 
 interface DispatchProps {
-  getMyFriends(): void;
+  getMyFollowRequests(): void;
+  getUserFriends(userId?: string): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  friendsProfiles: selectorsService.getMyFriendsProfiles(state),
+  myFriendsProfiles: selectorsService.getMyFriendsProfiles(state),
+  userFriendsProfiles: selectorsService.getUserFriendsProfiles(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps => (
+const mapDispatchToProps = (dispatch: Dispatch<friendsActions | usersActions>): DispatchProps => (
   {
-    getMyFriends: () => {
+    getMyFollowRequests: () => {
       dispatch(friendsActions.getMyFriends());
+    },
+    getUserFriends: (userId) => {
+      dispatch(usersActions.getFrinedsOfUser(userId));
     },
   }
 );
 
-type Props = StateProps & DispatchProps;
+type Props = StateProps & DispatchProps & NavigationInjectedProps<FriendNavigationProps>;
 
 interface State {
   searchQuery: string;
@@ -44,12 +55,17 @@ class FriendsScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       searchQuery: '',
-      filteredFriendProfiles: this.props.friendsProfiles,
+      filteredFriendProfiles: this.props.navigation.getParam('userId') ?
+        this.props.userFriendsProfiles :
+        this.props.myFriendsProfiles,
     };
   }
 
   componentDidMount() {
-    this.props.getMyFriends();
+    const userId = this.props.navigation.getParam('userId');
+
+    this.props.getMyFollowRequests();
+    this.props.getUserFriends(userId);
   }
 
   onChangeSearchValue = (value: string) => {
@@ -66,9 +82,13 @@ class FriendsScreen extends React.Component<Props, State> {
   }
 
   getFilteredProfiles = (query: string) => {
-    return this.props.friendsProfiles.filter(
-      (profile) => profile.fullName.toLowerCase().includes(query),
-    );
+    return this.props.navigation.getParam('userId') ?
+      this.props.userFriendsProfiles.filter(
+        (profile) => profile.fullName.toLowerCase().includes(query),
+      ) :
+      this.props.myFriendsProfiles.filter(
+        (profile) => profile.fullName.toLowerCase().includes(query),
+      );
   }
 
   private keyExtractor = (item: IFriendListItem) => `${item.userId}`;
@@ -119,7 +139,9 @@ class FriendsScreen extends React.Component<Props, State> {
               style={style.friendList}
               data={
                 this.state.searchQuery === '' ?
-                  this.props.friendsProfiles :
+                  this.props.navigation.getParam('userId') ?
+                    this.props.userFriendsProfiles :
+                    this.props.myFriendsProfiles :
                   this.state.filteredFriendProfiles
               }
               keyExtractor={this.keyExtractor}
