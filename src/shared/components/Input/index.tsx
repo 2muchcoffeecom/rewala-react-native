@@ -21,7 +21,7 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
   const {
     placeholder, labelText, keyboard, editable, isSecureTextEntry, type, maxLength,
     input: {onChange, onFocus, ...restInput},
-    meta: {touched, error},
+    meta: {touched, error, active},
   } = props;
 
   const handleChangeNumberInput = (text: string): void => {
@@ -42,18 +42,21 @@ export const Input: React.FunctionComponent<Props> = (props: Props) => {
         editable={editable}
         keyboardType={keyboard}
         containerStyle={
-          touched && error ?
+          !active && touched && error ?
             [style.inputContainer, style.inputContainerError] :
             style.inputContainer
         }
         inputStyle={style.inputText}
         maxLength={maxLength && maxLength}
       />
-      {touched && (error &&
+      {
+        !active && touched && (
+          error &&
           <Text style={style.errorText}>
             {error}
           </Text>
-      )}
+        )
+      }
     </View>
   );
 };
