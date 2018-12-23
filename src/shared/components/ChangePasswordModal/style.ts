@@ -10,7 +10,7 @@ const style = StyleSheet.create({
   },
   modalContainer: {
     width: 292,
-    height: 376,
+    minHeight: 376,
     backgroundColor: whiteColor,
     borderRadius: 4,
   },
@@ -43,6 +43,7 @@ const style = StyleSheet.create({
     alignSelf: 'center',
     width: 160,
     height: 40,
+    marginBottom: 20,
   },
 });
 
