@@ -27,10 +27,12 @@ export interface NewPasswordFormData {
 }
 
 interface StateProps {
+  formValues: NewPasswordFormData;
   formValuesResetPasswordCode: ResetPasswordCodeFormData;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
+  formValues: getFormValues('newPassword')(state) as NewPasswordFormData,
   formValuesResetPasswordCode: getFormValues('resetPasswordCode')(state) as ResetPasswordCodeFormData,
 });
 
@@ -57,7 +59,7 @@ class NewPasswordScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, invalid, submitting} = this.props;
+    const {handleSubmit, formValues, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -90,7 +92,12 @@ class NewPasswordScreen extends React.Component<Props> {
           <View style={style.buttonWraper}>
             <RegularButton
               title='SAVE PASSWORD'
-              disabled={invalid || submitting}
+              disabled={
+                !formValues ||
+                !formValues.password ||
+                !formValues.passwordConfirm ||
+                submitting
+              }
               onPress={handleSubmit(this.submitNewPassword)}
             />
           </View>

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Dispatch } from 'redux';
+import { compose, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import style from './style';
 
 import { View, ScrollView, Image, Text } from 'react-native';
-import { Field, InjectedFormProps, reduxForm, SubmissionError } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -19,11 +20,12 @@ import { passwordRegistration, confirmPassword } from '../../../../../shared/val
 import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { UserInput } from '../../../../../shared/services/auth.service';
+import { RootState } from '../../../../../redux/store';
+import { UserResponse } from '../../../../../shared/models/user.model';
+import { RequestError } from '../../../../../redux/request/states';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
 import deviceService from '../../../../../shared/services/device.service';
-import { UserResponse } from '../../../../../shared/models/user.model';
-import { RequestError } from '../../../../../redux/request/states';
 
 export interface RegistrationFormData {
   fullName: string;
@@ -33,12 +35,20 @@ export interface RegistrationFormData {
   passwordConfirm: string;
 }
 
+interface StateProps {
+  formValues: RegistrationFormData;
+}
+
+const mapStateToProps = (state: RootState): StateProps => ({
+  formValues: getFormValues('registration')(state) as RegistrationFormData,
+});
+
 interface State {
   cca2: string;
   callingCode: string;
 }
 
-type Props = InjectedFormProps<RegistrationFormData>;
+type Props = StateProps & InjectedFormProps<RegistrationFormData>;
 
 class RegistrationScreen extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -82,7 +92,7 @@ class RegistrationScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const {handleSubmit, invalid, submitting} = this.props;
+    const {handleSubmit, formValues, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -165,7 +175,15 @@ class RegistrationScreen extends React.Component<Props, State> {
           <View style={style.buttonWraper}>
             <RegularButton
               title='SIGN UP'
-              disabled={invalid || submitting}
+              disabled={
+                !formValues ||
+                !formValues.fullName ||
+                !formValues.phone ||
+                !formValues.email ||
+                !formValues.password ||
+                !formValues.passwordConfirm ||
+                submitting
+              }
               onPress={handleSubmit(this.submitRegistration)}
             />
           </View>
@@ -178,6 +196,9 @@ class RegistrationScreen extends React.Component<Props, State> {
   }
 }
 
-export default reduxForm<RegistrationFormData>({
-  form: 'registration',
-})(RegistrationScreen);
+export default compose(
+  reduxForm<RegistrationFormData>({
+    form: 'registration',
+  }),
+  connect<StateProps>(mapStateToProps),
+)(RegistrationScreen);

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Dispatch } from 'redux';
+import { compose, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import style from './style';
 
 import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
-import { SubmissionError, Field, InjectedFormProps, reduxForm } from 'redux-form';
+import { SubmissionError, Field, InjectedFormProps, reduxForm, getFormValues } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 
@@ -13,6 +14,7 @@ import { passwordLogin } from '../../../../../shared/validators/password';
 import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
 import { LoginInput } from '../../../../../shared/services/auth.service';
+import { RootState } from '../../../../../redux/store';
 import { RequestError } from '../../../../../redux/request/states';
 
 import { Actions as authActions } from '../../../../../redux/auth/AC';
@@ -21,7 +23,15 @@ import { UserResponse } from '../../../../../shared/models/user.model';
 
 type LoginFormData = LoginInput;
 
-type Props = InjectedFormProps<LoginFormData>;
+interface StateProps {
+  formValues: LoginFormData;
+}
+
+const mapStateToProps = (state: RootState): StateProps => ({
+  formValues: getFormValues('login')(state) as LoginFormData,
+});
+
+type Props = StateProps & InjectedFormProps<LoginFormData>;
 
 class LoginScreen extends React.Component<Props> {
   submitLogin = (values: LoginFormData, dispatch: Dispatch<authActions>) => {
@@ -46,7 +56,7 @@ class LoginScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, submitting, invalid} = this.props;
+    const {handleSubmit, formValues, submitting } = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -79,7 +89,12 @@ class LoginScreen extends React.Component<Props> {
           <View style={style.signInWraper}>
             <RegularButton
               title='SIGN IN'
-              disabled={invalid || submitting}
+              disabled={
+                !formValues ||
+                !formValues.email ||
+                !formValues.password ||
+                submitting
+              }
               onPress={handleSubmit(this.submitLogin)}
             />
           </View>
@@ -107,6 +122,9 @@ class LoginScreen extends React.Component<Props> {
   }
 }
 
-export default reduxForm<LoginFormData>({
-  form: 'login',
-})(LoginScreen);
+export default compose(
+  reduxForm<LoginFormData>({
+    form: 'login',
+  }),
+  connect<StateProps>(mapStateToProps),
+)(LoginScreen);
