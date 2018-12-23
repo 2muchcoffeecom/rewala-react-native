@@ -7,7 +7,6 @@ import { Field, InjectedFormProps, reduxForm, SubmissionError } from 'redux-form
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import LogInLink from '../../../../../shared/components/LogInLink';
-import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import email from '../../../../../shared/validators/email';
 import required from '../../../../../shared/validators/required';
@@ -36,7 +35,7 @@ class ForgotPasswordScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, invalid, error, submitting} = this.props;
+    const {handleSubmit, invalid, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -48,11 +47,6 @@ class ForgotPasswordScreen extends React.Component<Props> {
           />
         </View>
         <View style={style.wraper}>
-          {
-            error && <ErrorRequestText>
-              {error}
-            </ErrorRequestText>
-          }
           <View style={style.emailWraper}>
             <Field
               name='email'

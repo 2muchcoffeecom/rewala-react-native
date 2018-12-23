@@ -6,7 +6,6 @@ import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
 import { SubmissionError, Field, InjectedFormProps, reduxForm } from 'redux-form';
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
-import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import email from '../../../../../shared/validators/email';
 import required from '../../../../../shared/validators/required';
@@ -47,7 +46,7 @@ class LoginScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, submitting, error, invalid} = this.props;
+    const {handleSubmit, submitting, invalid} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -59,11 +58,6 @@ class LoginScreen extends React.Component<Props> {
           />
         </View>
         <View style={style.wraper}>
-          {
-            error && <ErrorRequestText>
-              {error}
-            </ErrorRequestText>
-          }
           <View>
             <Field
               name='email'

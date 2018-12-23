@@ -8,7 +8,6 @@ import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } f
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import LogInLink from '../../../../../shared/components/LogInLink';
-import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import { getSubmissionError } from '../../../../../shared/validators/getSubmissionError';
 
@@ -64,7 +63,7 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, error, submitting} = this.props;
+    const {handleSubmit, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -76,11 +75,6 @@ class ResetPasswordCodeScreen extends React.Component<Props> {
           />
         </View>
         <View style={style.wraper}>
-          {
-            error && <ErrorRequestText>
-              {error}
-            </ErrorRequestText>
-          }
           <View>
             <Field
               name='resetPasswordCode'

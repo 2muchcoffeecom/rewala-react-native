@@ -8,7 +8,6 @@ import { Field, InjectedFormProps, reduxForm, getFormValues, SubmissionError } f
 import Input from '../../../../../shared/components/Input';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import LogInLink from '../../../../../shared/components/LogInLink';
-import ErrorRequestText from '../../../../../shared/components/ErrorRequestText';
 
 import required from '../../../../../shared/validators/required';
 import { passwordRegistration, confirmPassword } from '../../../../../shared/validators/password';
@@ -58,7 +57,7 @@ class NewPasswordScreen extends React.Component<Props> {
   }
 
   render() {
-    const {handleSubmit, invalid, error, submitting} = this.props;
+    const {handleSubmit, invalid, submitting} = this.props;
 
     return (
       <ScrollView contentContainerStyle={style.root}>
@@ -70,11 +69,6 @@ class NewPasswordScreen extends React.Component<Props> {
           />
         </View>
         <View style={style.wraper}>
-          {
-            error && <ErrorRequestText>
-              {error}
-            </ErrorRequestText>
-          }
           <View>
             <Field
               name='password'
