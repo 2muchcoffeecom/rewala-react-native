@@ -4,7 +4,7 @@ import style from './style';
 
 import {
   View, TextInput, TouchableOpacity, Text,
-  Image, FlatList, ListRenderItem,
+  Image, FlatList, ScrollView, ListRenderItem,
 } from 'react-native';
 import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../../shared/components/FriendListItem/index';
 import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
@@ -124,7 +124,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
       this.state.searchQuery !== '';
 
     return (
-      <View style={style.root}>
+      <ScrollView contentContainerStyle={style.root}>
         <View style={style.seacrhWraper}>
           {
             this.state.searchQuery === '' ?
@@ -171,7 +171,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
           </View>
         </View>
         <AddRewalButton/>
-      </View>
+      </ScrollView>
     );
   }
 }
