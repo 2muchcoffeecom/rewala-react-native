@@ -14,7 +14,7 @@ export const loginRequestEpic = (action$: Observable<Action>) => action$.pipe(
         const {resolve, reject} = action.payload;
 
         if (resp.errors) {
-          reject(resp.errors.pop());
+          reject(resp.errors[0]);
 
           return fromActions.Actions.loginFail(resp.errors[0]);
         } else {

@@ -14,7 +14,7 @@ export const newPasswordRequestEpic = (action$: Observable<Action>) => action$.p
         const {resolve, reject} = action.payload;
 
         if (resp.errors) {
-          reject(resp.errors.pop());
+          reject(resp.errors[0]);
 
           return fromActions.Actions.newPasswordFail(resp.errors[0]);
         } else {

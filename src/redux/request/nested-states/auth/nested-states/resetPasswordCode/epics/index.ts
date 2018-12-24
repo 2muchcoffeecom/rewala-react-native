@@ -14,7 +14,7 @@ export const resetPasswordCodeRequestEpic = (action$: Observable<Action>) => act
         const {resolve, reject} = action.payload;
 
         if (resp.errors) {
-          reject(resp.errors.pop());
+          reject(resp.errors[0]);
 
           return fromActions.Actions.resetPasswordCodeFail(resp.errors[0]);
         } else {

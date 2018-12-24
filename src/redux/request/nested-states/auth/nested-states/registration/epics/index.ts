@@ -14,7 +14,7 @@ export const registrationRequestEpic = (action$: Observable<Action>) => action$.
         const {resolve, reject} = action.payload;
 
         if (resp.errors) {
-          reject(resp.errors.pop());
+          reject(resp.errors[0]);
 
           return fromActions.Actions.registrationFail(resp.errors[0]);
         } else {
