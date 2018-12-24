@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {
-  createNavigationContainer, createSwitchNavigator, NavigationContainerComponent,
+  createAppContainer, createSwitchNavigator, NavigationContainerComponent,
 } from 'react-navigation';
 
 import SplashScreen from './SplashScreen';
@@ -18,7 +18,7 @@ const Navigator = createSwitchNavigator({
   initialRouteName: 'SplashScreen',
 });
 
-const NavigatorContainer = createNavigationContainer(Navigator); // until new @types
+const NavigatorContainer = createAppContainer(Navigator);
 
 export default class AppNavigator extends React.Component {
   setNavigator(navigatorRef: NavigationContainerComponent): void {

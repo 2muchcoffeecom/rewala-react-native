@@ -44,7 +44,7 @@
     "@types/react-native": "^0.57.12",
     "@types/react-native-linear-gradient": "^2.4.0",
     "@types/react-native-vector-icons": "^4.6.4",
-    "@types/react-navigation": "^2.13.7",
+    "@types/react-navigation": "^3.0.1",
     "@types/react-redux": "^6.0.9",
     "@types/redux-form": "^7.4.12",
     "babel-jest": "23.6.0",

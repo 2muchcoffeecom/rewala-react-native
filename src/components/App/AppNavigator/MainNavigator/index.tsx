@@ -6,12 +6,7 @@ import { Image } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import TabBarComponent from '../../../../shared/components/TabBarComponent';
 
-import {
-  BottomTabNavigatorConfig,
-  NavigationScreenConfig,
-  NavigationBottomTabScreenOptions,
-  TabBarBottomProps,
-} from 'react-navigation';
+import { TabBarBottomProps } from 'react-navigation';
 import { RootState } from '../../../../redux/store';
 import { Dispatch } from 'redux';
 
@@ -20,10 +15,6 @@ import { Actions as usersActions } from '../../../../redux/users/AC';
 import HomeNavigator from './HomeNavigator';
 import ProfileNavigator from './ProfileNavigator';
 import SearchNavigator from './SearchNavigator';
-
-interface CustomBottomTabNavigatorConfig extends BottomTabNavigatorConfig {
-  defaultNavigationOptions: NavigationScreenConfig<NavigationBottomTabScreenOptions>;
-}
 
 const Navigator = createBottomTabNavigator({
   HomeNavigator,
@@ -94,7 +85,7 @@ const Navigator = createBottomTabNavigator({
     tabStyle: style.tabStyle,
     style: style.style,
   },
-} as CustomBottomTabNavigatorConfig);
+});
 
 interface StateProps {
   authorisedUserId: string | null;
