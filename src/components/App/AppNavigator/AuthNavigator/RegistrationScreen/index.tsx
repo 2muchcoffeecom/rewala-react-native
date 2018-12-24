@@ -160,6 +160,7 @@ class RegistrationScreen extends React.Component<Props, State> {
               component={Input}
               placeholder='Password'
               validate={[required, passwordRegistration]}
+              maxLength={15}
               isSecureTextEntry={true}
             />
           </View>
@@ -168,6 +169,7 @@ class RegistrationScreen extends React.Component<Props, State> {
               name='passwordConfirm'
               component={Input}
               placeholder='Confirm Password'
+              maxLength={15}
               validate={[required, confirmPassword]}
               isSecureTextEntry={true}
             />
