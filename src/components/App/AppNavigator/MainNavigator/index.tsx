@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import style from './style';
+
 import { Image } from 'react-native';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import TabBarComponent from '../../../../shared/components/TabBarComponent';
+
 import {
-  createBottomTabNavigator,
   BottomTabNavigatorConfig,
   NavigationScreenConfig,
   NavigationBottomTabScreenOptions,
@@ -29,6 +32,7 @@ const Navigator = createBottomTabNavigator({
   ProfileNavigator,
 }, {
   initialRouteName: 'HomeNavigator',
+  tabBarComponent: props => <TabBarComponent {...props}/>,
 
   defaultNavigationOptions: ({navigation}) => ({
     tabBarIcon: ({focused}) => {
