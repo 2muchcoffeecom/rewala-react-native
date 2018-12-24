@@ -3,11 +3,10 @@ import { compose, Dispatch } from 'redux';
 import { reduxForm, Field, InjectedFormProps, SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 import { ReactNativeFile } from 'apollo-upload-client';
-import * as mime from 'react-native-mime-types';
 import style from './style';
 
-import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+import { View, ScrollView, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 import Input from '../../../../../../shared/components/Input';
 import SwitchInput from '../../../../../../shared/components/SwitchInput';
 import RegularButton from '../../../../../../shared/components/RegularButton';
@@ -116,6 +115,7 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
     return new Promise<UserResponse>((resolve, reject) => {
       dispatch(usersActions.updateAuthorizedUser(updateUserInput, resolve, reject));
     })
+      .then(() => ImagePicker.clean())
       .catch((error: RequestError) => {
         error.message && dispatch(toastActions.showToast(error.message));
 
@@ -128,49 +128,30 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
   }
 
   onChangeAvatar = () => {
-    ImagePicker.showImagePicker({
-      title: 'Select Avatar',
-      mediaType: 'photo',
-      maxWidth: 400,
-      maxHeight: 400,
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    }, (response) => {
-      if (response.didCancel) {
-        return;
-      }
+    const aspect = Dimensions.get('window').width;
 
-      if (response.error) {
-        this.props.showToast(response.error);
-        return;
-      }
+    ImagePicker.openPicker({
+      width: aspect,
+      height: aspect,
+      cropping: true,
+      multiple: false,
+      cropperCircleOverlay: true,
+    })
+      .then((image) => {
+        if (!Array.isArray(image)) {
+          const name = this.props.meProfile ?
+            `${this.props.meProfile.fullName}${Date.now().toString()}` :
+            Date.now().toString();
 
-      if (response.fileSize >= 4000000) {
-        this.props.showToast('Avatar must be maximum 4 MB');
-        return;
-      }
-
-      if (
-        response.height > 400 ||
-        response.height < 180 ||
-        response.width > 400 ||
-        response.width < 180
-      ) {
-        this.props.showToast('Maximum avatar size - 400 x 400 pixels, minimum size -  180 x 180 pixels.');
-        return;
-      }
-
-      const {uri, fileName} = response;
-
-      if (fileName) {
-        const type = mime.lookup(fileName);
-        this.setState({
-          avatar: {uri, type, name: fileName},
-        });
-      }
-    });
+          this.setState({
+            avatar: {
+              uri: image.path,
+              type: image.mime,
+              name,
+            },
+          });
+        }
+      });
   }
 
   private setFormValues() {
