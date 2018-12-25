@@ -99,7 +99,7 @@ class FriendsScreen extends React.Component<Props, State> {
       <FriendListItem
         userId={item.userId}
         fullName={item.fullName}
-        avatarPath={item.avatarPath}
+        avatarThumbPath={item.avatarThumbPath}
         withFriendProfile={true}
       />
     );

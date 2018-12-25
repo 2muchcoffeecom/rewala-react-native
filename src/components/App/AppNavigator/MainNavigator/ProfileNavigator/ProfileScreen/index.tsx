@@ -114,7 +114,7 @@ class ProfileScreen extends React.Component<Props, State> {
         <View style={style.meInfo}>
           <View style={style.wraperMe}>
             {
-              meProfile && meProfile.avatarPath ?
+              meProfile && meProfile.avatarThumbPath ?
                 (
                   <AvatarProfile
                     profile={meProfile}

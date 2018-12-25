@@ -158,7 +158,7 @@ class ProfileFriendScreen extends React.Component<Props, State> {
           <View style={style.wraperUser}>
             <View style={style.avatarWraper}>
               {
-                friendProfile && friendProfile.avatarPath ?
+                friendProfile && friendProfile.avatarThumbPath ?
                   (
                     <AvatarProfile
                       profile={friendProfile}

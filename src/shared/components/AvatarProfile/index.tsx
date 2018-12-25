@@ -33,7 +33,7 @@ const AvatarProfile: React.FunctionComponent<Props> = (props) => {
         onPress={props.toggleVisibility}
       >
         <Image
-          source={{uri: `${apiEndpoint}/${profile.avatarPath}`}}
+          source={{uri: `${apiEndpoint}/${profile.avatarThumbPath}`}}
           style={style.avatarMini}
         />
       </TouchableOpacity>

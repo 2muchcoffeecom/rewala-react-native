@@ -7,6 +7,7 @@ export class ProfileModel {
   countryCode: string = '';
   notifications: boolean = false;
   avatarPath: string = '';
+  avatarThumbPath: string = '';
   userId: string = '';
   friendsCount: number = 0;
   rewalsCount: number = 0;
@@ -25,11 +26,21 @@ export class ProfileModel {
     if (obj.profile.avatar) {
       this.avatarPath = `${obj.profile.avatar.dir}/${obj.profile.avatar.filename}`;
     }
+
+    if (obj.profile.avatarThumb) {
+      this.avatarThumbPath = `${obj.profile.avatarThumb.dir}/${obj.profile.avatarThumb.filename}`;
+    }
   }
 }
 
 export interface ProfileResponse extends ProfileModel {
   avatar: {
+    _id: string,
+    dir: string,
+    filename: string
+    mimetype: string,
+  };
+  avatarThumb: {
     _id: string,
     dir: string,
     filename: string

@@ -112,7 +112,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
       <FriendListItem
         userId={item.userId}
         fullName={item.fullName}
-        avatarPath={item.avatarPath}
+        avatarThumbPath={item.avatarThumbPath}
         withFriendProfile={true}
       />
     );

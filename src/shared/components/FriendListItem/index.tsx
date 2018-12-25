@@ -20,7 +20,7 @@ export interface FriendNavigationProps {
 export interface OwnProps {
   userId: string;
   fullName: string;
-  avatarPath?: string;
+  avatarThumbPath?: string;
   withFriendProfile?: boolean;
 }
 
@@ -38,7 +38,7 @@ class FriendListItem extends React.PureComponent<Props> {
   render() {
 
     const {
-      avatarPath, fullName, userId, friend, withFriendProfile,
+      avatarThumbPath, fullName, userId, friend, withFriendProfile,
     } = this.props;
 
     const onPressFriend = () => {
@@ -59,8 +59,8 @@ class FriendListItem extends React.PureComponent<Props> {
                 style={style.friendInfoWraper}
               >
                 <Image
-                  source={avatarPath ?
-                    {uri: `${apiEndpoint}/${avatarPath}`} :
+                  source={avatarThumbPath ?
+                    {uri: `${apiEndpoint}/${avatarThumbPath}`} :
                     require('../../../../assets/avatar-placeholder.png')}
                   style={style.friendAvatar}
                 />
@@ -74,8 +74,8 @@ class FriendListItem extends React.PureComponent<Props> {
             (
               <View style={style.friendInfoWraper}>
                 <Image
-                  source={avatarPath ?
-                    {uri: `${apiEndpoint}/${avatarPath}`} :
+                  source={avatarThumbPath ?
+                    {uri: `${apiEndpoint}/${avatarThumbPath}`} :
                     require('../../../../assets/avatar-placeholder.png')}
                   style={style.friendAvatar}
                 />
