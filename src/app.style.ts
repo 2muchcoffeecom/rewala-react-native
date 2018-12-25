@@ -14,6 +14,16 @@ export const borderColor = '#B2B2B2';
 export const borderColorOpacity = 'rgba(117, 117, 117, 0.5)';
 export const modalBackgroundColorOpacity = 'rgba(24, 24 , 24, 0.74)';
 
+export enum QuestionOptionsColor {
+  Option1 = '#708EFF',
+  Option2 = '#F67B7B',
+  Option3 = '#F0D12E',
+  Option4 = '#0ABA7F',
+  Option5 = '#7A44FA',
+  Option6 = '#BD10E0',
+  Option7 = '#F5A623',
+}
+
 export const fontFamilyRegular = 'Lato-Regular';
 export const fontFamilyBold = 'Lato-Bold';
 
