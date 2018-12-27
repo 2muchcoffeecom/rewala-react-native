@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationActions, NavigationContainerComponent, StackActions } from 'react-navigation';
+import { NavigationActions, StackActions, NavigationContainerComponent } from 'react-navigation';
 import { TextStyle, ViewStyle } from 'react-native';
 
 import { headerTitleStyle, headerStyle, headerTitleContainerStyle } from '../../app.style';
@@ -25,7 +25,7 @@ interface INavService {
   navigate(routeName: string, params?: any): void;
   back(key?: string): void;
   navigationOptions(title?: string, headerBackImage?: JSX.Element): NavOptions;
-  navigationOptionsHeaderLogo(headerTitle?: React.ReactNode, headerBackImage?: JSX.Element): NavOptions;
+  navigationOptionsHeaderLogo(headerTitle?: React.ReactNode): NavOptions;
 }
 
 class NavService implements INavService {
@@ -79,11 +79,10 @@ class NavService implements INavService {
       headerTransparent: true,
       headerBackTitleVisible: false,
       headerBackImage,
-      headerLeft: headerBackImage ? undefined : null,
     };
   }
 
-  navigationOptionsHeaderLogo(headerTitle?: React.ReactNode, headerBackImage?: JSX.Element): NavOptions {
+  navigationOptionsHeaderLogo(headerTitle?: React.ReactNode): NavOptions {
     return {
       headerTitle,
       headerTitleStyle,
@@ -91,8 +90,6 @@ class NavService implements INavService {
       headerTitleContainerStyle,
       headerTransparent: true,
       headerBackTitleVisible: false,
-      headerBackImage,
-      headerLeft: headerBackImage ? undefined : null,
     };
   }
 }

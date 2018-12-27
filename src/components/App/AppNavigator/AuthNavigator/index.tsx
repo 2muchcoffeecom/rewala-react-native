@@ -45,11 +45,17 @@ export default createStackNavigator({
   },
   NoFriendsScreen: {
     screen: NoFriendsScreen,
-    navigationOptions: navService.navigationOptionsHeaderLogo(<HeaderLogo/>),
+    navigationOptions: {
+      ...navService.navigationOptionsHeaderLogo(<HeaderLogo/>),
+      headerLeft: null,
+    },
   },
   AddFriendsScreen: {
     screen: AddFriendsScreen,
-    navigationOptions: navService.navigationOptionsHeaderLogo(<HeaderLogo/>),
+    navigationOptions: {
+      ...navService.navigationOptionsHeaderLogo(<HeaderLogo/>),
+      headerLeft: null,
+    },
   },
 }, {
   initialRouteName: 'LoginScreen',
