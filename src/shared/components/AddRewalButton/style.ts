@@ -9,7 +9,7 @@ const style = StyleSheet.create({
   addButton: {
     position: 'absolute',
     bottom: 26,
-    right: 24,
+    right: 18,
     width: 50,
     height: 50,
     borderRadius: 4,
@@ -18,10 +18,10 @@ const style = StyleSheet.create({
         shadowColor,
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.5,
-        shadowRadius: 4,
+        shadowRadius: 8,
       },
       android: {
-        elevation: 4,
+        elevation: 8,
       },
     }),
   },
