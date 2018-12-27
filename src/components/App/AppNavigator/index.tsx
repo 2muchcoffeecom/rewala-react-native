@@ -4,16 +4,20 @@ import {
   createAppContainer, createSwitchNavigator, NavigationContainerComponent,
 } from 'react-navigation';
 
+import RootToast from '../../../shared/components/RootToast';
+
+import navService from '../../../shared/services/nav.service';
+
 import SplashScreen from './SplashScreen';
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
-import RootToast from '../../../shared/components/RootToast';
-import navService from '../../../shared/services/nav.service';
+import ModalNavigator from './ModalNavigator';
 
 const Navigator = createSwitchNavigator({
   SplashScreen,
   AuthNavigator,
   MainNavigator,
+  ModalNavigator,
 }, {
   initialRouteName: 'SplashScreen',
 });
