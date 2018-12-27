@@ -7,7 +7,6 @@ const style = StyleSheet.create({
   root: {
     justifyContent: 'flex-start',
     width: '100%',
-    marginBottom: 8,
   },
   inputContainer: {
     justifyContent: 'center',
@@ -39,6 +38,20 @@ const style = StyleSheet.create({
     fontSize: 12,
     fontWeight: '400',
     color: blackTextColor,
+  },
+  deleteButton: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 25.5,
+    height: 40,
+  },
+  crossImage: {
+    width: 13.5,
+    height: 12,
   },
 });
 
