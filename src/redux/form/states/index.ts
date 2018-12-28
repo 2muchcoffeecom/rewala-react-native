@@ -8,4 +8,5 @@ export interface FormsState {
   resetPasswordCode: FormsState;
   ProfileSettings: FormsState;
   changePassword: FormsState;
+  addRewal: FormsState;
 }
