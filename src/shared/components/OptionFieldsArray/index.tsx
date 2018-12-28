@@ -1,9 +1,11 @@
 import React from 'react';
 import style from './style';
+import { mainColor } from '../../../app.style';
 
 import { View, TouchableOpacity } from 'react-native';
 import { Field, WrappedFieldArrayProps, WrappedFieldProps } from 'redux-form';
 import OptionInput from '../../../shared/components/OptionInput';
+import { Icon } from '../../../shared/components/Icon';
 
 import { QuestionOptionsColor } from '../../../app.style';
 
@@ -15,8 +17,8 @@ const OptionFieldsArray: React.FunctionComponent<Props> = (props: Props) => {
 
   const renderOptionsFields = () => fields.map((optionItem, index) => {
       const onPressRemoveButton = () => {
-        fields.remove(index)
-      }
+        fields.remove(index);
+      };
       const count = index + 1;
 
       return (
@@ -25,7 +27,7 @@ const OptionFieldsArray: React.FunctionComponent<Props> = (props: Props) => {
           key={index}
         >
           <Field
-            name={`${optionItem}.option`}
+            name={`${optionItem}`}
             component={OptionInput}
             keyboard='default'
             placeholder={`OPTION ${count}`}
@@ -45,9 +47,13 @@ const OptionFieldsArray: React.FunctionComponent<Props> = (props: Props) => {
         fields.length < 7 &&
         <View style={style.addOptionButtonWraper}>
           <TouchableOpacity
-            style={style.addOptionButton}
             onPress={onPressAddButton}
           >
+            <Icon
+              name='add-option'
+              color={mainColor}
+              size={28}
+            />
           </TouchableOpacity>
         </View>
       }

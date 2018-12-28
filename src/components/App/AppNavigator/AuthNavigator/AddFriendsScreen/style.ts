@@ -38,8 +38,6 @@ const style = StyleSheet.create({
     position: 'absolute',
     right: 7,
     top: 7,
-    width: 17.35,
-    height: 17.99,
   },
   searchDeleteButton: {
     position: 'absolute',
@@ -50,10 +48,6 @@ const style = StyleSheet.create({
     alignItems: 'center',
     width: 24,
     height: 22.46,
-  },
-  searchCrossImage: {
-    width: 10,
-    height: 9.23,
   },
   friendList: {
     flex: 1,

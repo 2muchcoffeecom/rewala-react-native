@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import style from './style';
+import { mainColor, greyColorIcon } from '../../../../app.style';
 
-import { Image } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import TabBarComponent from '../../../../shared/components/TabBarComponent';
+import { Icon } from '../../../../shared/components/Icon';
 
 import { TabBarBottomProps } from 'react-navigation';
 import { RootState } from '../../../../redux/store';
@@ -31,50 +32,34 @@ const Navigator = createBottomTabNavigator({
 
       if (routeName === 'HomeNavigator') {
         return (
-          <Image
-            source={
-              focused ?
-                require('../../../../../assets/home-filled.png') :
-                require('../../../../../assets/home.png')
-            }
-            resizeMode='contain'
-            style={style.homeImage}
+          <Icon
+            name={`home${focused ? '-filled' : ''}`}
+            size={22}
+            color={focused ? mainColor : greyColorIcon}
           />
         );
       } else if (routeName === 'SearchNavigator') {
         return (
-          <Image
-            source={
-              focused ?
-                require('../../../../../assets/search-filled.png') :
-                require('../../../../../assets/search.png')
-            }
-            resizeMode='contain'
-            style={style.searchImage}
+          <Icon
+            name={`search${focused ? '-filled' : ''}`}
+            size={22}
+            color={focused ? mainColor : greyColorIcon}
           />
         );
       } else if (routeName === 'NotificationNavigator') {
         return (
-          <Image
-            source={
-              focused ?
-                require('../../../../../assets/notification-filled.png') :
-                require('../../../../../assets/notification.png')
-            }
-            resizeMode='contain'
-            style={style.notificationImage}
+          <Icon
+            name={`notification${focused ? '-filled' : ''}`}
+            size={21}
+            color={focused ? mainColor : greyColorIcon}
           />
         );
       } else {
         return (
-          <Image
-            source={
-              focused ?
-                require('../../../../../assets/profile-filled.png') :
-                require('../../../../../assets/profile.png')
-            }
-            resizeMode='contain'
-            style={style.profileImage}
+          <Icon
+            name={`profile${focused ? '-filled' : ''}`}
+            size={20}
+            color={focused ? mainColor : greyColorIcon}
           />
         );
       }

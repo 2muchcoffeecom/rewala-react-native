@@ -1,22 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 
 const style = StyleSheet.create({
-  homeImage: {
-    width: 22.3,
-    height: 21.2,
-  },
-  searchImage: {
-    width: 21.7,
-    height: 22.5,
-  },
-  notificationImage: {
-    width: 21.2,
-    height: 21.2,
-  },
-  profileImage: {
-    width: 17.5,
-    height: 20.0,
-  },
   tabStyle: {
     height: 40,
   },

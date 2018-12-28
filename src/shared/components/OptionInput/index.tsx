@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, KeyboardTypeOptions, TextInput, Image, TouchableOpacity } from 'react-native';
+import { View, KeyboardTypeOptions, TextInput, TouchableOpacity } from 'react-native';
+import { Icon } from '../Icon';
 import { WrappedFieldProps } from 'redux-form';
 import style from './style';
-import { greyColorAddRewal } from '../../../app.style';
+import { greyColorAddRewal, greyColorIcon } from '../../../app.style';
 
 export interface OwnProps {
   keyboard?: KeyboardTypeOptions;
@@ -41,9 +42,10 @@ export const OptionInput: React.FunctionComponent<Props> = (props: Props) => {
             onPress={onPressRemoveInputButton}
             style={style.deleteButton}
           >
-            <Image
-              source={require('../../../../assets/delete-cross.png')}
-              style={style.crossImage}
+            <Icon
+              name='delete-option'
+              size={12}
+              color={greyColorIcon}
             />
           </TouchableOpacity>
         }

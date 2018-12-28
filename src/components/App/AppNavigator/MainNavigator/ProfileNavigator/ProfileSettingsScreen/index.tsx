@@ -3,6 +3,7 @@ import { compose, Dispatch } from 'redux';
 import { reduxForm, Field, InjectedFormProps, SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 import { ReactNativeFile } from 'apollo-upload-client';
+import { mainColor, whiteColor } from '../../../../../../app.style';
 import style from './style';
 
 import { View, ScrollView, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
@@ -11,6 +12,7 @@ import Input from '../../../../../../shared/components/Input';
 import SwitchInput from '../../../../../../shared/components/SwitchInput';
 import RegularButton from '../../../../../../shared/components/RegularButton';
 import ChangePasswordModal from '../../../../../../shared/components/ChangePasswordModal';
+import { Icon } from '../../../../../../shared/components/Icon';
 
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
 import { RootState } from '../../../../../../redux/store';
@@ -193,10 +195,10 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
           onPress={this.onChangeAvatar}
         >
           <View style={style.imageWraper}>
-            <Image
-              source={require('../../../../../../../assets/photo.png')}
-              resizeMode='contain'
-              style={style.iconPhoto}
+            <Icon
+              name='photo'
+              size={16}
+              color={whiteColor}
             />
           </View>
           <Image
@@ -221,9 +223,10 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
               validate={[required, email]}
             />
           </View>
-          <Image
-            source={require('../../../../../../../assets/pencil.png')}
-            resizeMode='contain'
+          <Icon
+            name='edit'
+            size={12}
+            color={mainColor}
             style={style.iconPencil}
           />
         </View>
@@ -241,17 +244,19 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
               ]}
             />
           </View>
-          <Image
-            source={require('../../../../../../../assets/pencil.png')}
-            resizeMode='contain'
+          <Icon
+            name='edit'
+            size={12}
+            color={mainColor}
             style={style.iconPencil}
           />
         </View>
         <View style={style.notificationWraper}>
           <View style={style.notificationImageWraper}>
-            <Image
-              source={require('../../../../../../../assets/notification-filled.png')}
-              resizeMode='contain'
+            <Icon
+              name='notification-filled'
+              size={16}
+              color={mainColor}
               style={style.notificationImage}
             />
             <Text style={style.text}>Notification</Text>

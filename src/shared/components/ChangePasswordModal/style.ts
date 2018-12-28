@@ -19,10 +19,6 @@ const style = StyleSheet.create({
     top: 13,
     right: 13,
   },
-  image: {
-    width: 15,
-    height: 15,
-  },
   text: {
     marginTop: 36,
     marginBottom: 29,

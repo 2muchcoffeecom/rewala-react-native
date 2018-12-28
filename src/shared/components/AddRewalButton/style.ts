@@ -2,9 +2,12 @@ import { Platform, StyleSheet } from 'react-native';
 import { shadowColor } from '../../../app.style';
 
 const style = StyleSheet.create({
-  image: {
-    width: 50,
-    height: 50,
+  gradient: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addButton: {
     position: 'absolute',

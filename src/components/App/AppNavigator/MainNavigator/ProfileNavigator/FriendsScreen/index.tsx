@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import style from './style';
 
-import { View, ScrollView, TextInput, TouchableOpacity, Image, FlatList, ListRenderItem } from 'react-native';
+import { View, ScrollView, TextInput, TouchableOpacity, FlatList, ListRenderItem } from 'react-native';
+import { Icon } from '../../../../../../shared/components/Icon';
 import FriendListItem, {
-  FriendNavigationProps,
-  OwnProps as IFriendListItem,
+  FriendNavigationProps, OwnProps as IFriendListItem,
 } from '../../../../../../shared/components/FriendListItem';
 
 import { NavigationInjectedProps } from 'react-navigation';
@@ -16,6 +16,7 @@ import { Dispatch } from 'redux';
 import selectorsService from '../../../../../../shared/services/selectors.service';
 import { Actions as friendsActions } from '../../../../../../redux/friends/AC';
 import { Actions as usersActions } from '../../../../../../redux/users/AC';
+import { greyColorIcon } from '../../../../../../app.style';
 
 interface StateProps {
   myFriendsProfiles: ProfileModel[];
@@ -112,17 +113,20 @@ class FriendsScreen extends React.Component<Props, State> {
           <View style={style.seacrhWraper}>
             {
               this.state.searchQuery === '' ?
-                <Image
-                  source={require('../../../../../../../assets/search.png')}
+                <Icon
+                  name='search'
+                  size={18}
+                  color={greyColorIcon}
                   style={style.searchImage}
                 /> :
                 <TouchableOpacity
                   onPress={this.onPressSearchDeleteButton}
                   style={style.searchDeleteButton}
                 >
-                  <Image
-                    source={require('../../../../../../../assets/delete-cross.png')}
-                    style={style.searchCrossImage}
+                  <Icon
+                    name='delete-option'
+                    size={10}
+                    color={greyColorIcon}
                   />
                 </TouchableOpacity>
             }

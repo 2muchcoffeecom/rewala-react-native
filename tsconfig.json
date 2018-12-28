@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "baseUrl": ".",
     "outDir": "build/dist",

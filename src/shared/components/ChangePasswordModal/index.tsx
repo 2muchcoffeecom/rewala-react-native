@@ -1,10 +1,12 @@
 import React from 'react';
 import { Field, InjectedFormProps, reduxForm, SubmissionError } from 'redux-form';
+import { blackTextColor } from '../../../app.style';
 import style from './style';
 
-import { Modal, TouchableOpacity, View, Text, Image } from 'react-native';
+import { Modal, TouchableOpacity, View, Text } from 'react-native';
 import Input from '../Input';
 import RegularButton from '../RegularButton';
+import { Icon } from '../Icon';
 
 import { Dispatch } from 'redux';
 import { RequestError } from '../../../redux/request/states';
@@ -78,10 +80,10 @@ const ChangePasswordModal: React.FunctionComponent<Props> = (props) => {
             onPress={onCloseModal}
             style={style.closeButton}
           >
-            <Image
-              source={require('../../../../assets/closing-cross.png')}
-              resizeMode='contain'
-              style={style.image}
+            <Icon
+              name='close-popup'
+              size={15}
+              color={blackTextColor}
             />
           </TouchableOpacity>
           <Text style={style.text}>Change Password</Text>

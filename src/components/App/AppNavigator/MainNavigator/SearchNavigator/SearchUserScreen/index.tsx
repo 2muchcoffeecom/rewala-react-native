@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { greyColorIcon } from '../../../../../../app.style';
 import style from './style';
 
 import {
   View, TextInput, TouchableOpacity, Text,
-  Image, FlatList, ScrollView, ListRenderItem,
+  FlatList, ScrollView, ListRenderItem,
 } from 'react-native';
 import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../../shared/components/FriendListItem/index';
 import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
+import { Icon } from '../../../../../../shared/components/Icon';
 
 import { Dispatch } from 'redux';
 import { RootState } from '../../../../../../redux/store';
@@ -128,17 +130,20 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
         <View style={style.seacrhWraper}>
           {
             this.state.searchQuery === '' ?
-              <Image
-                source={require('../../../../../../../assets/search.png')}
+              <Icon
+                name='search'
+                size={18}
+                color={greyColorIcon}
                 style={style.searchImage}
               /> :
               <TouchableOpacity
                 onPress={this.onPressSearchDeleteButton}
                 style={style.searchDeleteButton}
               >
-                <Image
-                  source={require('../../../../../../../assets/delete-cross.png')}
-                  style={style.searchCrossImage}
+                <Icon
+                  name='delete-option'
+                  size={10}
+                  color={greyColorIcon}
                 />
               </TouchableOpacity>
           }

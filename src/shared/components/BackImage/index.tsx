@@ -1,12 +1,12 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Icon } from '../../../shared/components/Icon';
 
 const BackImage: React.FunctionComponent = () => {
   return (
-    <Image
-      source={require('../../../../assets/back.png')}
-      style={{ width: 20, height: 14 }}
-      resizeMode='contain'
+    <Icon
+      name='back'
+      size={14}
+      color='#1E201D'
     />
   );
 };

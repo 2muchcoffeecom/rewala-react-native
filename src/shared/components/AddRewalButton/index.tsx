@@ -1,8 +1,12 @@
 import React from 'react';
-import { TouchableOpacity, Image } from 'react-native';
-import style from './style';
-
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
+import style from './style';
+import { whiteColor, linearGradientColors } from '../../../app.style';
+
+import { TouchableOpacity, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { Icon } from '../../../shared/components/Icon';
+
 import navService from '../../../shared/services/nav.service';
 
 type Props = NavigationInjectedProps;
@@ -21,15 +25,24 @@ const AddRewalButton: React.FunctionComponent<Props> = (props) => {
   };
 
   return (
-    <TouchableOpacity
-      style={style.addButton}
-      onPress={onPressAddButton}
-    >
-      <Image
-        style={style.image}
-        source={require('../../../../assets/add-rewal.png')}
-      />
-    </TouchableOpacity>
+    <View style={style.addButton}>
+      <LinearGradient
+        colors={linearGradientColors}
+        useAngle={true}
+        angle={43}
+        style={style.gradient}
+      >
+        <TouchableOpacity
+          onPress={onPressAddButton}
+        >
+          <Icon
+            name='add-rewal'
+            size={26}
+            color={whiteColor}
+          />
+        </TouchableOpacity>
+      </LinearGradient>
+    </View>
   );
 };
 

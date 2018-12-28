@@ -2,6 +2,8 @@ import { Dimensions, TextStyle, ViewStyle } from 'react-native';
 
 export const whiteColor = '#FFF';
 export const greyColor = '#9D9D9D';
+export const greyColorAddRewal = '#A9A9A9';
+export const greyColorIcon = '#BEBEBE';
 export const greyColorText = '#7D7D7D';
 export const blackTextColor = '#000';
 export const mainColor = '#708EFF';
@@ -13,6 +15,7 @@ export const errorBorderColor = 'rgba(255, 117, 117, 0.5)';
 export const borderColor = '#B2B2B2';
 export const borderColorOpacity = 'rgba(117, 117, 117, 0.5)';
 export const modalBackgroundColorOpacity = 'rgba(24, 24 , 24, 0.74)';
+export const linearGradientColors = ['#7FB2FD', '#5D70FF'];
 
 export enum QuestionOptionsColor {
   Option1 = '#708EFF',

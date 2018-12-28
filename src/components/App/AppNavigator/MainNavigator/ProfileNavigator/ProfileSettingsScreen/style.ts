@@ -36,10 +36,6 @@ const style = StyleSheet.create({
     width: 80,
     height: 80,
   },
-  iconPhoto: {
-    width: 20,
-    height: 16,
-  },
   textAccountWraper: {
     marginBottom: 15,
   },
@@ -67,8 +63,6 @@ const style = StyleSheet.create({
     top: 13,
     right: 16,
     zIndex: 10,
-    width: 12,
-    height: 13,
   },
   notificationWraper: {
     justifyContent: 'space-between',
@@ -81,8 +75,6 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   notificationImage: {
-    width: 21.2,
-    height: 21.2,
     marginRight: 12,
   },
   changePasswordButton: {

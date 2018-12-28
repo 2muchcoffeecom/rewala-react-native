@@ -46,12 +46,8 @@ const style = StyleSheet.create({
     zIndex: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 25.5,
+    width: 36.5,
     height: 40,
-  },
-  crossImage: {
-    width: 13.5,
-    height: 12,
   },
 });
 
