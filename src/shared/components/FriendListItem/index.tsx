@@ -26,10 +26,12 @@ export interface OwnProps {
 
 interface StateProps {
   friend: FollowRequest | undefined;
+  authorizedUserId: string;
 }
 
 const mapStateToProps = (state: RootState, props: Props): StateProps => ({
   friend: selectorsService.getFriendFollowRequestByUserId(state, props),
+  authorizedUserId: state.auth.authorizedUserId,
 });
 
 type Props = OwnProps & StateProps;
@@ -38,7 +40,7 @@ class FriendListItem extends React.PureComponent<Props> {
   render() {
 
     const {
-      avatarThumbPath, fullName, userId, friend, withFriendProfile,
+      avatarThumbPath, fullName, userId, friend, withFriendProfile, authorizedUserId,
     } = this.props;
 
     const onPressFriend = () => {
@@ -46,7 +48,10 @@ class FriendListItem extends React.PureComponent<Props> {
         userId: this.props.userId,
         friendFollowRequestId: this.props.friend ? this.props.friend._id : '',
       };
-      navService.push('ProfileFriendScreen', params);
+
+      userId === authorizedUserId ?
+        navService.push('ProfileScreen', params) :
+        navService.push('ProfileFriendScreen', params);
     };
 
     return (
