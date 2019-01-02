@@ -5,7 +5,7 @@ import style from './style';
 
 import {
   View, TextInput, TouchableOpacity, Text,
-  FlatList, ScrollView, ListRenderItem,
+  FlatList, ScrollView, ListRenderItem, EmitterSubscription, Keyboard,
 } from 'react-native';
 import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../../shared/components/FriendListItem/index';
 import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
@@ -56,6 +56,7 @@ type Props = StateProps & DispatchProps;
 
 interface State {
   searchQuery: string;
+  isKeyboardVisible: boolean;
 }
 
 class SearchUserScreen extends React.PureComponent<Props, State> {
@@ -63,11 +64,34 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       searchQuery: '',
+      isKeyboardVisible: false,
     };
+  }
+
+  keyboardWillShowSub: EmitterSubscription;
+  keyboardWillHideSub: EmitterSubscription;
+
+  keyboardWillShow = () => {
+    this.setState({
+      isKeyboardVisible: true,
+    });
+  }
+
+  keyboardWillHide = () => {
+    this.setState({
+      isKeyboardVisible: false,
+    });
   }
 
   componentDidMount() {
     this.props.getMyFollowRequests();
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
   }
 
   onChangeSearchValue = (value: string) => {
@@ -175,7 +199,10 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
             />
           </View>
         </View>
-        <AddRewalButton/>
+        {
+          !this.state.isKeyboardVisible &&
+          <AddRewalButton/>
+        }
       </ScrollView>
     );
   }
