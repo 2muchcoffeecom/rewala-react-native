@@ -14,7 +14,7 @@ export interface OwnProps {
 
 type Props = OwnProps & WrappedFieldProps;
 
-export const OptionInput: React.FunctionComponent<Props> = (props: Props) => {
+export const MultilineInput: React.FunctionComponent<Props> = (props: Props) => {
   const {
     placeholder, keyboard, editable, maxLength, color,
     input: {onChange, onFocus, ...restInput},
@@ -42,4 +42,4 @@ export const OptionInput: React.FunctionComponent<Props> = (props: Props) => {
   );
 };
 
-export default OptionInput;
+export default MultilineInput;
