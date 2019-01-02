@@ -5,6 +5,9 @@ import {
 
 const style = StyleSheet.create({
   root: {
+    flex: 1,
+  },
+  scrollRoot: {
     height: fullHeight - 40,
     marginTop: 49,
   },
@@ -14,17 +17,31 @@ const style = StyleSheet.create({
   },
   bgImageContainer: {
     width: '100%',
-    height: 200,
+    minHeight: 200,
   },
   gradient: {
     flex: 1,
     justifyContent: 'center', alignItems: 'center',
+    paddingTop: 40,
+    paddingBottom: 40,
   },
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+    minHeight: 200,
+    position: 'absolute',
+    zIndex: -1,
+  },
+  questionTitleColorButtonsGroupWraper: {
+    top: 15,
+    right: 20,
+    position: 'absolute',
+  },
+
   multilineInputWraper: {
     width: '100%',
     paddingLeft: 48,
     paddingRight: 48,
-    height: 120,
   },
   addPhotoButton: {
     flexDirection: 'row',

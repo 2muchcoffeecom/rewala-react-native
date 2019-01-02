@@ -1,6 +1,6 @@
 import { Dimensions, TextStyle, ViewStyle } from 'react-native';
 
-export const whiteColor = '#FFF';
+export const whiteColor = '#FFFFFF';
 export const greyColor = '#9D9D9D';
 export const greyColorAddRewal = '#A9A9A9';
 export const greyColorIcon = '#BEBEBE';
@@ -26,6 +26,16 @@ export enum QuestionOptionsColor {
   Option6 = '#BD10E0',
   Option7 = '#F5A623',
 }
+
+export const questionTitleColor = [
+  '#FFFFFF',
+  '#1C1C1C',
+  '#708EFF',
+  '#F67B7B',
+  '#F0D12E',
+  '#09BA7E',
+  '#B543FF',
+];
 
 export const fontFamilyRegular = 'Lato-Regular';
 export const fontFamilyBold = 'Lato-Bold';
