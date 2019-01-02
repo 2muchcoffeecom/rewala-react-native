@@ -13,7 +13,7 @@ type Props = WrappedFieldProps & WrappedFieldArrayProps<any>;
 
 const OptionFieldsArray: React.FunctionComponent<Props> = (props: Props) => {
   const {fields} = props;
-  const onPressAddButton = () => fields.push({});
+  const onPressAddButton = () => fields.push('');
 
   const renderOptionsFields = () => fields.map((optionItem, index) => {
       const onPressRemoveButton = () => {
