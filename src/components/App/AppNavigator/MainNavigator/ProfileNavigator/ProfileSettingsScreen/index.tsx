@@ -7,11 +7,12 @@ import { mainColor, whiteColor } from '../../../../../../app.style';
 import style from './style';
 
 import { View, ScrollView, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker, { Options } from 'react-native-image-crop-picker';
 import Input from '../../../../../../shared/components/Input';
 import SwitchInput from '../../../../../../shared/components/SwitchInput';
 import RegularButton from '../../../../../../shared/components/RegularButton';
 import ChangePasswordModal from '../../../../../../shared/components/ChangePasswordModal';
+import ImagePickerModal, { ImagePickerInput } from '../../../../../../shared/components/ImagePickerModal';
 import { Icon } from '../../../../../../shared/components/Icon';
 
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
@@ -65,12 +66,9 @@ const mapDispatchToProps = (dispatch: Dispatch<toastActions | authActions>): Dis
 );
 
 interface State {
-  avatar: {
-    uri: string;
-    type: string;
-    name: string;
-  };
-  isVisibleModal: boolean;
+  avatar: ImagePickerInput;
+  isVisibleChangePasswordModal: boolean;
+  isVisibleImagePickerModal: boolean;
 }
 
 type Props = StateProps & DispatchProps & InjectedFormProps<ProfileSettingsFormData>;
@@ -84,13 +82,20 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
         type: '',
         uri: '',
       },
-      isVisibleModal: false,
+      isVisibleChangePasswordModal: false,
+      isVisibleImagePickerModal: false,
     };
   }
 
-  toggleModalVisibility = () => {
+  toggleChangePasswordModalVisibility = () => {
     this.setState((state) => ({
-      isVisibleModal: !state.isVisibleModal,
+      isVisibleChangePasswordModal: !state.isVisibleChangePasswordModal,
+    }));
+  }
+
+  toggleImagePickerModalVisibility = () => {
+    this.setState((state) => ({
+      isVisibleImagePickerModal: !state.isVisibleImagePickerModal,
     }));
   }
 
@@ -129,31 +134,20 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
       });
   }
 
-  onChangeAvatar = () => {
+  selectAvatar = (image: ImagePickerInput) => {
+    this.setState({avatar: image});
+  }
+
+  getPickerOptions = (): Options => {
     const aspect = Dimensions.get('window').width;
 
-    ImagePicker.openPicker({
+    return {
       width: aspect,
       height: aspect,
       cropping: true,
       multiple: false,
       cropperCircleOverlay: true,
-    })
-      .then((image) => {
-        if (!Array.isArray(image)) {
-          const name = this.props.meProfile ?
-            `${this.props.meProfile.fullName}${Date.now().toString()}` :
-            Date.now().toString();
-
-          this.setState({
-            avatar: {
-              uri: image.path,
-              type: image.mime,
-              name,
-            },
-          });
-        }
-      });
+    };
   }
 
   private setFormValues() {
@@ -192,7 +186,7 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
       <ScrollView contentContainerStyle={style.root}>
         <TouchableOpacity
           style={style.avatarButton}
-          onPress={this.onChangeAvatar}
+          onPress={this.toggleImagePickerModalVisibility}
         >
           <View style={style.imageWraper}>
             <Icon
@@ -268,7 +262,7 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
         </View>
         <TouchableOpacity
           style={style.changePasswordButton}
-          onPress={this.toggleModalVisibility}
+          onPress={this.toggleChangePasswordModalVisibility}
         >
           <Text style={[style.text, style.textLink]}>Change Password</Text>
         </TouchableOpacity>
@@ -286,8 +280,15 @@ class ProfileSettingsScreen extends React.Component<Props, State> {
           />
         </View>
         <ChangePasswordModal
-          isVisible={this.state.isVisibleModal}
-          toggleVisibility={this.toggleModalVisibility}
+          isVisible={this.state.isVisibleChangePasswordModal}
+          toggleVisibility={this.toggleChangePasswordModalVisibility}
+        />
+        <ImagePickerModal
+          title='Select Avatar'
+          isVisible={this.state.isVisibleImagePickerModal}
+          toggleVisibility={this.toggleImagePickerModalVisibility}
+          selectImage={this.selectAvatar}
+          pickerOptions={this.getPickerOptions()}
         />
       </ScrollView>
     );
