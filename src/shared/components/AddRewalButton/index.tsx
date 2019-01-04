@@ -25,7 +25,7 @@ const AddRewalButton: React.FunctionComponent<Props> = (props) => {
   };
 
   return (
-    <View style={style.addButton}>
+    <View style={style.addButtonWraper}>
       <LinearGradient
         colors={linearGradientColors}
         useAngle={true}
@@ -33,6 +33,7 @@ const AddRewalButton: React.FunctionComponent<Props> = (props) => {
         style={style.gradient}
       >
         <TouchableOpacity
+          style={style.addButton}
           onPress={onPressAddButton}
         >
           <Icon

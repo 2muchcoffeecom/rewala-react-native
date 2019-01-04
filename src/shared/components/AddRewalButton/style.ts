@@ -9,7 +9,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  addButton: {
+  addButtonWraper: {
     position: 'absolute',
     bottom: 26,
     right: 18,
@@ -27,6 +27,12 @@ const style = StyleSheet.create({
         elevation: 8,
       },
     }),
+  },
+  addButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
 });
 
