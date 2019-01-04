@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import style from './style';
 
-import { View, ScrollView, TextInput, TouchableOpacity, FlatList, ListRenderItem } from 'react-native';
-import { Icon } from '../../../../../../shared/components/Icon';
+import { View, ScrollView, FlatList, ListRenderItem } from 'react-native';
 import FriendListItem, {
   FriendNavigationProps, OwnProps as IFriendListItem,
 } from '../../../../../../shared/components/FriendListItem';
+import SearchInput from '../../../../../../shared/components/SearchInput';
 
 import { NavigationInjectedProps } from 'react-navigation';
 import { RootState } from '../../../../../../redux/store';
@@ -16,7 +16,6 @@ import { Dispatch } from 'redux';
 import selectorsService from '../../../../../../shared/services/selectors.service';
 import { Actions as friendsActions } from '../../../../../../redux/friends/AC';
 import { Actions as usersActions } from '../../../../../../redux/users/AC';
-import { greyColorIcon } from '../../../../../../app.style';
 
 interface StateProps {
   myFriendsProfiles: ProfileModel[];
@@ -48,7 +47,6 @@ type Props = StateProps & DispatchProps & NavigationInjectedProps<FriendNavigati
 
 interface State {
   searchQuery: string;
-  filteredFriendProfiles: ProfileModel[];
 }
 
 class FriendsScreen extends React.Component<Props, State> {
@@ -56,9 +54,6 @@ class FriendsScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       searchQuery: '',
-      filteredFriendProfiles: this.props.navigation.getParam('userId') ?
-        this.props.userFriendsProfiles :
-        this.props.myFriendsProfiles,
     };
   }
 
@@ -72,13 +67,6 @@ class FriendsScreen extends React.Component<Props, State> {
   onChangeSearchValue = (value: string) => {
     this.setState({
       searchQuery: value.toLowerCase(),
-      filteredFriendProfiles: this.getFilteredProfiles(value.toLowerCase()),
-    });
-  }
-
-  onPressSearchDeleteButton = () => {
-    this.setState({
-      searchQuery: '',
     });
   }
 
@@ -111,43 +99,15 @@ class FriendsScreen extends React.Component<Props, State> {
       <ScrollView contentContainerStyle={style.root}>
         <View style={style.wraper}>
           <View style={style.seacrhWraper}>
-            {
-              this.state.searchQuery === '' ?
-                <Icon
-                  name='search'
-                  size={18}
-                  color={greyColorIcon}
-                  style={style.searchImage}
-                /> :
-                <TouchableOpacity
-                  onPress={this.onPressSearchDeleteButton}
-                  style={style.searchDeleteButton}
-                >
-                  <Icon
-                    name='delete-option'
-                    size={10}
-                    color={greyColorIcon}
-                  />
-                </TouchableOpacity>
-            }
-            <TextInput
-              style={style.searchInput}
-              placeholderTextColor='#BCBCBF'
-              placeholder='Search'
-              onChangeText={this.onChangeSearchValue}
-              value={this.state.searchQuery}
+            <SearchInput
+              searchQuery={this.state.searchQuery}
+              changeSearchQuery={this.onChangeSearchValue}
             />
           </View>
           <View>
             <FlatList
               style={style.friendList}
-              data={
-                this.state.searchQuery === '' ?
-                  this.props.navigation.getParam('userId') ?
-                    this.props.userFriendsProfiles :
-                    this.props.myFriendsProfiles :
-                  this.state.filteredFriendProfiles
-              }
+              data={this.getFilteredProfiles(this.state.searchQuery)}
               keyExtractor={this.keyExtractor}
               renderItem={this.renderItem}
             />

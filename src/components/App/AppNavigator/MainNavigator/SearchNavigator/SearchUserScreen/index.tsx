@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { greyColorIcon } from '../../../../../../app.style';
 import style from './style';
 
 import {
-  View, TextInput, TouchableOpacity, Text,
-  FlatList, ScrollView, ListRenderItem, EmitterSubscription, Keyboard,
+  View, Text, FlatList, ScrollView, Keyboard,
+  ListRenderItem, EmitterSubscription,
 } from 'react-native';
 import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../../shared/components/FriendListItem/index';
 import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
-import { Icon } from '../../../../../../shared/components/Icon';
+import SearchInput from '../../../../../../shared/components/SearchInput';
 
 import { Dispatch } from 'redux';
 import { RootState } from '../../../../../../redux/store';
@@ -94,11 +93,14 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
     this.keyboardWillHideSub.remove();
   }
 
-  onChangeSearchValue = (value: string) => {
+  search = (value: string) => {
     this.props.search({
       fullName: value,
       limit: 10,
     });
+  }
+
+  onChangeSearchValue = (value: string) => {
     this.setState({
       searchQuery: value,
     });
@@ -114,12 +116,6 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
         next: pagedUsersOptions.next,
       });
     }
-  }
-
-  onPressSearchDeleteButton = () => {
-    this.setState({
-      searchQuery: '',
-    });
   }
 
   listEmptyComponent = (isVisible: boolean) => {
@@ -152,32 +148,10 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
     return (
       <ScrollView contentContainerStyle={style.root}>
         <View style={style.seacrhWraper}>
-          {
-            this.state.searchQuery === '' ?
-              <Icon
-                name='search'
-                size={18}
-                color={greyColorIcon}
-                style={style.searchImage}
-              /> :
-              <TouchableOpacity
-                onPress={this.onPressSearchDeleteButton}
-                style={style.searchDeleteButton}
-              >
-                <Icon
-                  name='delete-option'
-                  size={10}
-                  color={greyColorIcon}
-                />
-              </TouchableOpacity>
-          }
-          <TextInput
-            style={style.searchInput}
-            placeholderTextColor='#BCBCBF'
-            placeholder='Search'
-            onChangeText={this.onChangeSearchValue}
-            value={this.state.searchQuery}
-            maxLength={50}
+          <SearchInput
+            searchQuery={this.state.searchQuery}
+            changeSearchQuery={this.onChangeSearchValue}
+            searchRequest={this.search}
           />
         </View>
         <View style={style.wraper}>

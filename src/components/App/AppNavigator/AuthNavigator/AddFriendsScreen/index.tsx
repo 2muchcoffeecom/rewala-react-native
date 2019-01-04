@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { greyColorIcon } from '../../../../../app.style';
-
 import style from './style';
 
-import { View, ScrollView, TextInput, TouchableOpacity, FlatList, ListRenderItem } from 'react-native';
+import { View, ScrollView, FlatList, ListRenderItem, EmitterSubscription, Keyboard } from 'react-native';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../shared/components/FriendListItem';
-import { Icon } from '../../../../../shared/components/Icon';
+import SearchInput from '../../../../../shared/components/SearchInput';
 
 import { RootState } from '../../../../../redux/store';
 import { ProfileModel } from '../../../../../shared/models/profile.model';
@@ -27,7 +25,7 @@ type Props = StateProps;
 
 interface State {
   searchQuery: string;
-  filteredProfiles: ProfileModel[];
+  isKeyboardVisible: boolean;
 }
 
 class AddFriendsScreen extends React.Component<Props, State> {
@@ -35,20 +33,38 @@ class AddFriendsScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       searchQuery: '',
-      filteredProfiles: this.props.profilesFromContacts,
+      isKeyboardVisible: false,
     };
+  }
+
+  componentDidMount() {
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
+  }
+
+  keyboardWillShowSub: EmitterSubscription;
+  keyboardWillHideSub: EmitterSubscription;
+
+  keyboardWillShow = () => {
+    this.setState({
+      isKeyboardVisible: true,
+    });
+  }
+
+  keyboardWillHide = () => {
+    this.setState({
+      isKeyboardVisible: false,
+    });
   }
 
   onChangeSearchValue = (value: string) => {
     this.setState({
       searchQuery: value.toLowerCase(),
-      filteredProfiles: this.getFilteredProfiles(value.toLowerCase()),
-    });
-  }
-
-  onPressSearchDeleteButton = () => {
-    this.setState({
-      searchQuery: '',
     });
   }
 
@@ -77,48 +93,27 @@ class AddFriendsScreen extends React.Component<Props, State> {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={style.root}>
-        <View style={style.wraper}>
-          <View style={style.seacrhWraper}>
-            {
-              this.state.searchQuery === '' ?
-                <Icon
-                  name='search'
-                  size={18}
-                  color={greyColorIcon}
-                  style={style.searchImage}
-                /> :
-                <TouchableOpacity
-                  onPress={this.onPressSearchDeleteButton}
-                  style={style.searchDeleteButton}
-                >
-                  <Icon
-                    name='delete-option'
-                    size={10}
-                    color={greyColorIcon}
-                  />
-                </TouchableOpacity>
-            }
-            <TextInput
-              style={style.searchInput}
-              placeholderTextColor='#BCBCBF'
-              placeholder='Search'
-              onChangeText={this.onChangeSearchValue}
-              value={this.state.searchQuery}
-            />
+      <View style={style.root}>
+        <ScrollView style={style.scrollRoot} contentContainerStyle={style.scrollContainer}>
+          <View style={style.wraper}>
+            <View style={style.seacrhWraper}>
+              <SearchInput
+                searchQuery={this.state.searchQuery}
+                changeSearchQuery={this.onChangeSearchValue}
+              />
+            </View>
+            <View>
+              <FlatList
+                style={style.friendList}
+                data={this.getFilteredProfiles(this.state.searchQuery)}
+                keyExtractor={this.keyExtractor}
+                renderItem={this.renderItem}
+              />
+            </View>
           </View>
-          <View>
-            <FlatList
-              style={style.friendList}
-              data={
-                this.state.searchQuery === '' ?
-                  this.props.profilesFromContacts :
-                  this.state.filteredProfiles
-              }
-              keyExtractor={this.keyExtractor}
-              renderItem={this.renderItem}
-            />
-          </View>
+        </ScrollView>
+        {
+          !this.state.isKeyboardVisible &&
           <View style={style.buttonWraper}>
             <RegularButton
               title='START USING APP'
@@ -126,8 +121,8 @@ class AddFriendsScreen extends React.Component<Props, State> {
               fontSize={12}
             />
           </View>
-        </View>
-      </ScrollView>
+        }
+      </View>
     );
   }
 }
