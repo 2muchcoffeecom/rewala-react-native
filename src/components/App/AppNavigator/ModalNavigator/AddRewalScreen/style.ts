@@ -1,6 +1,6 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import {
-  fontFamilyRegular, fontFamilyBold, fullHeight, mainColor, whiteColor, greyColorAddRewal,
+  fontFamilyRegular, fontFamilyBold, fullHeight, mainColor, greyColorAddRewal,
 } from '../../../../../app.style';
 
 const style = StyleSheet.create({
@@ -8,16 +8,17 @@ const style = StyleSheet.create({
     flex: 1,
   },
   scrollRoot: {
-    height: fullHeight - 40,
+    height: fullHeight - 89,
+    marginBottom: 40,
     marginTop: 49,
   },
   scrollContainer: {
-    paddingBottom: 50,
+    paddingBottom: 72,
     minHeight: fullHeight - 89,
   },
   bgImageContainer: {
     width: '100%',
-    minHeight: 200,
+    minHeight: Dimensions.get('window').width * 0.5333,
   },
   gradient: {
     flex: 1,
@@ -28,7 +29,7 @@ const style = StyleSheet.create({
   backgroundImage: {
     width: '100%',
     height: '100%',
-    minHeight: 200,
+    minHeight: Dimensions.get('window').width * 0.5333,
     position: 'absolute',
     zIndex: -1,
   },
@@ -37,23 +38,10 @@ const style = StyleSheet.create({
     right: 20,
     position: 'absolute',
   },
-
   multilineInputWraper: {
     width: '100%',
     paddingLeft: 48,
     paddingRight: 48,
-  },
-  addPhotoButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    width: 90,
-    height: 24,
-    paddingLeft: 11,
-    paddingRight: 11,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: 4,
   },
   addPhotoButtonWraper: {
     position: 'absolute',
@@ -69,7 +57,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 37,
+    height: 45,
     paddingRight: 30,
     paddingLeft: 30,
     ...Platform.select({
@@ -88,7 +76,7 @@ const style = StyleSheet.create({
   textInviteFriendsButton: {
     fontFamily: fontFamilyBold,
     fontWeight: '700',
-    fontSize: 9,
+    fontSize: 10,
     color: mainColor,
   },
   timePickerButton: {
@@ -101,21 +89,15 @@ const style = StyleSheet.create({
   textTimePickerButton: {
     fontFamily: fontFamilyRegular,
     fontWeight: '400',
-    fontSize: 7,
+    fontSize: 10,
     color: greyColorAddRewal,
   },
   textBoldTimePickerButton: {
     fontFamily: fontFamilyBold,
     fontWeight: '700',
-    fontSize: 7,
+    fontSize: 10,
     color: mainColor,
     textAlign: 'right',
-  },
-  textAddPhoto: {
-    fontFamily: fontFamilyRegular,
-    fontWeight: '400',
-    fontSize: 8,
-    color: whiteColor,
   },
   textBold: {
     fontFamily: fontFamilyBold,
@@ -125,6 +107,12 @@ const style = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
     paddingTop: 20,
+  },
+  invitedUserAvatars: {
+    width: '100%',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 30,
   },
   buttonCreate: {
     position: 'absolute',

@@ -1,11 +1,11 @@
 import React from 'react';
-import { compose } from 'redux';
+import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import style from './style';
 import { linearGradientColors, mainColor, whiteColor } from '../../../../../app.style';
 
 import {
-  View, ScrollView, Text, TouchableOpacity, Image,
+  View, ScrollView, Text, TouchableOpacity, Image, SafeAreaView,
   BackHandler, EmitterSubscription, Keyboard, Dimensions,
 } from 'react-native';
 import { Field, FieldArray, InjectedFormProps, reduxForm } from 'redux-form';
@@ -17,15 +17,19 @@ import { Icon } from '../../../../../shared/components/Icon';
 import OptionFieldsArray from '../../../../../shared/components/OptionFieldsArray';
 import MultilineInput from '../../../../../shared/components/MultilineInput';
 import QuestionTitleColorButtonsGroup from '../../../../../shared/components/QuestionTitleColorButtonsGroup';
+import ImagePickerModal, { ImagePickerInput } from '../../../../../shared/components/ImagePickerModal';
+import InviteFriendsModal from '../../../../../shared/components/InviteFriendsModal';
+import AddDeletePhotoButton from '../../../../../shared/components/AddDeletePhotoButton';
+import AvatarsInAddRewal from '../../../../../shared/components/AvatarsInAddRewal';
 
 import { ProfileModel } from '../../../../../shared/models/profile.model';
 import { RootState } from '../../../../../redux/store';
 import { AddRewalButtonNavParams } from '../../../../../shared/components/AddRewalButton';
 import { NavigationInjectedProps, NavigationScreenConfig, NavigationStackScreenOptions } from 'react-navigation';
+import { Options } from 'react-native-image-crop-picker';
 
 import selectorsService from '../../../../../shared/services/selectors.service';
-import ImagePickerModal, { ImagePickerInput } from '../../../../../shared/components/ImagePickerModal';
-import { Options } from "react-native-image-crop-picker";
+import { Actions as friendsActions } from '../../../../../redux/friends/AC';
 
 interface AddRewalFormData {
   title: string;
@@ -33,24 +37,41 @@ interface AddRewalFormData {
 }
 
 interface StateProps {
-  meProfile: ProfileModel | undefined;
+  myFriendsProfiles: ProfileModel[];
+}
+
+interface DispatchProps {
+  getMyFriends(): void;
 }
 
 const mapStateToProps = (state: RootState): StateProps => ({
-  meProfile: selectorsService.getAuthorizedUserProfile(state),
+  myFriendsProfiles: selectorsService.getMyFriendsProfiles(state),
 });
+
+const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps => (
+  {
+    getMyFriends: () => {
+      dispatch(friendsActions.getMyFriends());
+    },
+  }
+);
 
 interface State {
   isDateTimePickerVisible: boolean;
   isKeyboardVisible: boolean;
   isVisibleImagePickerModal: boolean;
+  isVisibleInviteFriendsModal: boolean;
   expiredTime: number;
   optionCount: number;
   titleColor: string;
   image: ImagePickerInput;
+  invitedFriends: string[];
 }
 
-type Props = StateProps & InjectedFormProps<AddRewalFormData> & NavigationInjectedProps<AddRewalButtonNavParams>;
+type Props = StateProps &
+  DispatchProps &
+  InjectedFormProps<AddRewalFormData> &
+  NavigationInjectedProps<AddRewalButtonNavParams>;
 
 class AddRewalScreen extends React.Component<Props, State> {
   static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = (
@@ -80,6 +101,7 @@ class AddRewalScreen extends React.Component<Props, State> {
       isDateTimePickerVisible: false,
       isKeyboardVisible: false,
       isVisibleImagePickerModal: false,
+      isVisibleInviteFriendsModal: false,
       expiredTime: 24,
       optionCount: 2,
       titleColor: whiteColor,
@@ -88,6 +110,7 @@ class AddRewalScreen extends React.Component<Props, State> {
         type: '',
         uri: '',
       },
+      invitedFriends: [],
     };
   }
 
@@ -107,8 +130,11 @@ class AddRewalScreen extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    this.props.getMyFriends();
+
     this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
     this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
+
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     this.props.initialize({options: ['', '']});
   }
@@ -132,13 +158,35 @@ class AddRewalScreen extends React.Component<Props, State> {
     this.toggleImagePickerModalVisibility();
   }
 
+  onPressDeletePhotoButton = () => {
+    this.setState({
+      image: {
+        uri: '',
+        type: '',
+        name: '',
+      },
+    });
+  }
+
   selectImage = (image: ImagePickerInput) => {
     this.setState({image});
+  }
+
+  inviteFriends = (data: string[]) => {
+    this.setState({
+      invitedFriends: data,
+    });
   }
 
   toggleImagePickerModalVisibility = () => {
     this.setState((state) => ({
       isVisibleImagePickerModal: !state.isVisibleImagePickerModal,
+    }));
+  }
+
+  toggleInviteFriendsModalVisibility = () => {
+    this.setState((state) => ({
+      isVisibleInviteFriendsModal: !state.isVisibleInviteFriendsModal,
     }));
   }
 
@@ -157,7 +205,7 @@ class AddRewalScreen extends React.Component<Props, State> {
 
     return {
       width: aspect,
-      height: 200,
+      height: aspect * 0.5333,
       cropping: true,
       multiple: false,
     };
@@ -183,17 +231,11 @@ class AddRewalScreen extends React.Component<Props, State> {
           />
         </View>
         <View style={style.addPhotoButtonWraper}>
-          <TouchableOpacity
-            style={style.addPhotoButton}
-            onPress={this.onPressAddPhotoButton}
-          >
-            <Text style={style.textAddPhoto}>ADD PHOTO</Text>
-            <Icon
-              name='photo'
-              size={11}
-              color={whiteColor}
-            />
-          </TouchableOpacity>
+          <AddDeletePhotoButton
+            isAddedPhoto={this.state.image.uri !== ''}
+            onPressAddPhotoButton={this.onPressAddPhotoButton}
+            onPressDeletePhotoButton={this.onPressDeletePhotoButton}
+          />
         </View>
       </React.Fragment>
     );
@@ -227,13 +269,15 @@ class AddRewalScreen extends React.Component<Props, State> {
     const {isDateTimePickerVisible, expiredTime} = this.state;
 
     return (
-      <View style={style.root}>
+      <SafeAreaView style={style.root}>
         <ScrollView style={style.scrollRoot} contentContainerStyle={style.scrollContainer}>
           <View style={style.bgImageContainer}>
             {this.getTitleWithImageBody()}
           </View>
           <View style={style.modalBar}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.toggleInviteFriendsModalVisibility}
+            >
               <Text style={style.textInviteFriendsButton}>
                 INVITE FRIENDS
               </Text>
@@ -256,7 +300,7 @@ class AddRewalScreen extends React.Component<Props, State> {
               </View>
               <Icon
                 name='time'
-                size={18}
+                size={24}
                 color={mainColor}
                 style={style.timeIcon}
               />
@@ -277,6 +321,12 @@ class AddRewalScreen extends React.Component<Props, State> {
               component={OptionFieldsArray}
             />
           </View>
+          <View style={style.invitedUserAvatars}>
+            <AvatarsInAddRewal
+              profilesData={this.props.myFriendsProfiles}
+              invitedFriends={this.state.invitedFriends}
+            />
+          </View>
         </ScrollView>
         {
           !this.state.isKeyboardVisible &&
@@ -295,7 +345,13 @@ class AddRewalScreen extends React.Component<Props, State> {
           selectImage={this.selectImage}
           pickerOptions={this.getPickerOptions()}
         />
-      </View>
+        <InviteFriendsModal
+          myFriendsProfiles={this.props.myFriendsProfiles}
+          isVisible={this.state.isVisibleInviteFriendsModal}
+          toggleVisibility={this.toggleInviteFriendsModalVisibility}
+          confirmSelection={this.inviteFriends}
+        />
+      </SafeAreaView>
     );
   }
 }
@@ -304,5 +360,5 @@ export default compose(
   reduxForm<AddRewalFormData>({
     form: 'addRewal',
   }),
-  connect<StateProps>(mapStateToProps),
+  connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
 )(AddRewalScreen);
