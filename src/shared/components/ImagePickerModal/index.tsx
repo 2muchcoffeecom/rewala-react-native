@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style';
 
-import { TouchableOpacity, View, Text, Dimensions } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import Modal from 'react-native-modal';
 import ImagePicker, { Options } from 'react-native-image-crop-picker';
 
