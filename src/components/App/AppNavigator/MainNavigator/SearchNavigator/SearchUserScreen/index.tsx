@@ -1,11 +1,10 @@
 import React from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
+import withKeyboard, { KeyboardInjectedProps } from '../../../../../../shared/HOC/withKeyboard';
 import style from './style';
 
-import {
-  View, Text, FlatList, ScrollView, Keyboard,
-  ListRenderItem, EmitterSubscription,
-} from 'react-native';
+import { View, Text, FlatList, ScrollView, ListRenderItem } from 'react-native';
 import FriendListItem, { OwnProps as IFriendListItem } from '../../../../../../shared/components/FriendListItem/index';
 import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
 import SearchInput from '../../../../../../shared/components/SearchInput';
@@ -51,11 +50,10 @@ const mapDispatchToProps = (dispatch: Dispatch<usersActions | friendsActions>): 
   }
 );
 
-type Props = StateProps & DispatchProps;
+type Props = StateProps & DispatchProps & KeyboardInjectedProps;
 
 interface State {
   searchQuery: string;
-  isKeyboardVisible: boolean;
 }
 
 class SearchUserScreen extends React.PureComponent<Props, State> {
@@ -63,34 +61,11 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       searchQuery: '',
-      isKeyboardVisible: false,
     };
-  }
-
-  keyboardWillShowSub: EmitterSubscription;
-  keyboardWillHideSub: EmitterSubscription;
-
-  keyboardWillShow = () => {
-    this.setState({
-      isKeyboardVisible: true,
-    });
-  }
-
-  keyboardWillHide = () => {
-    this.setState({
-      isKeyboardVisible: false,
-    });
   }
 
   componentDidMount() {
     this.props.getMyFollowRequests();
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
-  }
-
-  componentWillUnmount() {
-    this.keyboardWillShowSub.remove();
-    this.keyboardWillHideSub.remove();
   }
 
   search = (value: string) => {
@@ -174,7 +149,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
           </View>
         </View>
         {
-          !this.state.isKeyboardVisible &&
+          !this.props.isKeyboardVisible &&
           <AddRewalButton/>
         }
       </ScrollView>
@@ -182,4 +157,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
   }
 }
 
-export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(SearchUserScreen);
+export default compose(
+  withKeyboard,
+  connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
+)(SearchUserScreen);

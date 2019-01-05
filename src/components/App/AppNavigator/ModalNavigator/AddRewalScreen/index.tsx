@@ -1,12 +1,13 @@
 import React from 'react';
 import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import withKeyboard, { KeyboardInjectedProps } from '../../../../../shared/HOC/withKeyboard';
 import style from './style';
 import { linearGradientColors, mainColor, whiteColor } from '../../../../../app.style';
 
 import {
   View, ScrollView, Text, TouchableOpacity, Image, SafeAreaView,
-  BackHandler, EmitterSubscription, Keyboard, Dimensions,
+  BackHandler, Dimensions,
 } from 'react-native';
 import { Field, FieldArray, InjectedFormProps, reduxForm } from 'redux-form';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -58,11 +59,9 @@ const mapDispatchToProps = (dispatch: Dispatch<friendsActions>): DispatchProps =
 
 interface State {
   isDateTimePickerVisible: boolean;
-  isKeyboardVisible: boolean;
   isVisibleImagePickerModal: boolean;
   isVisibleInviteFriendsModal: boolean;
   expiredTime: number;
-  optionCount: number;
   titleColor: string;
   image: ImagePickerInput;
   invitedFriends: string[];
@@ -71,7 +70,8 @@ interface State {
 type Props = StateProps &
   DispatchProps &
   InjectedFormProps<AddRewalFormData> &
-  NavigationInjectedProps<AddRewalButtonNavParams>;
+  NavigationInjectedProps<AddRewalButtonNavParams> &
+  KeyboardInjectedProps;
 
 class AddRewalScreen extends React.Component<Props, State> {
   static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = (
@@ -99,11 +99,9 @@ class AddRewalScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       isDateTimePickerVisible: false,
-      isKeyboardVisible: false,
       isVisibleImagePickerModal: false,
       isVisibleInviteFriendsModal: false,
       expiredTime: 24,
-      optionCount: 2,
       titleColor: whiteColor,
       image: {
         name: '',
@@ -114,34 +112,13 @@ class AddRewalScreen extends React.Component<Props, State> {
     };
   }
 
-  keyboardWillShowSub: EmitterSubscription;
-  keyboardWillHideSub: EmitterSubscription;
-
-  keyboardWillShow = () => {
-    this.setState({
-      isKeyboardVisible: true,
-    });
-  }
-
-  keyboardWillHide = () => {
-    this.setState({
-      isKeyboardVisible: false,
-    });
-  }
-
   componentDidMount() {
     this.props.getMyFriends();
-
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
-
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     this.props.initialize({options: ['', '']});
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
   componentWillUnmount() {
-    this.keyboardWillShowSub.remove();
-    this.keyboardWillHideSub.remove();
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
 
@@ -266,8 +243,6 @@ class AddRewalScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const {isDateTimePickerVisible, expiredTime} = this.state;
-
     return (
       <SafeAreaView style={style.root}>
         <ScrollView style={style.scrollRoot} contentContainerStyle={style.scrollContainer}>
@@ -290,7 +265,7 @@ class AddRewalScreen extends React.Component<Props, State> {
                 <Text
                   style={style.textBoldTimePickerButton}
                 >
-                  {`${expiredTime} HOURS`}
+                  {`${this.state.expiredTime} HOURS`}
                 </Text>
                 <Text
                   style={style.textTimePickerButton}
@@ -308,7 +283,7 @@ class AddRewalScreen extends React.Component<Props, State> {
             <DateTimePicker
               onConfirm={(date: Date) => console.log(new Date().getTime() - date.getTime())}
               onCancel={this.toggleDateTimePicker}
-              isVisible={isDateTimePickerVisible}
+              isVisible={this.state.isDateTimePickerVisible}
               mode='datetime'
               datePickerModeAndroid='spinner'
               minimumDate={new Date()}
@@ -329,7 +304,7 @@ class AddRewalScreen extends React.Component<Props, State> {
           </View>
         </ScrollView>
         {
-          !this.state.isKeyboardVisible &&
+          !this.props.isKeyboardVisible &&
           <View style={style.buttonCreate}>
             <RegularButton
               title='CREATE REWAL'
@@ -357,6 +332,7 @@ class AddRewalScreen extends React.Component<Props, State> {
 }
 
 export default compose(
+  withKeyboard,
   reduxForm<AddRewalFormData>({
     form: 'addRewal',
   }),
