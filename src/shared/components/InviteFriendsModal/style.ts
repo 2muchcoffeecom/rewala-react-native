@@ -61,7 +61,7 @@ const style = StyleSheet.create({
         shadowRadius: 2,
       },
       android: {
-        borderTopWidth: 1,
+        borderTopWidth: 0.25,
         borderTopColor: borderColorOpacity,
       },
     }),
