@@ -1,18 +1,12 @@
 import { user } from './user.template';
-import { avatar } from './avatar.template';
-
-export const questionOption = `{
-  _id,
-  text,
-  questionId
-  votes
-}`;
+import { image } from './image.template';
+import { questionOption } from './questionOption.template';
 
 export const question = `{
   _id
   title
   expiredTime
-  background ${avatar}
+  background ${image}
   memberIds
   ownerId
   owner ${user}
