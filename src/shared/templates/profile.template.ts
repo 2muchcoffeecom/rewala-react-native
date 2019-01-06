@@ -1,4 +1,4 @@
-import { avatar } from './avatar.template';
+import { image } from './image.template';
 
 export const profile = `{
   _id
@@ -7,8 +7,8 @@ export const profile = `{
   countryCode
   notifications
   avatarId
-  avatar ${avatar}
-  avatarThumb ${avatar}
+  avatar ${image}
+  avatarThumb ${image}
   friendsCount
   rewalsCount
 }`;

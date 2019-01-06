@@ -1,4 +1,4 @@
-export const avatar =  `{
+export const image =  `{
   _id
   dir
   filename
