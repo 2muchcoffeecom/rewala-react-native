@@ -6,11 +6,11 @@ import { ReactNativeFile } from 'apollo-upload-client';
 import link from '../middlewares/link.middleware';
 import { question } from '../templates/question.template';
 
-interface  CreateQuestionOptionInput {
+export interface  CreateQuestionOptionInput {
   text: string;
 }
 
-interface CreateQuestionInput {
+export interface CreateQuestionInput {
   title: string;
   expiredTime: number;
   background: InstanceType<typeof ReactNativeFile>;
