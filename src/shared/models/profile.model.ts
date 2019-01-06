@@ -33,17 +33,14 @@ export class ProfileModel {
   }
 }
 
+export interface ImageResponse {
+  _id: string;
+  dir: string;
+  filename: string;
+  mimetype: string;
+}
+
 export interface ProfileResponse extends ProfileModel {
-  avatar: {
-    _id: string,
-    dir: string,
-    filename: string
-    mimetype: string,
-  };
-  avatarThumb: {
-    _id: string,
-    dir: string,
-    filename: string
-    mimetype: string,
-  };
+  avatar: ImageResponse;
+  avatarThumb: ImageResponse;
 }
