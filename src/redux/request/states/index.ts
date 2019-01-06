@@ -2,10 +2,12 @@ import * as authState from '../nested-states/auth/states';
 import * as contactsState from '../nested-states/contacts/states';
 import * as friendsState from '../nested-states/friends/states';
 import * as usersState from '../nested-states/users/states';
+import * as questionsState from '../nested-states/questions/states';
 
 import { FollowRequest, FollowRequestResponse } from '../../../shared/models/followRequest.model';
 import { UserResponse } from '../../../shared/models/user.model';
 import { PagedUserModel } from '../../../shared/models/pagedUser.model';
+import { QuestionResponse } from '../../../shared/models/question.model';
 
 export interface FieldsError {
   email: {};
@@ -41,6 +43,7 @@ export interface GraphQlResponse {
     logout: boolean,
     search: PagedUserModel,
     userFriends: UserResponse[],
+    createQuestion: QuestionResponse,
   };
 }
 
@@ -52,6 +55,7 @@ export interface RequestState {
   contacts: contactsState.ContactsRequestState;
   friends: friendsState.FriendsRequestState;
   users: usersState.UsersRequestState;
+  question: questionsState.QuestionsRequestState;
 }
 
 export const initialState: RequestState = {
@@ -59,4 +63,5 @@ export const initialState: RequestState = {
   contacts: contactsState.initialState,
   friends: friendsState.initialState,
   users: usersState.initialState,
+  question: questionsState.initialState,
 };
