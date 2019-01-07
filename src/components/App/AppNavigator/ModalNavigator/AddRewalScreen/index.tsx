@@ -2,6 +2,7 @@ import React from 'react';
 import { compose, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import withKeyboard, { KeyboardInjectedProps } from '../../../../../shared/HOC/withKeyboard';
+import { ReactNativeFile } from 'extract-files';
 import style from './style';
 import { linearGradientColors, mainColor, whiteColor } from '../../../../../app.style';
 
@@ -35,9 +36,9 @@ import { CreateQuestionInput, CreateQuestionOptionInput } from '../../../../../s
 import required from '../../../../../shared/validators/required';
 
 import selectorsService from '../../../../../shared/services/selectors.service';
+import profileService from '../../../../../shared/services/profile.service';
 import { Actions as friendsActions } from '../../../../../redux/friends/AC';
 import { Actions as questionActions } from '../../../../../redux/questions/AC';
-import { ReactNativeFile } from 'extract-files';
 
 interface AddRewalFormData {
   title: string;
@@ -72,6 +73,7 @@ interface State {
   titleColor: string;
   background: ImagePickerInput;
   invitedFriends: string[];
+  avatarThumbUris: string[];
 }
 
 type Props = StateProps &
@@ -116,6 +118,7 @@ class AddRewalScreen extends React.Component<Props, State> {
         uri: '',
       },
       invitedFriends: [],
+      avatarThumbUris: [],
     };
   }
 
@@ -177,9 +180,13 @@ class AddRewalScreen extends React.Component<Props, State> {
   }
 
   inviteFriends = (data: string[]) => {
-    this.setState({
+    this.setState((state, props) => ({
       invitedFriends: data,
-    });
+      avatarThumbUris: profileService.getAvatarThumbsForAddRewal({
+        profilesData: props.myFriendsProfiles,
+        invitedFriends: data,
+      }),
+    }));
   }
 
   toggleImagePickerModalVisibility = () => {
@@ -273,13 +280,18 @@ class AddRewalScreen extends React.Component<Props, State> {
   render() {
     const {myFriendsProfiles, handleSubmit, submitting, isKeyboardVisible, invalid} = this.props;
     const {
-      expiredTime, isDateTimePickerVisible, invitedFriends, isVisibleImagePickerModal,
-      isVisibleInviteFriendsModal,
+      expiredTime, isDateTimePickerVisible, isVisibleImagePickerModal, isVisibleInviteFriendsModal,
     } = this.state;
 
     return (
       <View style={style.root}>
-        <ScrollView style={style.scrollRoot} contentContainerStyle={style.scrollContainer}>
+        <ScrollView
+          style={style.scrollRoot}
+          contentContainerStyle={
+            this.state.avatarThumbUris.length === 0 ?
+              style.scrollContainer :
+              [style.scrollContainer, {paddingBottom: 72}]
+          }>
           <View style={style.bgImageContainer}>
             {this.getTitleWithBackgroundBody()}
           </View>
@@ -299,7 +311,7 @@ class AddRewalScreen extends React.Component<Props, State> {
                 <Text
                   style={style.textBoldTimePickerButton}
                 >
-                  {`${expiredTime} HOURS`}
+                  {`${expiredTime / 3600} HOURS`}
                 </Text>
                 <Text
                   style={style.textTimePickerButton}
@@ -330,12 +342,14 @@ class AddRewalScreen extends React.Component<Props, State> {
               component={OptionFieldsArray}
             />
           </View>
-          <View style={style.invitedUserAvatars}>
-            <AvatarsInAddRewal
-              profilesData={myFriendsProfiles}
-              invitedFriends={invitedFriends}
-            />
-          </View>
+          {
+            this.state.avatarThumbUris.length !== 0 &&
+            <View style={style.invitedUserAvatars}>
+              <AvatarsInAddRewal
+                avatarThumbUris={this.state.avatarThumbUris}
+              />
+            </View>
+          }
         </ScrollView>
         {
           !isKeyboardVisible &&

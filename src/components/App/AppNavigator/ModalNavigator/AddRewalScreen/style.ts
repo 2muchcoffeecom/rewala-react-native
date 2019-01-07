@@ -13,7 +13,7 @@ const style = StyleSheet.create({
     marginTop: 49,
   },
   scrollContainer: {
-    paddingBottom: 72,
+    paddingBottom: 10,
     minHeight: fullHeight - 89,
   },
   bgImageContainer: {
