@@ -6,10 +6,10 @@ import style from './style';
 import { linearGradientColors, mainColor, whiteColor } from '../../../../../app.style';
 
 import {
-  View, ScrollView, Text, TouchableOpacity, Image, SafeAreaView,
+  View, ScrollView, Text, TouchableOpacity, Image,
   BackHandler, Dimensions,
 } from 'react-native';
-import { Field, FieldArray, InjectedFormProps, reduxForm } from 'redux-form';
+import { Field, FieldArray, InjectedFormProps, reduxForm, SubmissionError } from 'redux-form';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import RegularButton from '../../../../../shared/components/RegularButton';
 import LinearGradient from 'react-native-linear-gradient';
@@ -28,9 +28,16 @@ import { RootState } from '../../../../../redux/store';
 import { AddRewalButtonNavParams } from '../../../../../shared/components/AddRewalButton';
 import { NavigationInjectedProps, NavigationScreenConfig, NavigationStackScreenOptions } from 'react-navigation';
 import { Options } from 'react-native-image-crop-picker';
+import { RequestError } from '../../../../../redux/request/states';
+import { QuestionResponse } from '../../../../../shared/models/question.model';
+import { CreateQuestionInput, CreateQuestionOptionInput } from '../../../../../shared/services/question.service';
+
+import required from '../../../../../shared/validators/required';
 
 import selectorsService from '../../../../../shared/services/selectors.service';
 import { Actions as friendsActions } from '../../../../../redux/friends/AC';
+import { Actions as questionActions } from '../../../../../redux/questions/AC';
+import { ReactNativeFile } from 'extract-files';
 
 interface AddRewalFormData {
   title: string;
@@ -63,7 +70,7 @@ interface State {
   isVisibleInviteFriendsModal: boolean;
   expiredTime: number;
   titleColor: string;
-  image: ImagePickerInput;
+  background: ImagePickerInput;
   invitedFriends: string[];
 }
 
@@ -101,9 +108,9 @@ class AddRewalScreen extends React.Component<Props, State> {
       isDateTimePickerVisible: false,
       isVisibleImagePickerModal: false,
       isVisibleInviteFriendsModal: false,
-      expiredTime: 24,
+      expiredTime: 10800,
       titleColor: whiteColor,
-      image: {
+      background: {
         name: '',
         type: '',
         uri: '',
@@ -128,7 +135,27 @@ class AddRewalScreen extends React.Component<Props, State> {
     return true;
   }
 
-  onPressButtonCreate = () => {
+  submitCreateQuestion = (values: AddRewalFormData, dispatch: Dispatch<questionActions>) => {
+    const input: CreateQuestionInput = {
+      title: values.title,
+      background: this.state.background.uri !== '' ?
+        new ReactNativeFile(this.state.background) : undefined,
+      expiredTime: this.state.expiredTime,
+      memberIds: this.state.invitedFriends.length !== 0 ?
+        this.state.invitedFriends : undefined,
+      questionOptions: values.options.map<CreateQuestionOptionInput>(
+        (option) => ({text: option}),
+      ),
+    };
+
+    return new Promise<QuestionResponse>((resolve, reject) => {
+      dispatch(questionActions.submitCreateQuestion(input, resolve, reject));
+    })
+      .catch((error: RequestError) => {
+        throw new SubmissionError<AddRewalFormData>({
+          _error: error.message ? error.message : undefined,
+        });
+      });
   }
 
   onPressAddPhotoButton = () => {
@@ -137,7 +164,7 @@ class AddRewalScreen extends React.Component<Props, State> {
 
   onPressDeletePhotoButton = () => {
     this.setState({
-      image: {
+      background: {
         uri: '',
         type: '',
         name: '',
@@ -145,8 +172,8 @@ class AddRewalScreen extends React.Component<Props, State> {
     });
   }
 
-  selectImage = (image: ImagePickerInput) => {
-    this.setState({image});
+  selectBackground = (background: ImagePickerInput) => {
+    this.setState({background});
   }
 
   inviteFriends = (data: string[]) => {
@@ -177,7 +204,7 @@ class AddRewalScreen extends React.Component<Props, State> {
     this.setState({titleColor: color});
   }
 
-  getPickerOptions = (): Options => {
+  getImagePickerOptions = (): Options => {
     const aspect = Dimensions.get('window').width;
 
     return {
@@ -188,7 +215,7 @@ class AddRewalScreen extends React.Component<Props, State> {
     };
   }
 
-  getTitleWithImageBody() {
+  getTitleWithBackgroundBody() {
     const content = (
       <React.Fragment>
         <View style={style.questionTitleColorButtonsGroupWraper}>
@@ -205,11 +232,12 @@ class AddRewalScreen extends React.Component<Props, State> {
             placeholder='TYPE YOUR QUESTION HERE'
             maxLength={70}
             color={this.state.titleColor}
+            validate={required}
           />
         </View>
         <View style={style.addPhotoButtonWraper}>
           <AddDeletePhotoButton
-            isAddedPhoto={this.state.image.uri !== ''}
+            isAddedPhoto={this.state.background.uri !== ''}
             onPressAddPhotoButton={this.onPressAddPhotoButton}
             onPressDeletePhotoButton={this.onPressDeletePhotoButton}
           />
@@ -217,12 +245,12 @@ class AddRewalScreen extends React.Component<Props, State> {
       </React.Fragment>
     );
 
-    if (this.state.image.uri !== '') {
+    if (this.state.background.uri !== '') {
       return (
         <View style={style.gradient}>
           {content}
           <Image
-            source={{uri: this.state.image.uri}}
+            source={{uri: this.state.background.uri}}
             resizeMode='cover'
             style={style.backgroundImage}
           />
@@ -243,11 +271,17 @@ class AddRewalScreen extends React.Component<Props, State> {
   }
 
   render() {
+    const {myFriendsProfiles, handleSubmit, submitting, isKeyboardVisible, invalid} = this.props;
+    const {
+      expiredTime, isDateTimePickerVisible, invitedFriends, isVisibleImagePickerModal,
+      isVisibleInviteFriendsModal,
+    } = this.state;
+
     return (
-      <SafeAreaView style={style.root}>
+      <View style={style.root}>
         <ScrollView style={style.scrollRoot} contentContainerStyle={style.scrollContainer}>
           <View style={style.bgImageContainer}>
-            {this.getTitleWithImageBody()}
+            {this.getTitleWithBackgroundBody()}
           </View>
           <View style={style.modalBar}>
             <TouchableOpacity
@@ -265,7 +299,7 @@ class AddRewalScreen extends React.Component<Props, State> {
                 <Text
                   style={style.textBoldTimePickerButton}
                 >
-                  {`${this.state.expiredTime} HOURS`}
+                  {`${expiredTime} HOURS`}
                 </Text>
                 <Text
                   style={style.textTimePickerButton}
@@ -283,7 +317,7 @@ class AddRewalScreen extends React.Component<Props, State> {
             <DateTimePicker
               onConfirm={(date: Date) => console.log(new Date().getTime() - date.getTime())}
               onCancel={this.toggleDateTimePicker}
-              isVisible={this.state.isDateTimePickerVisible}
+              isVisible={isDateTimePickerVisible}
               mode='datetime'
               datePickerModeAndroid='spinner'
               minimumDate={new Date()}
@@ -298,35 +332,36 @@ class AddRewalScreen extends React.Component<Props, State> {
           </View>
           <View style={style.invitedUserAvatars}>
             <AvatarsInAddRewal
-              profilesData={this.props.myFriendsProfiles}
-              invitedFriends={this.state.invitedFriends}
+              profilesData={myFriendsProfiles}
+              invitedFriends={invitedFriends}
             />
           </View>
         </ScrollView>
         {
-          !this.props.isKeyboardVisible &&
+          !isKeyboardVisible &&
           <View style={style.buttonCreate}>
             <RegularButton
               title='CREATE REWAL'
               fontSize={14}
-              onPress={this.onPressButtonCreate}
+              onPress={handleSubmit(this.submitCreateQuestion)}
+              disabled={submitting || invalid}
             />
           </View>
         }
         <ImagePickerModal
           title='Select Photo'
-          isVisible={this.state.isVisibleImagePickerModal}
+          isVisible={isVisibleImagePickerModal}
           toggleVisibility={this.toggleImagePickerModalVisibility}
-          selectImage={this.selectImage}
-          pickerOptions={this.getPickerOptions()}
+          selectImage={this.selectBackground}
+          pickerOptions={this.getImagePickerOptions()}
         />
         <InviteFriendsModal
-          myFriendsProfiles={this.props.myFriendsProfiles}
-          isVisible={this.state.isVisibleInviteFriendsModal}
+          myFriendsProfiles={myFriendsProfiles}
+          isVisible={isVisibleInviteFriendsModal}
           toggleVisibility={this.toggleInviteFriendsModalVisibility}
           confirmSelection={this.inviteFriends}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }
