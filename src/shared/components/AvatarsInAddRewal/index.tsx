@@ -4,22 +4,18 @@ import { apiEndpoint } from '../../constants/apiEndpoint';
 
 import { View, Image } from 'react-native';
 
-import profileService, { GetAvatarThumbsForAddRewalInput } from '../../services/profile.service';
-
-type OwnProps = GetAvatarThumbsForAddRewalInput;
+interface OwnProps {
+  avatarThumbUris: string[];
+}
 
 type Props = OwnProps;
 
 const AvatarsInAddRewal: React.FunctionComponent<Props> = (props) => {
-  const avatarThumbUris = profileService.getAvatarThumbsForAddRewal({
-    profilesData: props.profilesData,
-    invitedFriends: props.invitedFriends,
-  });
 
   return (
     <View style={style.root}>
       {
-        avatarThumbUris.map((avatarUri, index) => (
+        props.avatarThumbUris.map((avatarUri, index) => (
           <Image
             source={{uri: `${apiEndpoint}${avatarUri}`}}
             key={index}
@@ -27,7 +23,6 @@ const AvatarsInAddRewal: React.FunctionComponent<Props> = (props) => {
           />
         ))
       }
-
     </View>
   );
 };
