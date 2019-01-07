@@ -16,7 +16,7 @@ export const Actions = {
   createQuestionSuccess: (data: QuestionResponse) => {
     return createAction(ActionTypes.CREATE_QUESTION_SUCCESS, {data});
   },
-  createQuestionFail: (errors: RequestError | string) => {
+  createQuestionFail: (errors: RequestError) => {
     return createAction(ActionTypes.CREATE_QUESTION_FAIL, {errors});
   },
 };

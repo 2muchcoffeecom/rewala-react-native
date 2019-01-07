@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ofType } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
-import { authRequestAC, usersRequestAC } from '../../request/AC';
+import { authRequestAC, usersRequestAC, questionsRequestAC } from '../../request/AC';
 
 const showAuthErrorToastEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.login.Actions.loginFail> |
@@ -11,13 +11,15 @@ const showAuthErrorToastEpic = (action$: Observable<Action>) => action$.pipe(
     ReturnType<typeof authRequestAC.resetPassword.Actions.resetPasswordFail> |
     ReturnType<typeof authRequestAC.resetPasswordCode.Actions.resetPasswordCodeFail> |
     ReturnType<typeof authRequestAC.newPassword.Actions.newPasswordFail> |
-    ReturnType<typeof authRequestAC.logout.Actions.logoutFail>>(
+    ReturnType<typeof authRequestAC.logout.Actions.logoutFail> |
+    ReturnType<typeof questionsRequestAC.createQuestion.Actions.createQuestionFail>>(
     authRequestAC.login.ActionTypes.LOGIN_FAIL,
     authRequestAC.registration.ActionTypes.REGISTRATION_FAIL,
     authRequestAC.resetPassword.ActionTypes.RESET_PASSWORD_FAIL,
     authRequestAC.resetPasswordCode.ActionTypes.RESET_PASSWORD_CODE_FAIL,
     authRequestAC.newPassword.ActionTypes.NEW_PASSWORD_FAIL,
     authRequestAC.logout.ActionTypes.LOGOUT_FAIL,
+    questionsRequestAC.createQuestion.ActionTypes.CREATE_QUESTION_FAIL,
   ),
   map((action) => {
     const errorMessage = action.payload.errors.message;
