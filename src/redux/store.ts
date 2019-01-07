@@ -10,6 +10,7 @@ import { reducer as profilesReducer } from './profiles/reducers';
 import { reducer as friendsReducer } from './friends/reducers';
 import { reducer as contactsReducer } from './contacts/reducers';
 import { reducer as questionsReducer } from './questions/reducers';
+import { reducer as questionOptionsReducer } from './questionOptions/reducers';
 
 import { requestEpics } from './request/epics';
 import { authEpics } from './auth/epics';
@@ -19,6 +20,7 @@ import { usersEpics } from './users/epics';
 import { profilesEpics } from './profiles/epics';
 import { friendsEpics } from './friends/epics';
 import { questionsEpics } from './questions/epics';
+import { questionOptionsEpics } from './questionOptions/epics';
 
 import { RequestState } from './request/states';
 import { FormsState } from './form/states';
@@ -29,6 +31,7 @@ import { ProfilesState } from './profiles/states';
 import { FriendsState } from './friends/states';
 import { ContactsState } from './contacts/states';
 import { QuestionsState } from './questions/states';
+import { QuestionOptionsState } from './questionOptions/states';
 
 export interface RootState {
   request: RequestState;
@@ -40,6 +43,7 @@ export interface RootState {
   friends: FriendsState;
   contacts: ContactsState;
   questions: QuestionsState;
+  questionOptions: QuestionOptionsState;
 }
 
 const rootReducer = combineReducers({
@@ -52,6 +56,7 @@ const rootReducer = combineReducers({
   friends: friendsReducer,
   contacts: contactsReducer,
   questions: questionsReducer,
+  questionOptions: questionOptionsReducer,
 });
 
 const rootEpic = combineEpics(
@@ -63,6 +68,7 @@ const rootEpic = combineEpics(
   ...profilesEpics,
   ...friendsEpics,
   ...questionsEpics,
+  ...questionOptionsEpics,
 );
 
 const epicMiddleware = createEpicMiddleware();
