@@ -11,7 +11,8 @@ export function reducer(state = initialState, action: fromActions.Actions): Ques
 
       const entities = unionBy(state.entities, questionsFromAction, '_id');
       const newEntities = entities.map<QuestionModel>((entity) => {
-        const newQuestion = questionsFromAction.find(userFromAction => userFromAction._id === entity._id);
+        const newQuestion = questionsFromAction
+          .find(questionFromAction => questionFromAction._id === entity._id);
 
         return newQuestion ? Object.assign({}, entity, newQuestion) : entity;
       });
