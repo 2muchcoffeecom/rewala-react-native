@@ -13,8 +13,8 @@ export interface  CreateQuestionOptionInput {
 export interface CreateQuestionInput {
   title: string;
   expiredTime: number;
-  background: InstanceType<typeof ReactNativeFile>;
-  memberIds: string[];
+  background?: InstanceType<typeof ReactNativeFile>;
+  memberIds?: string[];
   questionOptions: CreateQuestionOptionInput[];
 }
 
