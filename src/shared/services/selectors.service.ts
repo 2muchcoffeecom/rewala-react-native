@@ -178,9 +178,15 @@ class SelectorsService implements ISelectorsService {
     ],
     (userIds, profiles) => {
       if (userIds.length !== 0) {
-        return profiles.filter(profile => {
-          return !!userIds.find((userId) => userId === profile.userId);
-        });
+        return userIds.reduce<ProfileModel[]>((accum, userId) => {
+          const prof = profiles.find((profile) => profile.userId === userId);
+
+          if (prof) {
+            return accum.concat(prof);
+          } else {
+            return accum;
+          }
+        }, []);
       } else {
         return [];
       }
