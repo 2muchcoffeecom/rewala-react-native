@@ -71,7 +71,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
   search = (value: string) => {
     this.props.search({
       fullName: value,
-      limit: 10,
+      limit: 20,
     });
   }
 
@@ -87,7 +87,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
     if (pagedUsersOptions.hasNext && pagedUsersOptions.next) {
       this.props.search({
         fullName: this.state.searchQuery,
-        limit: 10,
+        limit: 20,
         next: pagedUsersOptions.next,
       });
     }
@@ -115,6 +115,8 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
     );
   }
 
+  private getItemLayout = (data: ProfileModel[] | null, index: number) => ({length: 72, offset: 0, index});
+
   render() {
     const isVisibleEmptyComponent: boolean = this.props.searchResponse &&
       !this.props.searchResponse.results.length &&
@@ -139,6 +141,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
                   this.props.pagedUsersProfiles
               }
               keyExtractor={this.keyExtractor}
+              getItemLayout={this.getItemLayout}
               renderItem={this.renderItem}
               onEndReached={this.onEndReached}
               initialNumToRender={10}
