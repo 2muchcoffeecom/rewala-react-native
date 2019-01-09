@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style';
 
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 import ImagePicker, { Options } from 'react-native-image-crop-picker';
 
@@ -70,6 +70,7 @@ const ChangePasswordModal: React.FunctionComponent<Props> = (props) => {
       backdropOpacity={0.74}
       onBackButtonPress={onCloseModal}
       isVisible={isVisible}
+      deviceHeight={Dimensions.get('screen').height}
     >
       <View style={style.root}>
         <View style={style.modalContainer}>

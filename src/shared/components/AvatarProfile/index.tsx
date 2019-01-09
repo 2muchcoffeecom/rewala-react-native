@@ -43,6 +43,7 @@ const AvatarProfile: React.FunctionComponent<Props> = (props) => {
         backdropOpacity={0.74}
         onBackButtonPress={onCloseModal}
         isVisible={isVisible}
+        deviceHeight={Dimensions.get('screen').height}
       >
         <View style={style.modalRoot}>
           <View style={style.modalContainer}>
