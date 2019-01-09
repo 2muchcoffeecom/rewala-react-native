@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './style';
+import { blackModalColor } from '../../../app.style';
 
 import { TouchableOpacity, View, Text, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
@@ -66,7 +67,7 @@ const ChangePasswordModal: React.FunctionComponent<Props> = (props) => {
   return (
     <Modal
       onBackdropPress={onCloseModal}
-      backdropColor='#181818'
+      backdropColor={blackModalColor}
       backdropOpacity={0.74}
       onBackButtonPress={onCloseModal}
       isVisible={isVisible}

@@ -8,6 +8,7 @@ export const greyColorText = '#7D7D7D';
 export const blackTextColor = '#000';
 export const mainColor = '#708EFF';
 export const blackColor = '#1C1C1C';
+export const blackModalColor = '#181818';
 export const shadowColor = '#CCCBCB';
 export const errorColor = '#FF7575';
 export const backgroundColor = '#F2F2F2';
