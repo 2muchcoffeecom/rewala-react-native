@@ -13,8 +13,8 @@ import { Dispatch } from 'redux';
 import { RootState } from '../../../../../../redux/store';
 import { ProfileModel } from '../../../../../../shared/models/profile.model';
 import { SearchUserInput } from '../../../../../../shared/services/user.service';
-import { PagedUsersOptions } from '../../../../../../redux/users/states';
-import { PagedUserModel } from '../../../../../../shared/models/pagedUser.model';
+import { UserModel } from '../../../../../../shared/models/user.model';
+import { PagedOptions } from '../../../../../../redux/request/states';
 
 import selectorsService from '../../../../../../shared/services/selectors.service';
 import { Actions as usersActions } from '../../../../../../redux/users/AC';
@@ -22,9 +22,8 @@ import { Actions as friendsActions } from '../../../../../../redux/friends/AC';
 
 interface StateProps {
   pagedUsersProfiles: ProfileModel[];
-  pagedUsersOptions: PagedUsersOptions;
-  searchResponse: PagedUserModel;
-  isSearchLoading: boolean;
+  pagedUsersOptions?: PagedOptions;
+  searchResponse: UserModel[] | null;
 }
 
 interface DispatchProps {
@@ -34,9 +33,8 @@ interface DispatchProps {
 
 const mapStateToProps = (state: RootState): StateProps => ({
   pagedUsersProfiles: selectorsService.getPagedUsersProfiles(state),
-  pagedUsersOptions: state.users.pagedUsersOptions,
-  searchResponse: state.request.users.search.data as PagedUserModel,
-  isSearchLoading: state.request.users.search.loading,
+  pagedUsersOptions: state.request.users.search.pagedOptions,
+  searchResponse: state.request.users.search.data as UserModel[] | null,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<usersActions | friendsActions>): DispatchProps => (
@@ -84,7 +82,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
   onEndReached = () => {
     const {pagedUsersOptions} = this.props;
 
-    if (pagedUsersOptions.hasNext && pagedUsersOptions.next) {
+    if (pagedUsersOptions && pagedUsersOptions.hasNext && pagedUsersOptions.next) {
       this.props.search({
         fullName: this.state.searchQuery,
         limit: 20,
@@ -118,8 +116,8 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
   private getItemLayout = (data: ProfileModel[] | null, index: number) => ({length: 72, offset: 0, index});
 
   render() {
-    const isVisibleEmptyComponent: boolean = this.props.searchResponse &&
-      !this.props.searchResponse.results.length &&
+    const isVisibleEmptyComponent: boolean = !!this.props.searchResponse &&
+      !this.props.searchResponse.length &&
       this.state.searchQuery !== '';
 
     return (
@@ -144,7 +142,7 @@ class SearchUserScreen extends React.PureComponent<Props, State> {
               getItemLayout={this.getItemLayout}
               renderItem={this.renderItem}
               onEndReached={this.onEndReached}
-              initialNumToRender={10}
+              initialNumToRender={20}
               maxToRenderPerBatch={2}
               onEndReachedThreshold={0.5}
               ListEmptyComponent={this.listEmptyComponent(isVisibleEmptyComponent)}
