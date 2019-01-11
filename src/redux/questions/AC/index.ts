@@ -9,9 +9,12 @@ import { PagedResponseOf } from '../../../shared/models/pagedUser.model';
 export enum ActionTypes {
   SET_QUESTIONS_DATA = 'SET_QUESTIONS_DATA',
   SUBMIT_CREATE_QUESTION = 'SUBMIT_CREATE_QUESTION',
-  SET_PAGED_QUESTIONS_IDS_FROM_FEED = 'SET_PAGED_QUESTIONS_IDS_FROM_FEED',
-  SET_PAGED_QUESTIONS_IDS_FROM_ME = 'SET_PAGED_QUESTIONS_IDS_FROM_ME',
-  SET_PAGED_QUESTIONS_IDS_FROM_USER = 'SET_PAGED_QUESTIONS_IDS_FROM_USER',
+  SET_PAGED_QUESTIONS_IDS_FROM_FEED_AFTER_FIRST_PAGE = 'SET_PAGED_QUESTIONS_IDS_FROM_FEED_AFTER_FIRST_PAGE',
+  SET_PAGED_QUESTIONS_IDS_FROM_FEED_AFTER_NEXT_PAGE = 'SET_PAGED_QUESTIONS_IDS_FROM_FEED_AFTER_NEXT_PAGE',
+  SET_PAGED_QUESTIONS_IDS_FROM_ME_AFTER_FIRST_PAGE = 'SET_PAGED_QUESTIONS_IDS_FROM_ME_AFTER_FIRST_PAGE',
+  SET_PAGED_QUESTIONS_IDS_FROM_ME_AFTER_NEXT_PAGE = 'SET_PAGED_QUESTIONS_IDS_FROM_ME_AFTER_NEXT_PAGE',
+  SET_PAGED_QUESTIONS_IDS_FROM_USER_AFTER_FIRST_PAGE = 'SET_PAGED_QUESTIONS_IDS_FROM_USER_AFTER_FIRST_PAGE',
+  SET_PAGED_QUESTIONS_IDS_FROM_USER_AFTER_NEXT_PAGE = 'SET_PAGED_QUESTIONS_IDS_FROM_USER_AFTER_NEXT_PAGE',
   GET_PAGED_QUESTIONS_FEED = 'GET_PAGED_QUESTIONS_FEED',
   GET_PAGED_QUESTIONS_ME = 'GET_PAGED_QUESTIONS_ME',
   GET_PAGED_QUESTIONS_USER = 'GET_PAGED_QUESTIONS_USER',
@@ -24,14 +27,23 @@ export const Actions = {
   submitCreateQuestion: (data: CreateQuestionInput, resolve?: Resolve<QuestionResponse>, reject?: Reject) => {
     return createAction(ActionTypes.SUBMIT_CREATE_QUESTION, {data, resolve, reject});
   },
-  setPagedQuestionsIdsFromFeed: (data: PagedResponseOf<QuestionResponse>) => {
-    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_FEED, {data});
+  setPagedQuestionsIdsFromFeedAfterFirstPage: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_FEED_AFTER_FIRST_PAGE, {data});
   },
-  setPagedQuestionsIdsFromMe: (data: PagedResponseOf<QuestionResponse>) => {
-    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_ME, {data});
+  setPagedQuestionsIdsFromFeedAfterNextPage: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_FEED_AFTER_NEXT_PAGE, {data});
   },
-  setPagedQuestionsIdsFromUser: (data: PagedResponseOf<QuestionResponse>) => {
-    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_USER, {data});
+  setPagedQuestionsIdsFromMeAfterFirstPage: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_ME_AFTER_FIRST_PAGE, {data});
+  },
+  setPagedQuestionsIdsFromMeAfterNextPage: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_ME_AFTER_NEXT_PAGE, {data});
+  },
+  setPagedQuestionsIdsFromUserAfterFirstPage: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_USER_AFTER_FIRST_PAGE, {data});
+  },
+  setPagedQuestionsIdsFromUserAfterNextPage: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_USER_AFTER_NEXT_PAGE, {data});
   },
   getPagedQuestionsFeed: (data: PagedQuestionInput) => {
     return createAction(ActionTypes.GET_PAGED_QUESTIONS_FEED, {data});

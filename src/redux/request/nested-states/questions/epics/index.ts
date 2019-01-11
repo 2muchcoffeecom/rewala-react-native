@@ -1,11 +1,14 @@
 import { createQuestionRequestEpic } from '../nested-states/createQuestion/epics';
-import { pagedFeedRequestEpic } from '../nested-states/pagedFeed/epics';
-import { pagedMyRequestEpic } from '../nested-states/pagedMy/epics';
-import { pagedOfUserRequestEpic } from '../nested-states/pagedOfUser/epics';
+import { pagedFeedFirstRequestEpic, pagedFeedNextRequestEpic } from '../nested-states/pagedFeed/epics';
+import { pagedMeFirstRequestEpic, pagedMeNextRequestEpic } from '../nested-states/pagedMe/epics';
+import { pagedOfUserFirstRequestEpic, pagedOfUserNextRequestEpic } from '../nested-states/pagedOfUser/epics';
 
 export const questionsEpic = [
   createQuestionRequestEpic,
-  pagedFeedRequestEpic,
-  pagedMyRequestEpic,
-  pagedOfUserRequestEpic,
+  pagedFeedFirstRequestEpic,
+  pagedFeedNextRequestEpic,
+  pagedMeFirstRequestEpic,
+  pagedMeNextRequestEpic,
+  pagedOfUserFirstRequestEpic,
+  pagedOfUserNextRequestEpic,
 ];

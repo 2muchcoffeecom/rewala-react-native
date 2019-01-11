@@ -5,7 +5,7 @@ import { RequestNestedState } from '../../../states';
 export function reducer(state = initialState, action: fromActions.Actions): RequestNestedState {
 
   switch (action.type) {
-    case fromActions.ActionTypes.PAGED_OF_USER_REQUEST_FIRST:
+    case fromActions.ActionTypes.PAGED_ME_REQUEST_FIRST:
       return {
         ...state,
         loading: true,
@@ -17,7 +17,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Requ
         errors: null,
       };
 
-    case fromActions.ActionTypes.PAGED_OF_USER_REQUEST_NEXT:
+    case fromActions.ActionTypes.PAGED_ME_REQUEST_NEXT:
       return {
         ...state,
         loading: true,
@@ -29,7 +29,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Requ
         errors: null,
       };
 
-    case fromActions.ActionTypes.PAGED_OF_USER_REQUEST_FIRST_SUCCESS: {
+    case fromActions.ActionTypes.PAGED_ME_REQUEST_FIRST_SUCCESS: {
       const {data} = action.payload;
 
       return {
@@ -48,7 +48,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Requ
       };
     }
 
-    case fromActions.ActionTypes.PAGED_OF_USER_REQUEST_NEXT_SUCCESS: {
+    case fromActions.ActionTypes.PAGED_ME_REQUEST_NEXT_SUCCESS: {
       const {data} = action.payload;
 
       return {
@@ -67,8 +67,8 @@ export function reducer(state = initialState, action: fromActions.Actions): Requ
       };
     }
 
-    case fromActions.ActionTypes.PAGED_OF_USER_REQUEST_FIRST_FAIL:
-    case fromActions.ActionTypes.PAGED_OF_USER_REQUEST_NEXT_FAIL: {
+    case fromActions.ActionTypes.PAGED_ME_REQUEST_NEXT_FAIL:
+    case fromActions.ActionTypes.PAGED_ME_REQUEST_FIRST_FAIL: {
       const {payload} = action;
 
       return {

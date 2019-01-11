@@ -5,18 +5,32 @@ import { PagedQuestionOfUserInput } from '../../../../../../../shared/services/q
 import { QuestionResponse } from '../../../../../../../shared/models/question.model';
 
 export enum ActionTypes {
-  PAGED_OF_USER_REQUEST = 'PAGED_OF_USER_REQUEST',
-  PAGED_OF_USER_REQUEST_SUCCESS = 'PAGED_OF_USER_REQUEST_SUCCESS',
-  PAGED_OF_USER_REQUEST_FAIL = 'PAGED_OF_USER_REQUEST_FAIL',
+  PAGED_OF_USER_REQUEST_FIRST = 'PAGED_OF_USER_REQUEST_FIRST',
+  PAGED_OF_USER_REQUEST_FIRST_SUCCESS = 'PAGED_OF_USER_REQUEST_FIRST_SUCCESS',
+  PAGED_OF_USER_REQUEST_FIRST_FAIL = 'PAGED_OF_USER_REQUEST_FIRST_FAIL',
+  PAGED_OF_USER_REQUEST_NEXT = 'PAGED_OF_USER_REQUEST_NEXT',
+  PAGED_OF_USER_REQUEST_NEXT_SUCCESS = 'PAGED_OF_USER_REQUEST_NEXT_SUCCESS',
+  PAGED_OF_USER_REQUEST_NEXT_FAIL = 'PAGED_OF_USER_REQUEST_NEXT_FAIL',
 }
 
 export const Actions = {
-  pagedOfUser: (data: PagedQuestionOfUserInput) => createAction(ActionTypes.PAGED_OF_USER_REQUEST, {data}),
-  pagedOfUserSuccess: (data: PagedResponseOf<QuestionResponse>) => {
-    return createAction(ActionTypes.PAGED_OF_USER_REQUEST_SUCCESS, {data});
+  pagedOfUserFirst: (data: PagedQuestionOfUserInput) => {
+    return createAction(ActionTypes.PAGED_OF_USER_REQUEST_FIRST, {data});
   },
-  pagedOfUserFail: (errors: RequestError | string) => {
-    return createAction(ActionTypes.PAGED_OF_USER_REQUEST_FAIL, {errors});
+  pagedOfUserFirstSuccess: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.PAGED_OF_USER_REQUEST_FIRST_SUCCESS, {data});
+  },
+  pagedOfUserFirstFail: (errors: RequestError | string) => {
+    return createAction(ActionTypes.PAGED_OF_USER_REQUEST_FIRST_FAIL, {errors});
+  },
+  pagedOfUserNext: (data: PagedQuestionOfUserInput) => {
+    return createAction(ActionTypes.PAGED_OF_USER_REQUEST_NEXT, {data});
+  },
+  pagedOfUserNextSuccess: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.PAGED_OF_USER_REQUEST_NEXT_SUCCESS, {data});
+  },
+  pagedOfUserNextFail: (errors: RequestError | string) => {
+    return createAction(ActionTypes.PAGED_OF_USER_REQUEST_NEXT_FAIL, {errors});
   },
 };
 

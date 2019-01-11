@@ -67,12 +67,18 @@ const setProfilesDataFromPagedUsersEpic = (action$: Observable<Action>) => actio
 );
 
 const setProfilesDataFromPagedQuestionsEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedSuccess> |
-    ReturnType<typeof questionsRequestAC.pagedMy.Actions.pagedMySuccess> |
-    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserSuccess>>(
-    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_SUCCESS,
-    questionsRequestAC.pagedMy.ActionTypes.PAGED_MY_REQUEST_SUCCESS,
-    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_SUCCESS,
+  ofType<ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedNextSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedMe.Actions.pagedMeFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedMe.Actions.pagedMeNextSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserNextSuccess>>(
+    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_NEXT_SUCCESS,
+    questionsRequestAC.pagedMe.ActionTypes.PAGED_ME_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedMe.ActionTypes.PAGED_ME_REQUEST_NEXT_SUCCESS,
+    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_NEXT_SUCCESS,
   ),
   map((action) => {
     const users = action.payload.data.results.map(question => question.owner);

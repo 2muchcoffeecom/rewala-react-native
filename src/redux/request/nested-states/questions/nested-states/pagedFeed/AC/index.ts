@@ -5,18 +5,28 @@ import { PagedQuestionInput } from '../../../../../../../shared/services/questio
 import { QuestionResponse } from '../../../../../../../shared/models/question.model';
 
 export enum ActionTypes {
-  PAGED_FEED_REQUEST = 'PAGED_FEED_REQUEST',
-  PAGED_FEED_REQUEST_SUCCESS = 'PAGED_FEED_REQUEST_SUCCESS',
-  PAGED_FEED_REQUEST_FAIL = 'PAGED_FEED_REQUEST_FAIL',
+  PAGED_FEED_REQUEST_FIRST = 'PAGED_FEED_REQUEST_FIRST',
+  PAGED_FEED_REQUEST_FIRST_SUCCESS = 'PAGED_FEED_REQUEST_FIRST_SUCCESS',
+  PAGED_FEED_REQUEST_FIRST_FAIL = 'PAGED_FEED_REQUEST_FIRST_FAIL',
+  PAGED_FEED_REQUEST_NEXT = 'PAGED_FEED_REQUEST_NEXT',
+  PAGED_FEED_REQUEST_NEXT_SUCCESS = 'PAGED_FEED_REQUEST_NEXT_SUCCESS',
+  PAGED_FEED_REQUEST_NEXT_FAIL = 'PAGED_FEED_REQUEST_NEXT_FAIL',
 }
 
 export const Actions = {
-  pagedFeed: (data: PagedQuestionInput) => createAction(ActionTypes.PAGED_FEED_REQUEST, {data}),
-  pagedFeedSuccess: (data: PagedResponseOf<QuestionResponse>) => {
-    return createAction(ActionTypes.PAGED_FEED_REQUEST_SUCCESS, {data});
+  pagedFeedFirst: (data: PagedQuestionInput) => createAction(ActionTypes.PAGED_FEED_REQUEST_FIRST, {data}),
+  pagedFeedFirstSuccess: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.PAGED_FEED_REQUEST_FIRST_SUCCESS, {data});
   },
-  pagedFeedFail: (errors: RequestError | string) => {
-    return createAction(ActionTypes.PAGED_FEED_REQUEST_FAIL, {errors});
+  pagedFeedFirstFail: (errors: RequestError | string) => {
+    return createAction(ActionTypes.PAGED_FEED_REQUEST_FIRST_FAIL, {errors});
+  },
+  pagedFeedNext: (data: PagedQuestionInput) => createAction(ActionTypes.PAGED_FEED_REQUEST_NEXT, {data}),
+  pagedFeedNextSuccess: (data: PagedResponseOf<QuestionResponse>) => {
+    return createAction(ActionTypes.PAGED_FEED_REQUEST_NEXT_SUCCESS, {data});
+  },
+  pagedFeedNextFail: (errors: RequestError | string) => {
+    return createAction(ActionTypes.PAGED_FEED_REQUEST_NEXT_FAIL, {errors});
   },
 };
 

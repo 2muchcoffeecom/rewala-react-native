@@ -52,8 +52,20 @@ const showUserUpdateToastEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const showCreateQuestionToastEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof questionsRequestAC.createQuestion.Actions.createQuestionSuccess>>(
+    questionsRequestAC.createQuestion.ActionTypes.CREATE_QUESTION_SUCCESS,
+  ),
+  map(() => {
+    return fromActions.Actions.showToast(
+      'Rewal have been created successfully',
+    );
+  }),
+);
+
 export const toastEpics = [
   showResetPasswordToastEpic,
   showUserUpdateToastEpic,
   showAuthErrorToastEpic,
+  showCreateQuestionToastEpic,
 ];

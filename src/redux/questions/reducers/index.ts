@@ -23,7 +23,16 @@ export function reducer(state = initialState, action: fromActions.Actions): Ques
       };
     }
 
-    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_FEED: {
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_FEED_AFTER_FIRST_PAGE: {
+      const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
+
+      return {
+        ...state,
+        pagedQuestionsFromFeedIds: [...pagedQuestionsIds],
+      };
+    }
+
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_FEED_AFTER_NEXT_PAGE: {
       const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
 
       return {
@@ -32,7 +41,16 @@ export function reducer(state = initialState, action: fromActions.Actions): Ques
       };
     }
 
-    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_ME: {
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_ME_AFTER_FIRST_PAGE: {
+      const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
+
+      return {
+        ...state,
+        pagedQuestionsFromMeIds: [...pagedQuestionsIds],
+      };
+    }
+
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_ME_AFTER_NEXT_PAGE: {
       const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
 
       return {
@@ -41,7 +59,16 @@ export function reducer(state = initialState, action: fromActions.Actions): Ques
       };
     }
 
-    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_USER: {
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_USER_AFTER_FIRST_PAGE: {
+      const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
+
+      return {
+        ...state,
+        pagedQuestionsFromUserIds: [...pagedQuestionsIds],
+      };
+    }
+
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_USER_AFTER_NEXT_PAGE: {
       const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
 
       return {

@@ -1,9 +1,10 @@
 import { Action } from 'redux';
 import { Observable } from 'rxjs';
 import { ofType } from 'redux-observable';
-import { map } from 'rxjs/operators';
+import { ignoreElements, map, tap } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import { questionsRequestAC } from '../../request/AC';
+import navService from '../../../shared/services/nav.service';
 
 const setQuestionsDataEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof questionsRequestAC.createQuestion.Actions.createQuestionSuccess>>(
@@ -19,12 +20,18 @@ const setQuestionsDataEpic = (action$: Observable<Action>) => action$.pipe(
 );
 
 const setQuestionsDataFromPagedQuestionsEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedSuccess> |
-    ReturnType<typeof questionsRequestAC.pagedMy.Actions.pagedMySuccess> |
-    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserSuccess>>(
-    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_SUCCESS,
-    questionsRequestAC.pagedMy.ActionTypes.PAGED_MY_REQUEST_SUCCESS,
-    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_SUCCESS,
+  ofType<ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedNextSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedMe.Actions.pagedMeFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedMe.Actions.pagedMeNextSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserNextSuccess>>(
+    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_NEXT_SUCCESS,
+    questionsRequestAC.pagedMe.ActionTypes.PAGED_ME_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedMe.ActionTypes.PAGED_ME_REQUEST_NEXT_SUCCESS,
+    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_NEXT_SUCCESS,
   ),
   map((action) => {
     const questions = action.payload.data.results;
@@ -34,35 +41,53 @@ const setQuestionsDataFromPagedQuestionsEpic = (action$: Observable<Action>) => 
 );
 
 const setPagedQuestionsIdsFromFeedEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedSuccess>>(
-    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_SUCCESS,
+  ofType<ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedNextSuccess>>(
+    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_NEXT_SUCCESS,
   ),
   map((action) => {
     const pagedQuestionsData = action.payload.data;
 
-    return fromActions.Actions.setPagedQuestionsIdsFromFeed(pagedQuestionsData);
+    if (action.type === questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_FIRST_SUCCESS) {
+      return fromActions.Actions.setPagedQuestionsIdsFromFeedAfterFirstPage(pagedQuestionsData);
+    } else {
+      return fromActions.Actions.setPagedQuestionsIdsFromFeedAfterNextPage(pagedQuestionsData);
+    }
   }),
 );
 
 const setPagedQuestionsIdsFromMeEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof questionsRequestAC.pagedMy.Actions.pagedMySuccess>>(
-    questionsRequestAC.pagedMy.ActionTypes.PAGED_MY_REQUEST_SUCCESS,
+  ofType<ReturnType<typeof questionsRequestAC.pagedMe.Actions.pagedMeFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedMe.Actions.pagedMeNextSuccess>>(
+    questionsRequestAC.pagedMe.ActionTypes.PAGED_ME_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedMe.ActionTypes.PAGED_ME_REQUEST_NEXT_SUCCESS,
   ),
   map((action) => {
     const pagedQuestionsData = action.payload.data;
 
-    return fromActions.Actions.setPagedQuestionsIdsFromMe(pagedQuestionsData);
+    if (action.type === questionsRequestAC.pagedMe.ActionTypes.PAGED_ME_REQUEST_FIRST_SUCCESS) {
+      return fromActions.Actions.setPagedQuestionsIdsFromMeAfterFirstPage(pagedQuestionsData);
+    } else {
+      return fromActions.Actions.setPagedQuestionsIdsFromMeAfterNextPage(pagedQuestionsData);
+    }
   }),
 );
 
 const setPagedQuestionsIdsFromUserEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserSuccess>>(
-    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_SUCCESS,
+  ofType<ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserFirstSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserNextSuccess>>(
+    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_FIRST_SUCCESS,
+    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_NEXT_SUCCESS,
   ),
   map((action) => {
     const pagedQuestionsData = action.payload.data;
 
-    return fromActions.Actions.setPagedQuestionsIdsFromUser(pagedQuestionsData);
+    if (action.type === questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_FIRST_SUCCESS) {
+      return fromActions.Actions.setPagedQuestionsIdsFromUserAfterFirstPage(pagedQuestionsData);
+    } else {
+      return fromActions.Actions.setPagedQuestionsIdsFromUserAfterNextPage(pagedQuestionsData);
+    }
   }),
 );
 
@@ -77,6 +102,14 @@ const createQuestionEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
+const redirectToHomeScreenEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof questionsRequestAC.createQuestion.Actions.createQuestionSuccess>>(
+    questionsRequestAC.createQuestion.ActionTypes.CREATE_QUESTION_SUCCESS,
+  ),
+  tap(() => navService.navigate('HomeScreen')),
+  ignoreElements(),
+);
+
 const getPagedQuestionsFeedEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(
     fromActions.ActionTypes.GET_PAGED_QUESTIONS_FEED,
@@ -85,12 +118,12 @@ const getPagedQuestionsFeedEpic = (action$: Observable<Action>) => action$.pipe(
     const {data} = action.payload;
 
     if (data.next) {
-      return questionsRequestAC.pagedFeed.Actions.pagedFeed({
+      return questionsRequestAC.pagedFeed.Actions.pagedFeedNext({
         limit: data.limit,
         next: data.next,
       });
     } else {
-      return questionsRequestAC.pagedFeed.Actions.pagedFeed({
+      return questionsRequestAC.pagedFeed.Actions.pagedFeedFirst({
         limit: data.limit,
       });
     }
@@ -105,12 +138,12 @@ const getPagedQuestionsMeEpic = (action$: Observable<Action>) => action$.pipe(
     const {data} = action.payload;
 
     if (data.next) {
-      return questionsRequestAC.pagedMy.Actions.pagedMy({
+      return questionsRequestAC.pagedMe.Actions.pagedMeNext({
         limit: data.limit,
         next: data.next,
       });
     } else {
-      return questionsRequestAC.pagedMy.Actions.pagedMy({
+      return questionsRequestAC.pagedMe.Actions.pagedMeFirst({
         limit: data.limit,
       });
     }
@@ -125,13 +158,13 @@ const getPagedQuestionsUserEpic = (action$: Observable<Action>) => action$.pipe(
     const {data} = action.payload;
 
     if (data.next) {
-      return questionsRequestAC.pagedOfUser.Actions.pagedOfUser({
+      return questionsRequestAC.pagedOfUser.Actions.pagedOfUserNext({
         id: data.id,
         limit: data.limit,
         next: data.next,
       });
     } else {
-      return questionsRequestAC.pagedOfUser.Actions.pagedOfUser({
+      return questionsRequestAC.pagedOfUser.Actions.pagedOfUserFirst({
         id: data.id,
         limit: data.limit,
       });
@@ -149,4 +182,5 @@ export const questionsEpics = [
   setPagedQuestionsIdsFromFeedEpic,
   setPagedQuestionsIdsFromMeEpic,
   setPagedQuestionsIdsFromUserEpic,
+  redirectToHomeScreenEpic,
 ];
