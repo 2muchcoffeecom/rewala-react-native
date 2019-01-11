@@ -15,3 +15,11 @@ export class PagedUserModel {
     }
   }
 }
+
+export interface PagedResponseOf<E> {
+  results: E[];
+  next: string;
+  hasNext: boolean;
+  previous: string;
+  hasPrevious: boolean;
+}

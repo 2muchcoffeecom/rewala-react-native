@@ -1,7 +1,8 @@
 import { createAction, ActionsUnion } from '../../../../../../../shared/helpers/createAction';
-import { PagedUserModel } from '../../../../../../../shared/models/pagedUser.model';
+import { PagedResponseOf } from '../../../../../../../shared/models/pagedUser.model';
 import { SearchUserInput } from '../../../../../../../shared/services/user.service';
 import { RequestError } from '../../../../../states';
+import { UserResponse } from '../../../../../../../shared/models/user.model';
 
 export enum ActionTypes {
   NEW_SEARCH = 'NEW_SEARCH',
@@ -14,14 +15,14 @@ export enum ActionTypes {
 
 export const Actions = {
   newSearch: (data: SearchUserInput) => createAction(ActionTypes.NEW_SEARCH, {data}),
-  newSearchSuccess: (data: PagedUserModel) => {
+  newSearchSuccess: (data: PagedResponseOf<UserResponse>) => {
     return createAction(ActionTypes.NEW_SEARCH_SUCCESS, {data});
   },
   newSearchFail: (errors: RequestError | string) => {
     return createAction(ActionTypes.NEW_SEARCH_FAIL, {errors});
   },
   newSearchPage: (data: SearchUserInput) => createAction(ActionTypes.NEW_SEARCH_PAGE, {data}),
-  newSearchPageSuccess: (data: PagedUserModel) => {
+  newSearchPageSuccess: (data: PagedResponseOf<UserResponse>) => {
     return createAction(ActionTypes.NEW_SEARCH_PAGE_SUCCESS, {data});
   },
   newSearchPageFail: (errors: RequestError | string) => {

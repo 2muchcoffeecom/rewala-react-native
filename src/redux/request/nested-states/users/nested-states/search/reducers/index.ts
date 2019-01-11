@@ -16,13 +16,19 @@ export function reducer(state = initialState, action: fromActions.Actions): Requ
 
     case fromActions.ActionTypes.NEW_SEARCH_SUCCESS:
     case fromActions.ActionTypes.NEW_SEARCH_PAGE_SUCCESS: {
-      const {payload} = action;
+      const {data} = action.payload;
 
       return {
         ...state,
         loading: false,
         loaded: true,
-        data: payload.data,
+        pagedOptions: {
+          hasNext: data.hasNext,
+          next: data.next,
+          hasPrevious: data.hasPrevious,
+          previous: data.previous,
+        },
+        data: data.results,
       };
     }
 

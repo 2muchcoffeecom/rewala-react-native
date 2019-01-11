@@ -4,14 +4,14 @@ import { initialState as searchState } from '../nested-states/search/states';
 import { initialState as userFriendsState } from '../nested-states/userFriends/states';
 
 import { UserModel } from '../../../../../shared/models/user.model';
-import { PagedUserModel } from '../../../../../shared/models/pagedUser.model';
-import { RequestError } from '../../../states';
+import { PagedOptions, RequestError } from '../../../states';
 
 export interface RequestNestedState {
   loading: boolean;
   loaded: boolean;
   errors: RequestError | string | null;
-  data: null | UserModel | PagedUserModel | UserModel[];
+  data: null | UserModel | UserModel[];
+  pagedOptions?: PagedOptions;
 }
 
 export interface UsersRequestState {
