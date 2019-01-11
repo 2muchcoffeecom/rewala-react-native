@@ -40,27 +40,6 @@ export function reducer(state = initialState, action: fromActions.Actions): User
       };
     }
 
-    case fromActions.ActionTypes.DELETE_PAGED_USERS_IDS: {
-      return {
-        ...state,
-        pagedUsersIds: [],
-      };
-    }
-
-    case fromActions.ActionTypes.SET_PAGED_USERS_OPTIONS: {
-      const {data} = action.payload;
-
-      return {
-        ...state,
-        pagedUsersOptions: {
-          hasNext: data.hasNext,
-          next: data.next,
-          hasPrevious: data.hasPrevious,
-          previous: data.previous,
-        },
-      };
-    }
-
     case fromActions.ActionTypes.SET_FRIENDS_IDS_OF_USER: {
       const {data} = action.payload;
 

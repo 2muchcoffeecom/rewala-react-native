@@ -117,19 +117,6 @@ const setPagedUsersIdsEpic = (action$: Observable<Action>) => action$.pipe(
   }),
 );
 
-const setPagedUsersOptionsEpic = (action$: Observable<Action>) => action$.pipe(
-  ofType<ReturnType<typeof usersRequestAC.search.Actions.newSearchSuccess> |
-    ReturnType<typeof usersRequestAC.search.Actions.newSearchPageSuccess>>(
-    usersRequestAC.search.ActionTypes.NEW_SEARCH_SUCCESS,
-    usersRequestAC.search.ActionTypes.NEW_SEARCH_PAGE_SUCCESS,
-  ),
-  map((action) => {
-    const pagedUsersData = action.payload.data;
-
-    return fromActions.Actions.setPagedUsersOptions(pagedUsersData);
-  }),
-);
-
 const getFriendsOfUserEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof fromActions.Actions.getFrinedsOfUser>>(
     fromActions.ActionTypes.GET_FRIENDS_OF_USER,
@@ -160,7 +147,6 @@ export const usersEpics = [
   searchUsersEpic,
   setUsersDataFromPagedUsersEpic,
   setPagedUsersIdsEpic,
-  setPagedUsersOptionsEpic,
   getFriendsOfUserEpic,
   setFriendsIdsOfUserEpic,
 ];
