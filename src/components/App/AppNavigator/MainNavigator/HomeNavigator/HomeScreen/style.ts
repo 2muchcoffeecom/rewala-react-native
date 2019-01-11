@@ -5,7 +5,8 @@ const style = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 70,
+    justifyContent: 'center',
+    paddingTop: 57,
     backgroundColor,
   },
 });
