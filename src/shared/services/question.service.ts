@@ -4,8 +4,7 @@ import { execute } from 'apollo-link';
 import { ReactNativeFile } from 'apollo-upload-client';
 
 import link from '../middlewares/link.middleware';
-import { question } from '../templates/question.template';
-import { pagedUsers } from '../templates/user.template';
+import { question, pagedQuestions } from '../templates/question.template';
 
 interface IQuestionService {
   createQuestion(input: CreateQuestionInput): Observable<any>;
@@ -59,7 +58,7 @@ class QuestionService implements IQuestionService {
             next: $next,
             previous: $previous,
             limit: $limit,
-          ) ${pagedUsers}
+          ) ${pagedQuestions}
         }
       `,
       variables: {
@@ -77,7 +76,7 @@ class QuestionService implements IQuestionService {
             next: $next,
             previous: $previous,
             limit: $limit,
-          ) ${pagedUsers}
+          ) ${pagedQuestions}
         }
       `,
       variables: {
@@ -96,7 +95,7 @@ class QuestionService implements IQuestionService {
             next: $next,
             previous: $previous,
             limit: $limit,
-          ) ${pagedUsers}
+          ) ${pagedQuestions}
         }
       `,
       variables: {

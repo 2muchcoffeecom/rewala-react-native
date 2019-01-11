@@ -14,3 +14,11 @@ export const question = `{
   createdAt
   isFinished
 }`;
+
+export const pagedQuestions = `{
+  results ${question}
+  next
+  hasNext
+  previous
+  hasPrevious
+}`;
