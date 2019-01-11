@@ -1,5 +1,6 @@
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
+import { MenuProvider } from 'react-native-popup-menu';
 import {
   createAppContainer, createSwitchNavigator, NavigationContainerComponent,
 } from 'react-navigation';
@@ -32,10 +33,12 @@ export default class AppNavigator extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <NavigatorContainer
-          ref={this.setNavigator}
-        />
-        <RootToast/>
+        <MenuProvider backHandler={true}>
+          <NavigatorContainer
+            ref={this.setNavigator}
+          />
+          <RootToast/>
+        </MenuProvider>
       </View>
     );
   }
