@@ -6,8 +6,24 @@ import * as questionsState from '../nested-states/questions/states';
 
 import { FollowRequest, FollowRequestResponse } from '../../../shared/models/followRequest.model';
 import { UserResponse } from '../../../shared/models/user.model';
-import { PagedUserModel } from '../../../shared/models/pagedUser.model';
+import { PagedResponseOf } from '../../../shared/models/pagedUser.model';
 import { QuestionResponse } from '../../../shared/models/question.model';
+
+export interface RequestState {
+  auth: authState.AuthRequestState;
+  contacts: contactsState.ContactsRequestState;
+  friends: friendsState.FriendsRequestState;
+  users: usersState.UsersRequestState;
+  question: questionsState.QuestionsRequestState;
+}
+
+export const initialState: RequestState = {
+  auth: authState.initialState,
+  contacts: contactsState.initialState,
+  friends: friendsState.initialState,
+  users: usersState.initialState,
+  question: questionsState.initialState,
+};
 
 export interface FieldsError {
   email: {};
@@ -41,27 +57,21 @@ export interface GraphQlResponse {
     updateMe: UserResponse,
     changePassword: UserResponse,
     logout: boolean,
-    search: PagedUserModel,
+    search: PagedResponseOf<UserResponse>,
     userFriends: UserResponse[],
     createQuestion: QuestionResponse,
+    feedQuestions: PagedResponseOf<QuestionResponse>,
+    myQuestions: PagedResponseOf<QuestionResponse>,
+    personQuestions: PagedResponseOf<QuestionResponse>,
   };
 }
 
 export type Resolve<T> = (value?: T | PromiseLike<T>) => void;
 export type Reject = (reason?: any) => void;
 
-export interface RequestState {
-  auth: authState.AuthRequestState;
-  contacts: contactsState.ContactsRequestState;
-  friends: friendsState.FriendsRequestState;
-  users: usersState.UsersRequestState;
-  question: questionsState.QuestionsRequestState;
+export interface PagedOptions {
+  next: string | null;
+  hasNext: boolean;
+  previous: string | null;
+  hasPrevious: boolean;
 }
-
-export const initialState: RequestState = {
-  auth: authState.initialState,
-  contacts: contactsState.initialState,
-  friends: friendsState.initialState,
-  users: usersState.initialState,
-  question: questionsState.initialState,
-};
