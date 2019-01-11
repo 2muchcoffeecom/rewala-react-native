@@ -24,7 +24,7 @@ const style = StyleSheet.create({
   },
   backgroundFullScreen: {
     width: Dimensions.get('window').width,
-    height: '100%',
+    height: Dimensions.get('window').width * 0.5333,
   },
   backgroundImage: {
     position: 'absolute',

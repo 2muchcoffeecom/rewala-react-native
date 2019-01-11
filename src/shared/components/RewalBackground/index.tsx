@@ -46,7 +46,10 @@ class RewalBackground extends React.PureComponent<Props, State> {
       style={style.gradient}
     >
       <Text
-        style={[style.textTitle, {color: this.props.titleColor}]}
+        style={
+          // [style.textTitle, {color: this.props.titleColor}]
+          style.textTitle
+        }
       >
         {this.props.title}
       </Text>
@@ -55,7 +58,7 @@ class RewalBackground extends React.PureComponent<Props, State> {
 
   getBackgroundImage = (): JSX.Element => {
     const backgroundUri = `${apiEndpoint}${this.props.backgroundPath}`;
-    const {title, titleColor} = this.props;
+    const {title} = this.props;
 
     return (
       <React.Fragment>
@@ -64,7 +67,9 @@ class RewalBackground extends React.PureComponent<Props, State> {
           style={style.gradient}
         >
           <Text
-            style={[style.textTitle, {color: titleColor}]}
+            style={style.textTitle
+              // [style.textTitle, {color: titleColor}]
+            }
           >
             {title}
           </Text>
@@ -81,6 +86,7 @@ class RewalBackground extends React.PureComponent<Props, State> {
           onBackButtonPress={this.onCloseModal}
           isVisible={this.state.isVisibleModal}
           deviceHeight={Dimensions.get('screen').height}
+
         >
           <View style={style.modalRoot}>
             <View style={style.modalContainer}>
@@ -106,3 +112,6 @@ class RewalBackground extends React.PureComponent<Props, State> {
 }
 
 export default RewalBackground;
+
+// TODO: no back end for fullScreen background
+// TODO: no back end for title color
