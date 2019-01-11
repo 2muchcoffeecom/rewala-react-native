@@ -41,7 +41,7 @@ interface State {
   avatarRatio: number;
 }
 
-class ProfileOfUserScreen extends React.Component<Props, State> {
+class ProfileOfUserScreen extends React.PureComponent<Props, State> {
   static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = ({navigation}) => {
     return {
       headerTitle: navigation.getParam('title', ''),
@@ -194,7 +194,9 @@ class ProfileOfUserScreen extends React.Component<Props, State> {
           </View>
         </View>
         {
-          this.isFriendFollowRequestAccepted() ? <FriendUserRewals/> : <NoRewals/>
+          this.isFriendFollowRequestAccepted() ?
+            <FriendUserRewals userId={userId}/> :
+            <NoRewals/>
         }
       </ScrollView>
     );
