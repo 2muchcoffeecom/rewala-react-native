@@ -1,10 +1,11 @@
 import React from 'react';
 import style from './style';
-import { blackColor, QuestionOptionsColor } from '../../../app.style';
+import { QuestionOptionsColor } from '../../../app.style';
 import { apiEndpoint } from '../../constants/apiEndpoint';
 
 import { Image, View, TouchableOpacity, Text } from 'react-native';
 import { Icon } from '../../../shared/components/Icon';
+import RewalHeaderMenu from '../../../shared/components/RewalHeaderMenu';
 
 import { FriendNavigationProps } from '../FriendListItem';
 import { FollowRequest } from '../../models/followRequest.model';
@@ -76,15 +77,10 @@ const RewalHeader: React.FunctionComponent<Props> = (props) => {
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={style.popupButton}
-      >
-        <Icon
-          name='more'
-          size={17}
-          color={blackColor}
-        />
-      </TouchableOpacity>
+      <RewalHeaderMenu
+        ownerId={ownerId}
+        authorizedUserId={authorizedUserId}
+      />
     </View>
   );
 };
