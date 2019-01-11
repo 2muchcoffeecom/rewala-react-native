@@ -4,7 +4,7 @@ import { ofType, StateObservable } from 'redux-observable';
 import { debounceTime, map } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import {
-  contactsRequestAC, authRequestAC, friendsRequestAC, usersRequestAC,
+  contactsRequestAC, authRequestAC, friendsRequestAC, usersRequestAC, questionsRequestAC,
 } from '../../request/AC';
 import { RootState } from '../../store';
 
@@ -48,6 +48,21 @@ const setUsersDataFromFollowRequestEpic = (
         return followRequest.toUserId === authorizedUserId ? followRequest.fromUser : followRequest.toUser;
       },
     );
+
+    return fromActions.Actions.setUsersData(users);
+  }),
+);
+
+const setUsersDataFromPagedQuestionsEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedMy.Actions.pagedMySuccess> |
+    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserSuccess>>(
+    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_SUCCESS,
+    questionsRequestAC.pagedMy.ActionTypes.PAGED_MY_REQUEST_SUCCESS,
+    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_SUCCESS,
+  ),
+  map((action) => {
+    const users = action.payload.data.results.map(question => question.owner);
 
     return fromActions.Actions.setUsersData(users);
   }),
@@ -142,6 +157,7 @@ const setFriendsIdsOfUserEpic = (action$: Observable<Action>) => action$.pipe(
 export const usersEpics = [
   setUsersDataEpic,
   setUsersDataFromFollowRequestEpic,
+  setUsersDataFromPagedQuestionsEpic,
   getAuthorizedUserEpic,
   updateAuthorizedUserEpic,
   searchUsersEpic,

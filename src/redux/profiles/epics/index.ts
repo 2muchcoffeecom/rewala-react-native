@@ -4,7 +4,7 @@ import { ofType, StateObservable } from 'redux-observable';
 import { map } from 'rxjs/operators';
 import * as fromActions from '../AC';
 import {
-  contactsRequestAC, authRequestAC, friendsRequestAC, usersRequestAC,
+  contactsRequestAC, authRequestAC, friendsRequestAC, usersRequestAC, questionsRequestAC,
 } from '../../request/AC';
 import { RootState } from '../../store';
 
@@ -66,8 +66,24 @@ const setProfilesDataFromPagedUsersEpic = (action$: Observable<Action>) => actio
   }),
 );
 
+const setProfilesDataFromPagedQuestionsEpic = (action$: Observable<Action>) => action$.pipe(
+  ofType<ReturnType<typeof questionsRequestAC.pagedFeed.Actions.pagedFeedSuccess> |
+    ReturnType<typeof questionsRequestAC.pagedMy.Actions.pagedMySuccess> |
+    ReturnType<typeof questionsRequestAC.pagedOfUser.Actions.pagedOfUserSuccess>>(
+    questionsRequestAC.pagedFeed.ActionTypes.PAGED_FEED_REQUEST_SUCCESS,
+    questionsRequestAC.pagedMy.ActionTypes.PAGED_MY_REQUEST_SUCCESS,
+    questionsRequestAC.pagedOfUser.ActionTypes.PAGED_OF_USER_REQUEST_SUCCESS,
+  ),
+  map((action) => {
+    const users = action.payload.data.results.map(question => question.owner);
+
+    return fromActions.Actions.setProfilesData(users);
+  }),
+);
+
 export const profilesEpics = [
   setProfilesDataEpic,
   setProfilesDataFromFollowRequestEpic,
   setProfilesDataFromPagedUsersEpic,
+  setProfilesDataFromPagedQuestionsEpic,
 ];
