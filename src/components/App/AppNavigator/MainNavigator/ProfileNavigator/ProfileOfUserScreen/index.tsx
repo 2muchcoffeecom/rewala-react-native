@@ -41,7 +41,7 @@ interface State {
   avatarRatio: number;
 }
 
-class ProfileFriendScreen extends React.Component<Props, State> {
+class ProfileOfUserScreen extends React.Component<Props, State> {
   static navigationOptions: NavigationScreenConfig<NavigationStackScreenOptions> = ({navigation}) => {
     return {
       headerTitle: navigation.getParam('title', ''),
@@ -201,4 +201,4 @@ class ProfileFriendScreen extends React.Component<Props, State> {
   }
 }
 
-export default connect<StateProps>(mapStateToProps)(ProfileFriendScreen);
+export default connect<StateProps>(mapStateToProps)(ProfileOfUserScreen);

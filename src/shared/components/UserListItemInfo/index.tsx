@@ -34,7 +34,7 @@ const UserListItemInfo: React.FunctionComponent<Props> = (props) => {
 
     userId === authorizedUserId ?
       navService.push('ProfileScreen', params) :
-      navService.push('ProfileFriendScreen', params);
+      navService.push('ProfileOfUserScreen', params);
   };
 
   const getUserInfoBody = (): JSX.Element => (

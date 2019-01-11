@@ -5,7 +5,7 @@ import BackImage from '../../../../../shared/components/BackImage';
 import navService from '../../../../../shared/services/nav.service';
 
 import SearchUserScreen from './SearchUserScreen';
-import ProfileFriendScreen from '../ProfileNavigator/ProfileFriendScreen';
+import ProfileOfUserScreen from '../ProfileNavigator/ProfileOfUserScreen';
 import FriendsScreen from '../ProfileNavigator/FriendsScreen';
 
 export default createStackNavigator({
@@ -15,8 +15,8 @@ export default createStackNavigator({
         header: null,
       },
     },
-    ProfileFriendScreen: {
-      screen: ProfileFriendScreen,
+    ProfileOfUserScreen: {
+      screen: ProfileOfUserScreen,
       navigationOptions: navService.navigationOptions('', <BackImage/>),
     },
     FriendsScreen: {

@@ -38,7 +38,7 @@ const RewalHeader: React.FunctionComponent<Props> = (props) => {
 
     ownerId === authorizedUserId ?
       navService.push('ProfileScreen', params) :
-      navService.push('ProfileFriendScreen', params);
+      navService.push('ProfileOfUserScreen', params);
   };
 
   return (
