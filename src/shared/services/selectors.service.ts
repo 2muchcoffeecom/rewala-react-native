@@ -4,7 +4,11 @@ import { UserModel } from '../models/user.model';
 import { ProfileModel } from '../models/profile.model';
 import { NavigationInjectedProps } from 'react-navigation';
 import { FriendNavigationProps, OwnProps as FriendListItemOwnProp } from '../components/FriendListItem';
+import { OwnProps as RewalListItemOwnProp } from '../components/Rewal';
+import { OwnProps as RewalListOwnProp } from '../components/RewalList';
 import { FollowRequest } from '../models/followRequest.model';
+import { QuestionOptionModel } from '../models/questionOption.model';
+import { QuestionModel } from '../models/question.model';
 
 interface ISelectorsService {
   getUsersFromContacts: OutputSelector<RootState, UserModel[],
@@ -31,10 +35,20 @@ interface ISelectorsService {
     (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
   getPagedUsersProfiles: OutputSelector<RootState, ProfileModel[],
     (res1: string[], res2: ProfileModel[]) => ProfileModel[]>;
-  getFriendProfileByUserId: OutputParametricSelector<RootState,
+  getFriendProfileByUserIdFromNavProps: OutputParametricSelector<RootState,
     NavigationInjectedProps<FriendNavigationProps>,
     ProfileModel | undefined,
     (res1: ProfileModel[], res2: string) => ProfileModel | undefined>;
+  getProfileByUserIdFromRewalProps: OutputParametricSelector<RootState,
+    RewalListItemOwnProp,
+    ProfileModel | undefined,
+    (res1: ProfileModel[], res2: string) => ProfileModel | undefined>;
+  getQuestionOptionsByQuestionIdsFromRewalProps: OutputParametricSelector<RootState,
+    RewalListItemOwnProp,
+    QuestionOptionModel[],
+    (res1: QuestionOptionModel[], res2: string) => QuestionOptionModel[]>;
+  getPagedQuestionByIdsFromRewalProps: OutputParametricSelector<RootState, RewalListOwnProp, QuestionModel[],
+    (res1: string[], res2: QuestionModel[]) => QuestionModel[]>;
 }
 
 class SelectorsService implements ISelectorsService {
@@ -193,7 +207,7 @@ class SelectorsService implements ISelectorsService {
     },
   );
 
-  getFriendProfileByUserId = createSelector(
+  getFriendProfileByUserIdFromNavProps = createSelector(
     [
       (state: RootState) => state.profiles.entities,
       (
@@ -202,6 +216,54 @@ class SelectorsService implements ISelectorsService {
       ) => props.navigation.getParam('userId', ''),
     ],
     (profiles, userId) => profiles.find(profile => profile.userId === userId),
+  );
+
+  getProfileByUserIdFromRewalProps = createSelector(
+    [
+      (state: RootState) => state.profiles.entities,
+      (
+        state: RootState,
+        props: RewalListItemOwnProp,
+      ) => props.ownerId,
+    ],
+    (profiles, userId) => profiles.find(profile => profile.userId === userId),
+  );
+
+  getQuestionOptionsByQuestionIdsFromRewalProps = createSelector(
+    [
+      (state: RootState) => state.questionOptions.entities,
+      (
+        state: RootState,
+        props: RewalListItemOwnProp,
+      ) => props._id,
+    ],
+    (questionOptions, questionId) => questionOptions
+      .filter(questionOption => questionOption.questionId === questionId),
+  );
+
+  getPagedQuestionByIdsFromRewalProps = createSelector(
+    [
+      (
+        state: RootState,
+        props: RewalListOwnProp,
+      ) => props.questionIds,
+      (state: RootState) => state.questions.entities,
+    ],
+    (questionIds, questions) => {
+      if (questionIds.length !== 0) {
+        return questionIds.reduce<QuestionModel[]>((accum, questionId) => {
+          const question = questions.find((questionItem) => questionItem._id === questionId);
+
+          if (question) {
+            return accum.concat(question);
+          } else {
+            return accum;
+          }
+        }, []);
+      } else {
+        return [];
+      }
+    },
   );
 }
 
