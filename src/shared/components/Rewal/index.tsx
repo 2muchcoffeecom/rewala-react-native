@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import style from './style';
 
 import { Text, View } from 'react-native';
@@ -7,52 +8,68 @@ import RewalBackground from '../RewalBackground';
 import QuestionOptionsList from '../QuestionOptionsList';
 
 import { QuestionOptionModel } from '../../models/questionOption.model';
+import { ProfileModel } from '../../models/profile.model';
+import { RootState } from '../../../redux/store';
 
-interface OwnProps {
-  fullName: string;
-  hoursLeft: string;
-  timeAgo: string;
-  ownerId: string;
-  authorizedUserId: string;
+import selectorsService from '../../services/selectors.service';
+
+export interface OwnProps {
+  _id: string;
   title: string;
-  titleColor: string;
+  titleColor?: string;
+  questionOptionIds: string[];
+  ownerId: string;
+  expiredTime: number;
+  createdAt: string;
   backgroundPath?: string;
-  questionOptions: QuestionOptionModel[];
 }
 
-type Props = OwnProps;
+interface StateProps {
+  authorizedUserId: string;
+  ownerProfile?: ProfileModel;
+  questionOptions: QuestionOptionModel[];
+  // friendFollowRequest?: FollowRequest;
+}
 
-class Rewal extends React.Component<Props> {
+const mapStateToProps = (state: RootState, props: Props): StateProps => ({
+  authorizedUserId: state.auth.authorizedUserId,
+  ownerProfile: selectorsService.getProfileByUserIdFromRewalProps(state, props),
+  questionOptions: selectorsService.getQuestionOptionsByQuestionIdsFromRewalProps(state, props),
+});
 
+type Props = OwnProps & StateProps;
+
+class Rewal extends React.PureComponent<Props> {
   render() {
     const {
-      timeAgo, title, titleColor, backgroundPath, ownerId, hoursLeft, fullName, authorizedUserId, questionOptions,
+      title, titleColor, backgroundPath, ownerId, ownerProfile,
+      authorizedUserId, questionOptions, expiredTime, createdAt,
     } = this.props;
 
     return (
       <View style={style.root}>
         <RewalHeader
-          fullName={fullName}
-          hoursLeft={hoursLeft}
+          fullName={ownerProfile ? ownerProfile.fullName : ''}
+          hoursLeft={createdAt}
           ownerId={ownerId}
           authorizedUserId={authorizedUserId}
+          avatarThumbPath={ownerProfile && ownerProfile.avatarThumbPath}
+          // friendFollowRequest={friendFollowRequest}
         />
         <RewalBackground
           title={title}
-          titleColor={titleColor}
+          titleColor={titleColor ? titleColor : ''}
           backgroundPath={backgroundPath}
         />
         <QuestionOptionsList
           questionOptions={questionOptions}
         />
-        <Text
-          style={style.timeAgo}
-        >
-          {`${timeAgo} min ago`}
+        <Text style={style.timeAgo}>
+          {`${expiredTime} min ago`}
         </Text>
       </View>
     );
   }
 }
 
-export default Rewal;
+export default connect<StateProps>(mapStateToProps)(Rewal);
