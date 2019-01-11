@@ -23,6 +23,33 @@ export function reducer(state = initialState, action: fromActions.Actions): Ques
       };
     }
 
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_FEED: {
+      const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
+
+      return {
+        ...state,
+        pagedQuestionsFromFeedIds: [...state.pagedQuestionsFromFeedIds, ...pagedQuestionsIds],
+      };
+    }
+
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_ME: {
+      const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
+
+      return {
+        ...state,
+        pagedQuestionsFromMeIds: [...state.pagedQuestionsFromMeIds, ...pagedQuestionsIds],
+      };
+    }
+
+    case fromActions.ActionTypes.SET_PAGED_QUESTIONS_IDS_FROM_USER: {
+      const pagedQuestionsIds = action.payload.data.results.map<string>((question) => question._id);
+
+      return {
+        ...state,
+        pagedQuestionsFromUserIds: [...state.pagedQuestionsFromUserIds, ...pagedQuestionsIds],
+      };
+    }
+
     default:
       return state;
   }
