@@ -9,7 +9,7 @@ import navService from '../../../../../shared/services/nav.service';
 class NoFriendsScreen extends React.PureComponent {
 
   toHomeBlankScreen = (): void => {
-    navService.navigate('HomeBlankScreen');
+    navService.navigate('HomeScreen');
   }
 
   render() {

@@ -75,7 +75,7 @@ class AddFriendsScreen extends React.Component<Props, State> {
   }
 
   toHomeBlankScreen = (): void => {
-    navService.navigate('HomeBlankScreen');
+    navService.navigate('HomeScreen');
   }
 
   private keyExtractor = (item: IFriendListItem) => `${item.userId}`;

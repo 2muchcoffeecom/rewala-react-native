@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import AddRewalButton from '../../../../../../shared/components/AddRewalButton';
 import NoRewals from '../../../../../../shared/components/NoRewals';
 
-class HomeBlankScreen extends React.Component {
+class HomeScreen extends React.Component {
 
   render() {
     return (
@@ -17,4 +17,4 @@ class HomeBlankScreen extends React.Component {
   }
 }
 
-export default HomeBlankScreen;
+export default HomeScreen;

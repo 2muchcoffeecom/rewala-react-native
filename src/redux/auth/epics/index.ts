@@ -142,7 +142,7 @@ const redirectToHomeScreenEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<ReturnType<typeof authRequestAC.login.Actions.loginSuccess>>(
     authRequestAC.login.ActionTypes.LOGIN_SUCCESS,
   ),
-  tap(() => navService.navigate('HomeBlankScreen')),
+  tap(() => navService.navigate('HomeScreen')),
   ignoreElements(),
 );
 

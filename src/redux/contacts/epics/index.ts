@@ -73,7 +73,7 @@ const redirectToFriendsScreenEpic = (action$: Observable<Action>) => action$.pip
 const readContactsPermissionDeniedEpic = (action$: Observable<Action>) => action$.pipe(
   ofType<fromActions.Actions>(fromActions.ActionTypes.GET_READ_CONTACTS_PERMISSION_DENIED),
   tap(() => {
-    return navService.navigate('HomeBlankScreen');
+    return navService.navigate('HomeScreen');
   }),
   ignoreElements(),
 );
