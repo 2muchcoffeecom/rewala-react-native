@@ -5,6 +5,7 @@ import { questionOption } from './questionOption.template';
 export const question = `{
   _id
   title
+  titleColor
   expiredTime
   background ${image}
   memberIds

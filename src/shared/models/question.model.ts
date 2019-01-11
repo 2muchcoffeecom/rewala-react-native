@@ -5,6 +5,7 @@ import { QuestionOptionModel } from './questionOption.model';
 export class QuestionModel {
   _id: string = '';
   title: string = '';
+  titleColor: string = '';
   expiredTime: number = 0;
   backgroundPath: string = '';
   memberIds: string[] = [];

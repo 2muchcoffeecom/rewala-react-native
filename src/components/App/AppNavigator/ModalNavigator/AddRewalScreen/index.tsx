@@ -141,6 +141,7 @@ class AddRewalScreen extends React.Component<Props, State> {
   submitCreateQuestion = (values: AddRewalFormData, dispatch: Dispatch<questionActions>) => {
     const input: CreateQuestionInput = {
       title: values.title,
+      titleColor: this.state.titleColor,
       background: this.state.background.uri !== '' ?
         new ReactNativeFile(this.state.background) : undefined,
       expiredTime: this.state.expiredTime,

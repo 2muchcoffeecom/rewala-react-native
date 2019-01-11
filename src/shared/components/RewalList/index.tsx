@@ -54,7 +54,7 @@ class RewalList extends React.PureComponent<Props> {
       <Rewal
         _id={item._id}
         title={item.title}
-        // titleColor={item.titleColor}
+        titleColor={item.titleColor}
         ownerId={item.ownerId}
         createdAt={item.createdAt}
         expiredTime={item.expiredTime}

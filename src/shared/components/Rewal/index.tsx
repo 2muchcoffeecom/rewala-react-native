@@ -16,7 +16,7 @@ import selectorsService from '../../services/selectors.service';
 export interface OwnProps {
   _id: string;
   title: string;
-  titleColor?: string;
+  titleColor: string;
   questionOptionIds: string[];
   ownerId: string;
   expiredTime: number;
@@ -58,7 +58,7 @@ class Rewal extends React.PureComponent<Props> {
         />
         <RewalBackground
           title={title}
-          titleColor={titleColor ? titleColor : ''}
+          titleColor={titleColor}
           backgroundPath={backgroundPath}
         />
         <QuestionOptionsList

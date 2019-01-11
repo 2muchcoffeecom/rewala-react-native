@@ -34,9 +34,12 @@ const style = StyleSheet.create({
     minHeight: Dimensions.get('window').width * 0.5333,
   },
   textTitle: {
+    paddingLeft: 48,
+    paddingRight: 48,
     fontFamily: fontFamilyBold,
     fontWeight: '700',
     fontSize: 18,
+    textAlign: 'center',
     color: whiteColor,
   },
 });
